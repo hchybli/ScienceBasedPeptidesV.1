@@ -41,5 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# sqlite
+# sqlite (database file + WAL mode sidecar files — never commit live DB state)
 /db/*.db
+/db/*.db-shm
+/db/*.db-wal
