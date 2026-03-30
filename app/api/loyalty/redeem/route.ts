@@ -1,0 +1,29 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import getDb from "@/db/index";
+import { getCurrentUser } from "@/lib/auth";
+import { minimumRedeemPoints, redeemPoints } from "@/lib/loyalty";
+
+const schema = z.object({
+  points: z.number().int().min(minimumRedeemPoints()),
+});
+
+export async function POST(req: Request) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const body = await req.json().catch(() => null);
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: `Minimum ${minimumRedeemPoints()} points` }, { status: 400 });
+  }
+  const db = getDb();
+  const u = db.prepare(`SELECT loyalty_points FROM users WHERE id = ?`).get(user.userId) as { loyalty_points: number };
+  if (u.loyalty_points < parsed.data.points) {
+    return NextResponse.json({ error: "Insufficient points" }, { status: 400 });
+  }
+  redeemPoints(user.userId, parsed.data.points, "manual_redeem");
+  const next = db.prepare(`SELECT loyalty_points FROM users WHERE id = ?`).get(user.userId) as { loyalty_points: number };
+  return NextResponse.json({ balance: next.loyalty_points });
+}
