@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/ui/product-card";
 import { parseJsonArray } from "@/lib/utils";
 import { FooterDisclaimer } from "@/components/ui/disclaimer";
+import { ShopToolbar } from "@/components/shop/shop-toolbar";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +28,14 @@ export default async function ShopPage({
         }
       : {}),
   };
-  const sort = sp.sort ?? "featured";
+  const sort = sp.sort ?? "most_popular";
   const orderMap: Record<string, { field: "created_at" | "sold_count" | "name"; dir: "asc" | "desc" }[]> = {
+    most_popular: [
+      { field: "sold_count", dir: "desc" },
+      { field: "name", dir: "asc" },
+    ],
+    a_z: [{ field: "name", dir: "asc" }],
+    z_a: [{ field: "name", dir: "desc" }],
     price_asc: [{ field: "name", dir: "asc" }],
     price_desc: [{ field: "name", dir: "asc" }],
     newest: [{ field: "created_at", dir: "desc" }],
@@ -39,9 +45,10 @@ export default async function ShopPage({
       { field: "sold_count", dir: "desc" },
     ],
   };
+  const sortKey = sort === "featured" ? "most_popular" : sort;
   const products = await prisma.products.findMany({
     where,
-    orderBy: (orderMap[sort] ?? orderMap.featured).map((o) => ({ [o.field]: o.dir })),
+    orderBy: (orderMap[sortKey] ?? orderMap.most_popular).map((o) => ({ [o.field]: o.dir })),
   });
   const variants = await prisma.variants.findMany({
     where: {
@@ -49,11 +56,27 @@ export default async function ShopPage({
       is_default: 1,
     },
   });
+  const allSizes = await prisma.variants.findMany({
+    where: {
+      product_id: { in: products.map((p) => p.id) },
+    },
+    select: { product_id: true, size: true, display_order: true },
+    orderBy: [{ product_id: "asc" }, { display_order: "asc" }],
+  });
   const variantByProduct = new Map(variants.map((v) => [v.product_id, v]));
+  const sizesByProduct = new Map<string, string[]>();
+  for (const row of allSizes) {
+    const next = sizesByProduct.get(row.product_id) ?? [];
+    if (!next.includes(row.size)) next.push(row.size);
+    sizesByProduct.set(row.product_id, next);
+  }
   const rows = products
     .map((p) => {
       const v = variantByProduct.get(p.id);
       if (!v) return null;
+      const imgs = parseJsonArray<string>(p.images, []);
+      const primaryImage = imgs[0] ?? "/placeholder-peptide.svg";
+      if (primaryImage === "/placeholder-peptide.svg") return null;
       return { ...p, vid: v.id, price: v.price, size: v.size, compare_at: v.compare_at };
     })
     .filter(Boolean) as Array<Record<string, unknown>>;
@@ -62,30 +85,21 @@ export default async function ShopPage({
   } else if (sort === "price_desc") {
     rows.sort((a, b) => Number(b.price) - Number(a.price));
   }
+  const hasCenteredTailRow = rows.length > 5 && rows.length % 5 === 4;
+  const mainRows = hasCenteredTailRow ? rows.slice(0, -4) : rows;
+  const tailRows = hasCenteredTailRow ? rows.slice(-4) : [];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-5">
         <div>
-          <h1 className="font-display text-3xl font-semibold">Shop</h1>
-          <p className="mt-2 text-sm text-[var(--text-muted)]">
-            Catalog items are supplied for laboratory and analytical research only. Not for human consumption.
-          </p>
+          <h1 className="font-display text-3xl font-semibold">All Products</h1>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">Premium research peptides with 99%+ purity</p>
         </div>
-        <div className="flex flex-wrap gap-2 text-sm">
-          <Link href="/shop" className="rounded-md border border-[var(--border)] px-3 py-1 hover:border-accent/40">
-            All
-          </Link>
-          <Link href="/shop?sort=price_asc" className="rounded-md border border-[var(--border)] px-3 py-1">
-            Price ↑
-          </Link>
-          <Link href="/shop?sort=price_desc" className="rounded-md border border-[var(--border)] px-3 py-1">
-            Price ↓
-          </Link>
-        </div>
+        <ShopToolbar initialQuery={sp.q ?? ""} initialSort={sortKey} />
       </div>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {rows.map((p) => {
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+        {mainRows.map((p, index) => {
           const imgs = parseJsonArray<string>(p.images as string, []);
           return (
             <ProductCard
@@ -99,10 +113,35 @@ export default async function ShopPage({
               compareAt={p.compare_at as number | null}
               variantId={p.vid as string}
               size={p.size as string}
+              variantSizes={sizesByProduct.get(p.id as string)}
+              priority={index < 5}
             />
           );
         })}
       </div>
+      {tailRows.length === 4 ? (
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:mx-auto xl:w-[calc(80%-0.3rem)] xl:grid-cols-4">
+          {tailRows.map((p, index) => {
+            const imgs = parseJsonArray<string>(p.images as string, []);
+            return (
+              <ProductCard
+                key={p.id as string}
+                id={p.id as string}
+                slug={p.slug as string}
+                name={p.name as string}
+                purity={p.purity as number | null}
+                image={imgs[0] ?? "/placeholder-peptide.svg"}
+                price={p.price as number}
+                compareAt={p.compare_at as number | null}
+                variantId={p.vid as string}
+                size={p.size as string}
+                variantSizes={sizesByProduct.get(p.id as string)}
+                priority={mainRows.length + index < 5}
+              />
+            );
+          })}
+        </div>
+      ) : null}
       <div className="mt-12 max-w-3xl">
         <FooterDisclaimer />
       </div>

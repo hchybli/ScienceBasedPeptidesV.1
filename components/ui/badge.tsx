@@ -10,7 +10,7 @@ const badgeVariants = cva(
         warning: "border-amber-500/40 bg-amber-500/10 text-amber-300",
         danger: "border-red-500/40 bg-red-500/10 text-red-300",
         neutral: "border-[var(--border)] bg-surface-2 text-[var(--text-muted)]",
-        purity: "border-accent/50 bg-accent-muted text-accent",
+        purity: "border-accent/50 bg-accent-muted font-semibold text-accent [text-shadow:0_1px_1px_rgba(0,0,0,0.95)]",
       },
     },
     defaultVariants: {

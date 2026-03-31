@@ -37,9 +37,9 @@ export default async function HomePage() {
   ];
 
   return (
-    <div className="space-y-6 pb-8 md:space-y-10">
-      <section className="relative overflow-hidden border-b border-[var(--border)] bg-gradient-to-b from-surface to-bg">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,201,167,0.10),transparent_45%)]" />
+    <div className="pb-8 md:pb-10">
+      <section className="relative overflow-hidden bg-[var(--bg)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(24,211,190,0.08),transparent_55%)]" />
         <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
           <Badge variant="purity" className="mb-4">
             Laboratory research materials · Independent COAs
@@ -92,7 +92,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-[var(--border)] py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-7xl px-4">
           <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">Commonly ordered</h2>
           <div className="mt-8 flex gap-4 overflow-x-auto pb-2">
@@ -117,7 +117,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-[var(--border)] py-16">
+      <section className="py-16">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 md:grid-cols-2">
           <div>
             <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">Curated comparative research sets</h2>
@@ -153,7 +153,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-[var(--border)] py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-7xl px-4">
           <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">What researchers say</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -187,7 +187,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-[var(--border)] py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <h2 className="font-display text-2xl font-semibold tracking-tight">Research updates</h2>
           <p className="mt-3 text-sm text-[var(--text-muted)]">

@@ -1,13 +1,18 @@
 import { config } from "dotenv";
 import { nanoid } from "nanoid";
 import path from "path";
+import fs from "fs";
 import bcrypt from "bcryptjs";
 import { DEFAULT_ADMIN_EMAIL } from "@/lib/site";
-import { prisma } from "@/lib/prisma";
 
 config({ path: path.join(process.cwd(), ".env.local") });
 
-const IMG = JSON.stringify(["/placeholder-peptide.svg"]);
+const PLACEHOLDER_IMAGE = "/placeholder-peptide.svg";
+
+function imageSet(...paths: string[]) {
+  const existing = paths.filter((imgPath) => fs.existsSync(path.join(process.cwd(), "public", imgPath.replace(/^\//, ""))));
+  return existing.length > 0 ? existing : [PLACEHOLDER_IMAGE];
+}
 
 type Var = {
   id: string;
@@ -40,7 +45,24 @@ type P = {
   is_best_seller: number;
   subscription_eligible: number;
   tags: string[];
+  images?: string[];
   variants: Var[];
+};
+
+type ProductStructureOverride = {
+  type?: string;
+  brand?: string;
+  family?: "Peptides" | "Blends" | "Solutions";
+  form?: string;
+  batch?: string;
+  image_slot?: string;
+};
+
+type ProductOverride = Partial<Omit<P, "id" | "slug" | "variants">> & {
+  variants?: Var[];
+  aliases?: string[];
+  structure?: ProductStructureOverride;
+  images?: string[];
 };
 
 const categories: Array<{
@@ -103,14 +125,15 @@ const categories: Array<{
   },
 ];
 
-const products: P[] = [
+const rawProducts: P[] = [
   {
     id: "p_bpc157",
     name: "BPC-157",
     slug: "bpc-157",
     description:
-      "Synthetic research peptide supplied as lyophilized powder for laboratory and analytical applications. Documented in preclinical literature for extracellular matrix and signaling pathway studies. Intended for research use only; not for human consumption.",
-    short_description: "Synthetic peptide for laboratory research applications.",
+      "A 15-amino acid peptide derived from human gastric juice that is studied in controlled laboratory models for protection and regenerative signaling pathways. Premium research peptide.",
+    short_description:
+      "A 15-amino acid peptide derived from human gastric juice that demonstrates protection and regenerative effects in animal cell models.",
     scientific_name: "Body Protection Compound 157",
     category_id: "cat_research_compounds",
     base_price: 34.99,
@@ -120,32 +143,14 @@ const products: P[] = [
     cas_number: "137525-51-0",
     cycle_length_days: 56,
     storage_instructions:
-      "Store at -20°C. Stable for 24 months frozen. After preparation of working solutions per laboratory SOP, refrigerate and complete analytical use within 30 days consistent with stability data.",
+      "Store at -20C in a dry, light-protected environment. Keep lyophilized powder sealed until laboratory preparation under validated SOPs.",
     is_featured: 1,
     is_best_seller: 1,
     subscription_eligible: 1,
-    tags: ["synthetic peptide", "lyophilized", "reference material", "laboratory"],
+    tags: ["research peptide", "regenerative peptide"],
     variants: [
       { id: "v_bpc_5", size: "5mg", price: 34.99, sku: "BPC157-5MG", stock: 500, is_default: true, order: 0 },
       { id: "v_bpc_10", size: "10mg", price: 59.99, sku: "BPC157-10MG", stock: 300, order: 1 },
-      {
-        id: "v_bpc_5x5",
-        size: "5mg × 5 vials",
-        price: 149.99,
-        sku: "BPC157-5X5MG",
-        stock: 200,
-        compare_at: 174.95,
-        order: 2,
-      },
-      {
-        id: "v_bpc_10x5",
-        size: "5mg × 10 vials",
-        price: 274.99,
-        sku: "BPC157-10X5MG",
-        stock: 150,
-        compare_at: 349.9,
-        order: 3,
-      },
     ],
   },
   {
@@ -182,6 +187,109 @@ const products: P[] = [
     ],
   },
   {
+    id: "p_semaglutide",
+    name: "Semaglutide",
+    slug: "semaglutide",
+    description:
+      "Semaglutide reference material for controlled research settings focused on consistency and reproducibility in laboratory workflows.",
+    short_description: "Precision-manufactured compound intended for laboratory research.",
+    scientific_name: "Semaglutide",
+    category_id: "cat_research_compounds",
+    base_price: 69.99,
+    sku: "SEMAGLUTIDE",
+    purity: 99.0,
+    cycle_length_days: 56,
+    is_featured: 0,
+    is_best_seller: 0,
+    subscription_eligible: 1,
+    tags: ["synthetic peptide", "laboratory", "research compound"],
+    variants: [
+      { id: "v_sema_5", size: "5mg", price: 69.99, sku: "SEMAGLUTIDE-5MG", stock: 250, is_default: true, order: 0 },
+      { id: "v_sema_10", size: "10mg", price: 119.99, sku: "SEMAGLUTIDE-10MG", stock: 200, order: 1 },
+      { id: "v_sema_15", size: "15mg", price: 159.99, sku: "SEMAGLUTIDE-15MG", stock: 150, order: 2 },
+    ],
+  },
+  {
+    id: "p_retatrutide",
+    name: "Retatrutide",
+    slug: "retatrutide",
+    description:
+      "Retatrutide research compound manufactured under controlled conditions to support consistency across laboratory and analytical workflows.",
+    short_description: "Synthetic research compound produced for controlled laboratory environments.",
+    scientific_name: "Retatrutide",
+    category_id: "cat_research_compounds",
+    base_price: 79.99,
+    sku: "RETATRUTIDE",
+    purity: 99.0,
+    cycle_length_days: 56,
+    is_featured: 0,
+    is_best_seller: 0,
+    subscription_eligible: 1,
+    tags: ["synthetic peptide", "laboratory", "research compound"],
+    variants: [
+      { id: "v_reta_5", size: "5mg", price: 79.99, sku: "RETATRUTIDE-5MG", stock: 220, is_default: true, order: 0 },
+      { id: "v_reta_10", size: "10mg", price: 129.99, sku: "RETATRUTIDE-10MG", stock: 180, order: 1 },
+      { id: "v_reta_15", size: "15mg", price: 169.99, sku: "RETATRUTIDE-15MG", stock: 140, order: 2 },
+    ],
+  },
+  {
+    id: "p_melanotan_i",
+    name: "Melanotan I",
+    slug: "melanotan-i",
+    description:
+      "Melanotan I is manufactured for controlled laboratory environments with consistency across production batches.",
+    short_description: "Synthetic research compound intended for laboratory use.",
+    scientific_name: "Melanotan I",
+    category_id: "cat_research_compounds",
+    base_price: 54.99,
+    sku: "MELANOTANI",
+    purity: 99.0,
+    cycle_length_days: 56,
+    is_featured: 0,
+    is_best_seller: 0,
+    subscription_eligible: 1,
+    tags: ["synthetic peptide", "laboratory", "research compound"],
+    variants: [{ id: "v_mt1_10", size: "10mg", price: 54.99, sku: "MELANOTAN1-10MG", stock: 220, is_default: true, order: 0 }],
+  },
+  {
+    id: "p_melanotan_ii",
+    name: "Melanotan II",
+    slug: "melanotan-ii",
+    description:
+      "Melanotan II is manufactured for controlled laboratory environments with consistency across production batches.",
+    short_description: "Synthetic research compound intended for laboratory use.",
+    scientific_name: "Melanotan II",
+    category_id: "cat_research_compounds",
+    base_price: 54.99,
+    sku: "MELANOTANII",
+    purity: 99.0,
+    cycle_length_days: 56,
+    is_featured: 0,
+    is_best_seller: 0,
+    subscription_eligible: 1,
+    tags: ["synthetic peptide", "laboratory", "research compound"],
+    variants: [{ id: "v_mt2_10", size: "10mg", price: 54.99, sku: "MELANOTAN2-10MG", stock: 220, is_default: true, order: 0 }],
+  },
+  {
+    id: "p_tesamorelin",
+    name: "Tesamorelin",
+    slug: "tesamorelin",
+    description:
+      "Tesamorelin is manufactured for controlled laboratory environments with batch-to-batch consistency for research and analytical workflows.",
+    short_description: "Synthetic research compound intended for laboratory use.",
+    scientific_name: "Tesamorelin",
+    category_id: "cat_research_compounds",
+    base_price: 74.99,
+    sku: "TESAMORELIN",
+    purity: 99.0,
+    cycle_length_days: 56,
+    is_featured: 0,
+    is_best_seller: 0,
+    subscription_eligible: 1,
+    tags: ["synthetic peptide", "laboratory", "research compound"],
+    variants: [{ id: "v_tesa_20", size: "20mg", price: 74.99, sku: "TESAMORELIN-20MG", stock: 220, is_default: true, order: 0 }],
+  },
+  {
     id: "p_blend_bpc_tb",
     name: "BPC-157 + TB-500 Blend",
     slug: "bpc-157-tb-500-blend",
@@ -216,6 +324,43 @@ const products: P[] = [
         stock: 200,
         compare_at: 324.95,
         order: 2,
+      },
+    ],
+  },
+  {
+    id: "p_blend_bpc_ghk_tb",
+    name: "BPC-157 + GHK-Cu + TB-500 Blend",
+    slug: "bpc-157-ghk-cu-tb-blend",
+    description:
+      "Tri-compound lyophilized blend including BPC-157, GHK-Cu, and TB-500 sequences for comparative multi-analyte laboratory and preclinical workflows.",
+    short_description: "Tri-sequence blend for comparative laboratory research workflows.",
+    category_id: "cat_research_compounds",
+    base_price: 124.99,
+    sku: "BLENDBPCGHKTB",
+    purity: 99.0,
+    cycle_length_days: 56,
+    is_featured: 1,
+    is_best_seller: 0,
+    subscription_eligible: 1,
+    tags: ["blend", "lyophilized", "comparative research", "laboratory", "multi-compound"],
+    images: ["/products/bpc-157-ghk-cu-tb-blend-clean-2.png"],
+    variants: [
+      {
+        id: "v_blend_bgt_20",
+        size: "20mg",
+        price: 124.99,
+        sku: "BLEND-BPC-GHK-TB-20MG",
+        stock: 260,
+        is_default: true,
+        order: 0,
+      },
+      {
+        id: "v_blend_bgt_40",
+        size: "40mg",
+        price: 219.99,
+        sku: "BLEND-BPC-GHK-TB-40MG",
+        stock: 140,
+        order: 1,
       },
     ],
   },
@@ -560,6 +705,103 @@ const products: P[] = [
   },
 ];
 
+const COMMON_DISCLAIMER = "For laboratory research use only. Not for human consumption.";
+const BRAND_LINE = "SCIENCE BASED PEPTIDES";
+const OVERRIDES_PATH = path.join(process.cwd(), "content", "products", "product-info.json");
+const IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg"];
+
+function loadProductOverrides(): Record<string, ProductOverride> {
+  if (!fs.existsSync(OVERRIDES_PATH)) return {};
+  try {
+    const raw = fs.readFileSync(OVERRIDES_PATH, "utf8");
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    return parsed as Record<string, ProductOverride>;
+  } catch (error) {
+    console.warn("Skipping product overrides: invalid JSON in content/products/product-info.json");
+    console.warn(error);
+    return {};
+  }
+}
+
+function resolveImagesForSlug(slug: string, explicit?: string[]): string[] {
+  if (explicit && explicit.length > 0) return imageSet(...explicit);
+  const publicProducts = path.join(process.cwd(), "public", "products");
+  if (!fs.existsSync(publicProducts)) return [PLACEHOLDER_IMAGE];
+  const files = fs.readdirSync(publicProducts);
+  const preferred: string[] = [];
+  for (const ext of IMAGE_EXTENSIONS) {
+    preferred.push(`${slug}.${ext}`);
+    preferred.push(`${slug}-vial.${ext}`);
+    preferred.push(`${slug}-1.${ext}`);
+  }
+  const picked = new Set<string>();
+  for (const candidate of preferred) {
+    if (files.includes(candidate)) picked.add(`/products/${candidate}`);
+  }
+  for (const file of files.sort()) {
+    const lower = file.toLowerCase();
+    const isImage = IMAGE_EXTENSIONS.some((ext) => lower.endsWith(`.${ext}`));
+    if (isImage && lower.startsWith(`${slug.toLowerCase()}-`)) {
+      picked.add(`/products/${file}`);
+    }
+  }
+  return picked.size > 0 ? Array.from(picked) : [PLACEHOLDER_IMAGE];
+}
+
+function mergeProductOverride(product: P, override?: ProductOverride): P {
+  if (!override) return product;
+  return {
+    ...product,
+    ...override,
+    tags: override.tags ?? product.tags,
+    variants: override.variants ?? product.variants,
+    images: override.images ?? product.images,
+  };
+}
+
+function classifyFamily(product: P, override?: ProductOverride): "Peptides" | "Blends" | "Solutions" {
+  if (override?.structure?.family) return override.structure.family;
+  if (product.name.includes("Blend")) return "Blends";
+  if (product.slug.includes("water") || product.category_id === "cat_research_accessories") return "Solutions";
+  return "Peptides";
+}
+
+function applyGlobalStructure(product: P, override?: ProductOverride): P {
+  const family = classifyFamily(product, override);
+  const type = override?.structure?.type ?? "Research Peptide";
+  const brand = override?.structure?.brand ?? BRAND_LINE;
+  const form = override?.structure?.form ?? (family === "Solutions" ? "Liquid Solution" : "Lyophilized Powder");
+  const batch = override?.structure?.batch ?? (family === "Solutions" ? "SHR-001" : "SBP-001");
+  const imageSlot = override?.structure?.image_slot ?? `products/${product.slug}.png`;
+  const normalized = product.description.includes(COMMON_DISCLAIMER)
+    ? product.description
+    : `${product.description} ${COMMON_DISCLAIMER}`;
+  const metaTags = [
+    `meta:type:${type}`,
+    `meta:brand:${brand}`,
+    `meta:family:${family}`,
+    `meta:form:${form}`,
+    `meta:batch:${batch}`,
+    `meta:image_slot:${imageSlot}`,
+  ];
+  const aliases = (override?.aliases ?? []).map((alias) => `alias:${alias}`);
+  const tags = Array.from(new Set([...product.tags, ...aliases, ...metaTags]));
+  return {
+    ...product,
+    description: normalized,
+    tags,
+    images: resolveImagesForSlug(product.slug, product.images),
+  };
+}
+
+const productOverrides = loadProductOverrides();
+const products: P[] = rawProducts.map((raw) => {
+  const override = productOverrides[raw.slug];
+  const merged = mergeProductOverride(raw, override);
+  return applyGlobalStructure(merged, override);
+});
+
 const bundles: Array<{
   id: string;
   name: string;
@@ -634,6 +876,12 @@ const related: Array<[string, string, string]> = [
   ["p_tb500", "p_bpc157", "research_set"],
   ["p_tb500", "p_blend_bpc_tb", "frequently_bought"],
   ["p_tb500", "p_bac", "related"],
+  ["p_bpc157", "p_blend_bpc_ghk_tb", "frequently_bought"],
+  ["p_tb500", "p_blend_bpc_ghk_tb", "frequently_bought"],
+  ["p_ghk", "p_blend_bpc_ghk_tb", "frequently_bought"],
+  ["p_blend_bpc_ghk_tb", "p_bpc157", "related"],
+  ["p_blend_bpc_ghk_tb", "p_tb500", "related"],
+  ["p_blend_bpc_ghk_tb", "p_ghk", "related"],
   ["p_cjc", "p_ipa", "research_set"],
   ["p_cjc", "p_cjc_ipa_blend", "frequently_bought"],
   ["p_ipa", "p_cjc", "research_set"],
@@ -652,70 +900,153 @@ const discounts = [
 ];
 
 async function main() {
-  await prisma.$executeRawUnsafe(`
-    TRUNCATE TABLE
-      "related_products",
-      "bundle_items",
-      "bundles",
-      "lab_reports",
-      "variants",
-      "products",
-      "categories",
-      "reviews",
-      "discount_codes",
-      "newsletter_signups",
-      "loyalty_transactions",
-      "referrals",
-      "abandoned_carts",
-      "email_sequences",
-      "subscription_items",
-      "subscriptions",
-      "orders",
-      "addresses",
-      "users"
-    RESTART IDENTITY CASCADE
-  `);
-
-  await prisma.categories.createMany({
-    data: categories.map((c) => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      description: c.description,
-      display_order: c.display_order,
-    })),
-  });
+  const { prisma } = await import("@/lib/prisma");
+  const incremental = process.argv.includes("--sync");
+  if (!incremental) {
+    await prisma.$executeRawUnsafe(`
+      TRUNCATE TABLE
+        "related_products",
+        "bundle_items",
+        "bundles",
+        "lab_reports",
+        "variants",
+        "products",
+        "categories",
+        "reviews",
+        "discount_codes",
+        "newsletter_signups",
+        "loyalty_transactions",
+        "referrals",
+        "abandoned_carts",
+        "email_sequences",
+        "subscription_items",
+        "subscriptions",
+        "orders",
+        "addresses",
+        "users"
+      RESTART IDENTITY CASCADE
+    `);
+    await prisma.categories.createMany({
+      data: categories.map((c) => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        description: c.description,
+        display_order: c.display_order,
+      })),
+    });
+  } else {
+    for (const c of categories) {
+      await prisma.categories.upsert({
+        where: { id: c.id },
+        update: {
+          name: c.name,
+          slug: c.slug,
+          description: c.description,
+          display_order: c.display_order,
+        },
+        create: {
+          id: c.id,
+          name: c.name,
+          slug: c.slug,
+          description: c.description,
+          display_order: c.display_order,
+        },
+      });
+    }
+  }
 
   for (const p of products) {
     const tags = JSON.stringify(p.tags);
-    await prisma.products.create({
-      data: {
-        id: p.id,
-        name: p.name,
-        slug: p.slug,
-        description: p.description,
-        short_description: p.short_description ?? null,
-        scientific_name: p.scientific_name ?? null,
-        category_id: p.category_id,
-        images: IMG,
-        base_price: p.base_price,
-        compare_price_at: p.compare_price_at ?? null,
-        sku: p.sku,
-        purity: p.purity ?? null,
-        molecular_formula: p.molecular_formula ?? null,
-        cas_number: p.cas_number ?? null,
-        storage_instructions: p.storage_instructions ?? null,
-        cycle_length_days: p.cycle_length_days ?? null,
-        is_active: 1,
-        is_featured: p.is_featured,
-        is_best_seller: p.is_best_seller,
-        subscription_eligible: p.subscription_eligible,
-        tags,
-        seo_title: `${p.name} · Laboratory research material`,
-        seo_description: (p.short_description ?? p.description).slice(0, 160),
-      },
-    });
+    const imageJson = JSON.stringify(p.images ?? [PLACEHOLDER_IMAGE]);
+    const batchTag = p.tags.find((tag) => tag.startsWith("meta:batch:"));
+    const batch = batchTag ? batchTag.replace("meta:batch:", "") : "SBP-001";
+    if (!incremental) {
+      await prisma.products.create({
+        data: {
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          description: p.description,
+          short_description: p.short_description ?? null,
+          scientific_name: p.scientific_name ?? null,
+          category_id: p.category_id,
+          images: imageJson,
+          base_price: p.base_price,
+          compare_price_at: p.compare_price_at ?? null,
+          sku: p.sku,
+          purity: p.purity ?? null,
+          molecular_formula: p.molecular_formula ?? null,
+          cas_number: p.cas_number ?? null,
+          storage_instructions: p.storage_instructions ?? null,
+          cycle_length_days: p.cycle_length_days ?? null,
+          is_active: 1,
+          is_featured: p.is_featured,
+          is_best_seller: p.is_best_seller,
+          subscription_eligible: p.subscription_eligible,
+          tags,
+          seo_title: `${p.name} · Laboratory research material`,
+          seo_description: (p.short_description ?? p.description).slice(0, 160),
+        },
+      });
+    } else {
+      await prisma.products.upsert({
+        where: { id: p.id },
+        update: {
+          name: p.name,
+          slug: p.slug,
+          description: p.description,
+          short_description: p.short_description ?? null,
+          scientific_name: p.scientific_name ?? null,
+          category_id: p.category_id,
+          images: imageJson,
+          base_price: p.base_price,
+          compare_price_at: p.compare_price_at ?? null,
+          sku: p.sku,
+          purity: p.purity ?? null,
+          molecular_formula: p.molecular_formula ?? null,
+          cas_number: p.cas_number ?? null,
+          storage_instructions: p.storage_instructions ?? null,
+          cycle_length_days: p.cycle_length_days ?? null,
+          is_active: 1,
+          is_featured: p.is_featured,
+          is_best_seller: p.is_best_seller,
+          subscription_eligible: p.subscription_eligible,
+          tags,
+          seo_title: `${p.name} · Laboratory research material`,
+          seo_description: (p.short_description ?? p.description).slice(0, 160),
+        },
+        create: {
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          description: p.description,
+          short_description: p.short_description ?? null,
+          scientific_name: p.scientific_name ?? null,
+          category_id: p.category_id,
+          images: imageJson,
+          base_price: p.base_price,
+          compare_price_at: p.compare_price_at ?? null,
+          sku: p.sku,
+          purity: p.purity ?? null,
+          molecular_formula: p.molecular_formula ?? null,
+          cas_number: p.cas_number ?? null,
+          storage_instructions: p.storage_instructions ?? null,
+          cycle_length_days: p.cycle_length_days ?? null,
+          is_active: 1,
+          is_featured: p.is_featured,
+          is_best_seller: p.is_best_seller,
+          subscription_eligible: p.subscription_eligible,
+          tags,
+          seo_title: `${p.name} · Laboratory research material`,
+          seo_description: (p.short_description ?? p.description).slice(0, 160),
+        },
+      });
+    }
 
+    if (incremental) {
+      await prisma.variants.deleteMany({ where: { product_id: p.id } });
+    }
     await prisma.variants.createMany({
       data: p.variants.map((v) => ({
         id: v.id,
@@ -731,11 +1062,14 @@ async function main() {
       })),
     });
 
+    if (incremental) {
+      await prisma.lab_reports.deleteMany({ where: { product_id: p.id } });
+    }
     await prisma.lab_reports.create({
       data: {
         id: nanoid(),
         product_id: p.id,
-        batch_number: `BATCH-${p.sku}-001`,
+        batch_number: batch,
         lab_name: "NorthStar Analytics Lab",
         purity: p.purity ?? 99.0,
         report_url: "https://example.com/coa/sample.pdf",
@@ -743,6 +1077,11 @@ async function main() {
         is_current: 1,
       },
     });
+  }
+
+  if (incremental) {
+    console.log("Catalog sync complete (incremental).");
+    return;
   }
 
   const variantToProduct = new Map<string, string>();

@@ -25,7 +25,20 @@ export default async function CategoryShopPage({ params }: { params: Promise<{ c
       is_default: 1,
     },
   });
+  const allSizes = await prisma.variants.findMany({
+    where: {
+      product_id: { in: products.map((p) => p.id) },
+    },
+    select: { product_id: true, size: true, display_order: true },
+    orderBy: [{ product_id: "asc" }, { display_order: "asc" }],
+  });
   const variantByProduct = new Map(variants.map((v) => [v.product_id, v]));
+  const sizesByProduct = new Map<string, string[]>();
+  for (const row of allSizes) {
+    const next = sizesByProduct.get(row.product_id) ?? [];
+    if (!next.includes(row.size)) next.push(row.size);
+    sizesByProduct.set(row.product_id, next);
+  }
   const rows = products
     .map((p) => {
       const v = variantByProduct.get(p.id);
@@ -50,7 +63,7 @@ export default async function CategoryShopPage({ params }: { params: Promise<{ c
           Materials in this category are for laboratory and analytical research only.
         </p>
       )}
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
         {rows.map((p) => {
           const imgs = parseJsonArray<string>(p.images as string, []);
           return (
@@ -65,6 +78,7 @@ export default async function CategoryShopPage({ params }: { params: Promise<{ c
               compareAt={p.compare_at as number | null}
               variantId={p.vid as string}
               size={p.size as string}
+              variantSizes={sizesByProduct.get(p.id as string)}
             />
           );
         })}

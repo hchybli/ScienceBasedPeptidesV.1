@@ -18,8 +18,11 @@ export function ProductCard(props: {
   compareAt?: number | null;
   variantId: string;
   size: string;
+  variantSizes?: string[];
+  priority?: boolean;
 }) {
   const addItem = useCartStore((s) => s.addItem);
+  const imageClassName = "object-cover object-center transition duration-300 group-hover:scale-[1.02]";
   const onAdd = () => {
     const item: CartItem = {
       productId: props.id,
@@ -36,13 +39,16 @@ export function ProductCard(props: {
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-surface shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40">
-      <Link href={`/products/${props.slug}`} className="relative aspect-square bg-surface-2">
+      <Link href={`/products/${props.slug}`} className="relative aspect-[3/4] bg-[#05070b]">
         <Image
           src={props.image || "/placeholder-peptide.svg"}
           alt=""
           fill
-          className="object-cover transition duration-300 group-hover:scale-[1.03]"
-          sizes="(max-width:768px) 100vw, 25vw"
+          className={imageClassName}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 25vw, 20vw"
+          quality={100}
+          unoptimized
+          priority={props.priority}
         />
         {props.purity != null ? (
           <div className="absolute left-2 top-2">
@@ -51,21 +57,25 @@ export function ProductCard(props: {
         ) : null}
       </Link>
       <div className="flex flex-1 flex-col p-5">
-        <Link href={`/products/${props.slug}`} className="font-display text-lg font-semibold tracking-tight hover:text-accent">
+        <Link
+          href={`/products/${props.slug}`}
+          className="font-display min-h-[3.5rem] text-lg font-semibold tracking-tight hover:text-accent"
+        >
           {props.name}
         </Link>
-        <p className="mt-1 text-xs uppercase tracking-wide text-[var(--text-muted)]">{props.size}</p>
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="font-mono text-lg text-[var(--text)]">{formatCurrency(props.price)}</span>
-          {props.compareAt && props.compareAt > props.price ? (
-            <span className="font-mono text-sm text-[var(--text-muted)] line-through">
-              {formatCurrency(props.compareAt)}
-            </span>
-          ) : null}
+        <div className="mt-auto pt-3">
+          <div className="flex items-baseline gap-2">
+            <span className="font-mono text-lg text-[var(--text)]">{formatCurrency(props.price)}</span>
+            {props.compareAt && props.compareAt > props.price ? (
+              <span className="font-mono text-sm text-[var(--text-muted)] line-through">
+                {formatCurrency(props.compareAt)}
+              </span>
+            ) : null}
+          </div>
+          <Button className="mt-4 w-full" type="button" onClick={onAdd}>
+            Add to cart
+          </Button>
         </div>
-        <Button className="mt-5 w-full" type="button" onClick={onAdd}>
-          Add to cart
-        </Button>
       </div>
     </div>
   );

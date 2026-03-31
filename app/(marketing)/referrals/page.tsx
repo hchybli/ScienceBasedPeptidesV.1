@@ -84,9 +84,6 @@ export default function ReferralsMarketingPage() {
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(24,211,190,0.08),transparent_56%)]" />
         <div className="mx-auto flex max-w-7xl flex-col items-center px-4 py-20 text-center md:px-6 md:py-28">
-          <p className="inline-flex rounded-full border border-[var(--border)] bg-surface px-4 py-1.5 text-xs uppercase tracking-[0.14em] text-[var(--text-muted)]">
-            Affiliate Program
-          </p>
           <h1 className="mt-6 max-w-5xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
             Become a Science Based Peptides Affiliate
           </h1>
@@ -94,7 +91,7 @@ export default function ReferralsMarketingPage() {
             {[
               { v: "20%", l: "First-order commission" },
               { v: "10%", l: "Recurring commission" },
-              { v: "30 days", l: "Referral cookie window" },
+              { v: "30 days", l: "30 day commission window" },
               { v: "Monthly", l: "Payout cadence" },
             ].map((s) => (
               <div

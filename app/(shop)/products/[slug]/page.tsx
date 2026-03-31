@@ -49,14 +49,35 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     p.id
   )) as Array<Record<string, unknown>>;
 
-  const related = (await prisma.$queryRawUnsafe(
-    `SELECT p2.id, p2.name, p2.slug, p2.short_description, p2.images, v.price, v.id AS variant_id, v.size
-     FROM related_products rp
-     JOIN products p2 ON p2.id = rp.related_id
+  const relatedPool = (await prisma.$queryRawUnsafe(
+    `SELECT p2.id, p2.name, p2.slug, p2.images, p2.purity, v.price, v.compare_at, v.id AS variant_id, v.size
+     FROM products p2
      JOIN variants v ON v.product_id = p2.id AND v.is_default = 1
-     WHERE rp.product_id = $1 LIMIT 12`,
+     WHERE p2.is_active = 1 AND p2.id <> $1
+     ORDER BY p2.slug ASC`,
     p.id
   )) as Array<Record<string, unknown>>;
+  const relatedWithImagesOnly = relatedPool.filter((item) => {
+    const images = parseJsonArray<string>((item.images as string) ?? "[]", []);
+    const primary = images[0] ?? "/placeholder-peptide.svg";
+    return primary !== "/placeholder-peptide.svg";
+  });
+
+  const pickDeterministicRelated = (items: Array<Record<string, unknown>>, seed: string, count: number) => {
+    if (items.length <= count) return items;
+    let hash = 0;
+    for (const ch of seed) {
+      hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+    }
+    const start = hash % items.length;
+    const selected: Array<Record<string, unknown>> = [];
+    for (let i = 0; i < items.length && selected.length < count; i++) {
+      selected.push(items[(start + i) % items.length]);
+    }
+    return selected;
+  };
+
+  const related = pickDeterministicRelated(relatedWithImagesOnly, p.slug as string, 4);
 
   const jsonLd = productJsonLd({
     name: p.name as string,
@@ -115,7 +136,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           id: r.id as string,
           name: r.name as string,
           slug: r.slug as string,
+          images: parseJsonArray<string>(r.images as string, []),
+          purity: (r.purity as number | null) ?? null,
           price: r.price as number,
+          compareAt: (r.compare_at as number | null) ?? null,
           variant_id: r.variant_id as string,
           size: r.size as string,
         }))}

@@ -1,0 +1,618 @@
+{
+  "bpc-157": {
+    "name": "BPC-157",
+    "short_description": "A synthetic compound commonly used in laboratory research settings.",
+    "description": "BPC-157 is manufactured under controlled conditions to ensure batch consistency and reliability. Intended strictly for laboratory research applications.",
+    "scientific_name": "BPC-157",
+    "base_price": 29.99,
+    "images": ["/products/bpc-157-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_bpc_5",
+        "size": "5mg",
+        "price": 29.99,
+        "sku": "BPC157-5MG",
+        "stock": 500,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_bpc_10",
+        "size": "10mg",
+        "price": 39.99,
+        "sku": "BPC157-10MG",
+        "stock": 300,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "compound:bpc-157",
+      "spec:compound:BPC-157",
+      "spec:quantity:[SIZE]"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SBP-001",
+      "image_slot": "products/bpc-157-clean-2.png"
+    }
+  },
+  "tb-500": {
+    "name": "TB-500",
+    "short_description": "A synthetic compound designed for structured laboratory research.",
+    "description": "TB-500 is produced for use in controlled research environments, ensuring consistency and quality across batches.",
+    "scientific_name": "TB-500",
+    "base_price": 49.99,
+    "images": ["/products/tb-500-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_tb_5",
+        "size": "5mg",
+        "price": 49.99,
+        "sku": "TB500-5MG",
+        "stock": 400,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_tb_10",
+        "size": "10mg",
+        "price": 99.99,
+        "sku": "TB500-10MG",
+        "stock": 250,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "compound:tb-500",
+      "spec:compound:TB-500",
+      "spec:quantity:[SIZE]"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SBP-001",
+      "image_slot": "products/tb-500-clean-2.png"
+    }
+  },
+  "semaglutide": {
+    "name": "Semaglutide",
+    "short_description": "A precision-manufactured compound intended for laboratory research.",
+    "description": "Semaglutide is produced under strict quality standards to ensure consistency and reliability. Designed for use in controlled research environments.",
+    "scientific_name": "Semaglutide",
+    "base_price": 29.99,
+    "images": ["/products/semaglutide-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_sema_5",
+        "size": "5mg",
+        "price": 29.99,
+        "sku": "SEMAGLUTIDE-5MG",
+        "stock": 250,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_sema_10",
+        "size": "10mg",
+        "price": 39.99,
+        "sku": "SEMAGLUTIDE-10MG",
+        "stock": 200,
+        "order": 1
+      },
+      {
+        "id": "v_sema_15",
+        "size": "15mg",
+        "price": 49.99,
+        "sku": "SEMAGLUTIDE-15MG",
+        "stock": 150,
+        "order": 2
+      },
+      {
+        "id": "v_sema_20",
+        "size": "20mg",
+        "price": 59.99,
+        "sku": "SEMAGLUTIDE-20MG",
+        "stock": 130,
+        "order": 3
+      },
+      {
+        "id": "v_sema_30",
+        "size": "30mg",
+        "price": 79.99,
+        "sku": "SEMAGLUTIDE-30MG",
+        "stock": 110,
+        "order": 4
+      },
+      {
+        "id": "v_sema_40",
+        "size": "40mg",
+        "price": 99.99,
+        "sku": "SEMAGLUTIDE-40MG",
+        "stock": 90,
+        "order": 5
+      },
+      {
+        "id": "v_sema_50",
+        "size": "50mg",
+        "price": 129.99,
+        "sku": "SEMAGLUTIDE-50MG",
+        "stock": 70,
+        "order": 6
+      }
+    ],
+    "tags": [
+      "compound:semaglutide",
+      "spec:compound:Semaglutide",
+      "spec:quantity:[SIZE]",
+      "spec:storage:Refrigerated"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SBP-001",
+      "image_slot": "products/semaglutide-clean-2.png"
+    }
+  },
+  "retatrutide": {
+    "name": "Retatrutide",
+    "short_description": "A synthetic research compound produced for controlled laboratory environments.",
+    "description": "Retatrutide is a research compound manufactured under controlled conditions to ensure consistency across batches. Intended strictly for laboratory and analytical applications.",
+    "scientific_name": "Retatrutide",
+    "base_price": 39.99,
+    "images": ["/products/retatrutide-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_reta_5",
+        "size": "5mg",
+        "price": 39.99,
+        "sku": "RETATRUTIDE-5MG",
+        "stock": 220,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_reta_10",
+        "size": "10mg",
+        "price": 49.99,
+        "sku": "RETATRUTIDE-10MG",
+        "stock": 180,
+        "order": 1
+      },
+      {
+        "id": "v_reta_15",
+        "size": "15mg",
+        "price": 59.99,
+        "sku": "RETATRUTIDE-15MG",
+        "stock": 140,
+        "order": 2
+      },
+      {
+        "id": "v_reta_20",
+        "size": "20mg",
+        "price": 69.99,
+        "sku": "RETATRUTIDE-20MG",
+        "stock": 120,
+        "order": 3
+      },
+      {
+        "id": "v_reta_30",
+        "size": "30mg",
+        "price": 89.99,
+        "sku": "RETATRUTIDE-30MG",
+        "stock": 100,
+        "order": 4
+      },
+      {
+        "id": "v_reta_50",
+        "size": "50mg",
+        "price": 139.99,
+        "sku": "RETATRUTIDE-50MG",
+        "stock": 80,
+        "order": 5
+      },
+      {
+        "id": "v_reta_60",
+        "size": "60mg",
+        "price": 169.99,
+        "sku": "RETATRUTIDE-60MG",
+        "stock": 60,
+        "order": 6
+      }
+    ],
+    "tags": [
+      "compound:retatrutide",
+      "spec:compound:Retatrutide",
+      "spec:quantity:[SIZE]",
+      "spec:purity:High Purity",
+      "spec:storage:Refrigerated (2-8C recommended)"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SBP-001",
+      "image_slot": "products/retatrutide-clean-2.png"
+    }
+  },
+  "melanotan-i": {
+    "name": "Melanotan I",
+    "short_description": "A synthetic research compound intended for laboratory use.",
+    "description": "Melanotan I is manufactured for controlled laboratory environments with consistency across batches.",
+    "scientific_name": "Melanotan I",
+    "base_price": 34.99,
+    "images": ["/products/melanotan-i-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_mt1_10",
+        "size": "10mg",
+        "price": 34.99,
+        "sku": "MELANOTAN1-10MG",
+        "stock": 220,
+        "is_default": true,
+        "order": 0
+      }
+    ],
+    "tags": [
+      "compound:melanotan-i",
+      "spec:compound:Melanotan I",
+      "spec:quantity:10mg"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SHR-001",
+      "image_slot": "products/melanotan-i-clean-2.png"
+    }
+  },
+  "melanotan-ii": {
+    "name": "Melanotan II",
+    "short_description": "A synthetic research compound intended for laboratory use.",
+    "description": "Melanotan II is manufactured for controlled laboratory environments with consistency across batches.",
+    "scientific_name": "Melanotan II",
+    "base_price": 34.99,
+    "images": ["/products/melanotan-ii-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_mt2_10",
+        "size": "10mg",
+        "price": 34.99,
+        "sku": "MELANOTAN2-10MG",
+        "stock": 220,
+        "is_default": true,
+        "order": 0
+      }
+    ],
+    "tags": [
+      "compound:melanotan-ii",
+      "spec:compound:Melanotan II",
+      "spec:quantity:10mg"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SHR-001",
+      "image_slot": "products/melanotan-ii-clean-2.png"
+    }
+  },
+  "tesamorelin": {
+    "name": "Tesamorelin",
+    "short_description": "A high-purity research compound developed for laboratory environments.",
+    "description": "Tesamorelin is manufactured under strict quality control to ensure consistency and reliability for research applications.",
+    "scientific_name": "Tesamorelin",
+    "base_price": 59.99,
+    "images": ["/products/tesamorelin-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_tesa_5",
+        "size": "5mg",
+        "price": 59.99,
+        "sku": "TESAMORELIN-5MG",
+        "stock": 260,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_tesa_10",
+        "size": "10mg",
+        "price": 99.99,
+        "sku": "TESAMORELIN-10MG",
+        "stock": 220,
+        "order": 1
+      },
+      {
+        "id": "v_tesa_20",
+        "size": "20mg",
+        "price": 179.99,
+        "sku": "TESAMORELIN-20MG",
+        "stock": 220,
+        "order": 2
+      }
+    ],
+    "tags": [
+      "compound:tesamorelin",
+      "spec:compound:Tesamorelin",
+      "spec:quantity:[SIZE]"
+    ],
+    "structure": {
+      "type": "Research Peptide",
+      "brand": "SCIENCE BASED PEPTIDES",
+      "family": "Peptides",
+      "form": "Lyophilized Powder",
+      "batch": "SBP-001",
+      "image_slot": "products/tesamorelin-clean-2.png"
+    }
+  },
+  "bpc-157-tb-500-blend": {
+    "base_price": 99.99,
+    "name": "BPC-157 + TB-500",
+    "short_description": "A dual-compound blend designed for laboratory research applications.",
+    "description": "This blend combines two research compounds in a single formulation, produced under controlled conditions to ensure consistency.",
+    "images": ["/products/bpc-157-tb-500-blend-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_blend_bt_10",
+        "size": "10mg (5mg / 5mg)",
+        "price": 99.99,
+        "sku": "BLEND-BPC-TB-10MG",
+        "stock": 600,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_blend_bt_20",
+        "size": "20mg (10mg / 10mg)",
+        "price": 179.99,
+        "sku": "BLEND-BPC-TB-20MG",
+        "stock": 300,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "blend",
+      "spec:compounds:BPC-157 / TB-500",
+      "spec:total quantity:[SIZE]"
+    ],
+    "structure": {
+      "family": "Blends",
+      "batch": "SBP-001",
+      "image_slot": "products/bpc-157-tb-500-blend-clean-2.png"
+    }
+  },
+  "bpc-157-ghk-cu-tb-blend": {
+    "base_price": 129.99,
+    "name": "BPC-157 + GHK-Cu + TB-500",
+    "short_description": "A multi-compound research blend formulated for laboratory environments.",
+    "description": "This combination product includes three research compounds produced under controlled conditions to maintain consistency and reliability.",
+    "images": ["/products/bpc-157-ghk-cu-tb-blend-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_blend_bgt_50",
+        "size": "50mg (5mg / 35mg / 10mg)",
+        "price": 129.99,
+        "sku": "BLEND-BPC-GHK-TB-50MG",
+        "stock": 260,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_blend_bgt_70",
+        "size": "70mg (10mg / 50mg / 10mg)",
+        "price": 159.99,
+        "sku": "BLEND-BPC-GHK-TB-70MG",
+        "stock": 140,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "blend",
+      "spec:compounds:BPC-157 / GHK-Cu / TB-500",
+      "spec:total quantity:[SIZE]"
+    ],
+    "structure": {
+      "family": "Blends",
+      "batch": "SHR-001",
+      "image_slot": "products/bpc-157-ghk-cu-tb-blend-clean-2.png"
+    }
+  },
+  "cjc-1295-no-dac": {
+    "base_price": 29.99,
+    "name": "CJC-1295",
+    "short_description": "A synthetic research compound developed for controlled laboratory environments.",
+    "description": "CJC-1295 is manufactured under controlled conditions to ensure consistency across batches. Designed strictly for laboratory and analytical research applications.",
+    "images": ["/products/cjc-1295-no-dac-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_cjc_2",
+        "size": "2mg",
+        "price": 29.99,
+        "sku": "CJC-2MG",
+        "stock": 400,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_cjc_5",
+        "size": "5mg",
+        "price": 49.99,
+        "sku": "CJC-5MG",
+        "stock": 250,
+        "order": 1
+      },
+      {
+        "id": "v_cjc_10",
+        "size": "10mg",
+        "price": 89.99,
+        "sku": "CJC-10MG",
+        "stock": 180,
+        "order": 2
+      }
+    ],
+    "tags": [
+      "compound:cjc-1295",
+      "spec:compound:CJC-1295",
+      "spec:quantity:[SIZE]",
+      "spec:purity:High Purity",
+      "spec:storage:Refrigerated (2-8C recommended)"
+    ],
+    "structure": {
+      "batch": "SBP-001",
+      "image_slot": "products/cjc-1295-no-dac-clean-2.png"
+    }
+  },
+  "ipamorelin": {},
+  "cjc-1295-ipamorelin-blend": {
+    "base_price": 79.99,
+    "name": "CJC-1295 + Ipamorelin",
+    "short_description": "A dual-compound research blend designed for laboratory applications.",
+    "description": "This combination includes CJC-1295 and Ipamorelin, manufactured under controlled conditions to ensure consistency and reliability for research environments.",
+    "images": ["/products/cjc-1295-ipamorelin-blend-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_ci_10",
+        "size": "10mg",
+        "price": 79.99,
+        "sku": "CJC-IPA-10MG",
+        "stock": 200,
+        "is_default": true,
+        "order": 0
+      }
+    ],
+    "tags": [
+      "blend",
+      "spec:compounds:CJC-1295 / Ipamorelin",
+      "spec:total quantity:10mg"
+    ],
+    "structure": {
+      "family": "Blends",
+      "batch": "SBP-001",
+      "image_slot": "products/cjc-1295-ipamorelin-blend-clean-2.png"
+    }
+  },
+  "sermorelin": {},
+  "ghk-cu": {
+    "base_price": 29.99,
+    "name": "GHK-Cu",
+    "short_description": "A copper-binding research compound used in laboratory settings.",
+    "description": "GHK-Cu is produced under controlled conditions to maintain consistency and quality for analytical applications.",
+    "images": ["/products/ghk-cu-clean-3.png"],
+    "variants": [
+      {
+        "id": "v_ghk_50",
+        "size": "50mg",
+        "price": 29.99,
+        "sku": "GHKCU-50MG",
+        "stock": 400,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_ghk_100",
+        "size": "100mg",
+        "price": 49.99,
+        "sku": "GHKCU-100MG",
+        "stock": 250,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "compound:ghk-cu",
+      "spec:compound:GHK-Cu",
+      "spec:quantity:[SIZE]"
+    ],
+    "structure": {
+      "batch": "SHR-001",
+      "image_slot": "products/ghk-cu-clean-3.png"
+    }
+  },
+  "nad-plus": {
+    "base_price": 49.99,
+    "name": "NAD+",
+    "short_description": "A research compound used in controlled laboratory environments.",
+    "description": "NAD+ is manufactured under strict conditions to ensure consistency and reliability for research applications.",
+    "images": ["/products/nad-plus-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_nad_100",
+        "size": "100mg",
+        "price": 49.99,
+        "sku": "NAD-100MG",
+        "stock": 400,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_nad_500",
+        "size": "500mg",
+        "price": 59.99,
+        "sku": "NAD-500MG",
+        "stock": 300,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "compound:nad-plus",
+      "spec:compound:NAD+",
+      "spec:quantity:[SIZE]"
+    ],
+    "structure": {
+      "batch": "SBP-001",
+      "image_slot": "products/nad-plus-clean-2.png"
+    }
+  },
+  "epitalon": {},
+  "mots-c": {},
+  "thymosin-alpha-1": {},
+  "pt-141": {},
+  "selank": {},
+  "semax": {},
+  "bacteriostatic-water-30ml": {
+    "base_price": 9.99,
+    "name": "Bac Water",
+    "short_description": "A sterile solution intended for laboratory applications.",
+    "description": "Bacteriostatic water is produced under controlled conditions to ensure consistency and reliability for laboratory use.",
+    "images": ["/products/bacteriostatic-water-30ml-clean-2.png"],
+    "variants": [
+      {
+        "id": "v_bac_3",
+        "size": "3ml",
+        "price": 9.99,
+        "sku": "BACWATER-3ML",
+        "stock": 1500,
+        "is_default": true,
+        "order": 0
+      },
+      {
+        "id": "v_bac_10",
+        "size": "10ml",
+        "price": 14.99,
+        "sku": "BACWATER-10ML",
+        "stock": 1000,
+        "order": 1
+      }
+    ],
+    "tags": [
+      "solution",
+      "spec:type:Sterile Water",
+      "spec:volume:[SIZE]"
+    ],
+    "structure": {
+      "family": "Solutions",
+      "form": "Liquid Solution",
+      "image_slot": "products/bacteriostatic-water-30ml-clean-2.png"
+    }
+  },
+  "precision-syringes-29g": {},
+  "alcohol-prep-pads": {}
+}
