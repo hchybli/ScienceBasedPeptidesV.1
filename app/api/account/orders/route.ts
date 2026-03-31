@@ -3,10 +3,15 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { parseJsonArray } from "@/lib/utils";
 
+const PRIVATE_NO_STORE_HEADERS = {
+  "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
+  Pragma: "no-cache",
+};
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: PRIVATE_NO_STORE_HEADERS });
   }
 
   const orders = await prisma.orders.findMany({
@@ -22,13 +27,16 @@ export async function GET() {
     },
   });
 
-  return NextResponse.json({
-    orders: orders.map((order) => ({
-      id: order.id,
-      total: order.total,
-      status: order.status,
-      created_at: Number(order.created_at),
-      itemCount: parseJsonArray<Record<string, unknown>>(order.items, []).length,
-    })),
-  });
+  return NextResponse.json(
+    {
+      orders: orders.map((order) => ({
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        created_at: Number(order.created_at),
+        itemCount: parseJsonArray<Record<string, unknown>>(order.items, []).length,
+      })),
+    },
+    { headers: PRIVATE_NO_STORE_HEADERS }
+  );
 }

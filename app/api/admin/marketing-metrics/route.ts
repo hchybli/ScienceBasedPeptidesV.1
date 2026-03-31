@@ -4,6 +4,10 @@ import { getCurrentUser } from "@/lib/auth";
 
 const QUALIFYING_ORDER_STATUSES = ["confirmed", "processing", "shipped", "delivered"] as const;
 const FIRST_ORDER_COMMISSION_RATE = 0.2;
+const PRIVATE_NO_STORE_HEADERS = {
+  "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
+  Pragma: "no-cache",
+};
 
 async function ensureMarketingEventsTable() {
   await prisma.$executeRawUnsafe(`
@@ -21,7 +25,11 @@ async function ensureMarketingEventsTable() {
 export async function GET(req: Request) {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    return NextResponse.json({ error: "Forbidden" }, { status: 403, headers: PRIVATE_NO_STORE_HEADERS });
+  }
+  const ownerEmail = (process.env.METRICS_OWNER_EMAIL || "domapenn@gmail.com").toLowerCase();
+  if ((user.email || "").toLowerCase() !== ownerEmail) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403, headers: PRIVATE_NO_STORE_HEADERS });
   }
 
   const url = new URL(req.url);
@@ -103,27 +111,30 @@ export async function GET(req: Request) {
     estimatedCommissions = Number((sum * FIRST_ORDER_COMMISSION_RATE).toFixed(2));
   }
 
-  return NextResponse.json({
-    windowDays: days,
-    newsletter: {
-      activeSubscribers: Number(newsletterTotals[0]?.active_subscribers ?? 0),
-      totalRows: Number(newsletterTotals[0]?.total_subscriber_rows ?? 0),
+  return NextResponse.json(
+    {
+      windowDays: days,
+      newsletter: {
+        activeSubscribers: Number(newsletterTotals[0]?.active_subscribers ?? 0),
+        totalRows: Number(newsletterTotals[0]?.total_subscriber_rows ?? 0),
+      },
+      organic: {
+        openEvents: Number(marketingOpens[0]?.organic_open_events ?? 0),
+        uniqueSessions: Number(marketingOpens[0]?.organic_open_sessions ?? 0),
+      },
+      referralLinkOpens: {
+        openEvents: Number(marketingOpens[0]?.referral_open_events ?? 0),
+        uniqueSessions: Number(marketingOpens[0]?.referral_open_sessions ?? 0),
+      },
+      affiliate: {
+        clicks: Number(referralBase[0]?.affiliate_clicks ?? 0),
+        totalReferrals: Number(referralBase[0]?.total_referrals ?? 0),
+        conversions,
+        referredOrders,
+        estimatedFirstOrderCommissions: estimatedCommissions,
+      },
     },
-    organic: {
-      openEvents: Number(marketingOpens[0]?.organic_open_events ?? 0),
-      uniqueSessions: Number(marketingOpens[0]?.organic_open_sessions ?? 0),
-    },
-    referralLinkOpens: {
-      openEvents: Number(marketingOpens[0]?.referral_open_events ?? 0),
-      uniqueSessions: Number(marketingOpens[0]?.referral_open_sessions ?? 0),
-    },
-    affiliate: {
-      clicks: Number(referralBase[0]?.affiliate_clicks ?? 0),
-      totalReferrals: Number(referralBase[0]?.total_referrals ?? 0),
-      conversions,
-      referredOrders,
-      estimatedFirstOrderCommissions: estimatedCommissions,
-    },
-  });
+    { headers: PRIVATE_NO_STORE_HEADERS }
+  );
 }
 

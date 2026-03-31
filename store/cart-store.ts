@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import type { CartItem } from "@/lib/cart";
 
 interface CartStore {
@@ -48,6 +48,9 @@ export const useCartStore = create<CartStore>()(
       setDiscount: (data) => set({ discountData: data, discountCode: data?.code ?? null }),
       itemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
     }),
-    { name: "peptide-cart" }
+    {
+      name: "peptide-cart",
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
 );

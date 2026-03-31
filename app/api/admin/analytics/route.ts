@@ -9,10 +9,15 @@ interface LineSnap {
   price?: number;
 }
 
+const PRIVATE_NO_STORE_HEADERS = {
+  "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
+  Pragma: "no-cache",
+};
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    return NextResponse.json({ error: "Forbidden" }, { status: 403, headers: PRIVATE_NO_STORE_HEADERS });
   }
   const now = Math.floor(Date.now() / 1000);
   const day = 86400;
@@ -121,20 +126,23 @@ export async function GET() {
   ]);
   const revenue30Resolved = await Promise.all(last30Days);
 
-  return NextResponse.json({
-    revenue: {
-      today: todayRevenue,
-      week: weekRevenue,
-      month: monthRevenue,
-      allTime: allRevenue,
+  return NextResponse.json(
+    {
+      revenue: {
+        today: todayRevenue,
+        week: weekRevenue,
+        month: monthRevenue,
+        allTime: allRevenue,
+      },
+      ordersByStatus: byStatus,
+      aov: { allTime: aovAll, last30Days: aov30 },
+      repeatPurchaseRate: repeatRate,
+      topProducts: topByRev,
+      subscriptionMRR: mrr,
+      newCustomersLast30: Number(newCustomers?.c ?? 0),
+      loyaltyPointsOutstanding: Number(pointsOutstanding?.s ?? 0),
+      revenueLast30Days: revenue30Resolved,
     },
-    ordersByStatus: byStatus,
-    aov: { allTime: aovAll, last30Days: aov30 },
-    repeatPurchaseRate: repeatRate,
-    topProducts: topByRev,
-    subscriptionMRR: mrr,
-    newCustomersLast30: Number(newCustomers?.c ?? 0),
-    loyaltyPointsOutstanding: Number(pointsOutstanding?.s ?? 0),
-    revenueLast30Days: revenue30Resolved,
-  });
+    { headers: PRIVATE_NO_STORE_HEADERS }
+  );
 }

@@ -7,6 +7,10 @@ const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const codeSuffix = customAlphabet(CODE_ALPHABET, 6);
 const FIRST_ORDER_COMMISSION_RATE = 0.2;
 const QUALIFYING_ORDER_STATUSES = ["confirmed", "processing", "shipped", "delivered"] as const;
+const PRIVATE_NO_STORE_HEADERS = {
+  "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
+  Pragma: "no-cache",
+};
 
 async function ensureReferralCode(userId: string, existingCode: string | null): Promise<string> {
   if (existingCode && existingCode.trim().length > 0) return existingCode;
@@ -32,7 +36,7 @@ async function ensureReferralCode(userId: string, existingCode: string | null): 
 export async function GET() {
   const auth = await getCurrentUser();
   if (!auth) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: PRIVATE_NO_STORE_HEADERS });
   }
 
   const user = await prisma.users.findFirst({
@@ -48,7 +52,7 @@ export async function GET() {
   });
 
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: PRIVATE_NO_STORE_HEADERS });
   }
 
   const referralCode = await ensureReferralCode(user.id, user.referral_code);
@@ -109,26 +113,29 @@ export async function GET() {
     estimatedCommissions = Number((firstOrderTotal * FIRST_ORDER_COMMISSION_RATE).toFixed(2));
   }
 
-  return NextResponse.json({
-    account: {
-      id: user.id,
-      name: user.name ?? "",
-      email: user.email,
-      role: user.role,
-      createdAt: Number(user.created_at),
-      status: "Active",
-      referralCode,
+  return NextResponse.json(
+    {
+      account: {
+        id: user.id,
+        name: user.name ?? "",
+        email: user.email,
+        role: user.role,
+        createdAt: Number(user.created_at),
+        status: "Active",
+        referralCode,
+      },
+      orders: orders.map((o) => ({
+        ...o,
+        created_at: Number(o.created_at),
+      })),
+      referralPerformance: {
+        totalReferrals,
+        clicks,
+        conversions,
+        referredOrders,
+        estimatedCommissions,
+      },
     },
-    orders: orders.map((o) => ({
-      ...o,
-      created_at: Number(o.created_at),
-    })),
-    referralPerformance: {
-      totalReferrals,
-      clicks,
-      conversions,
-      referredOrders,
-      estimatedCommissions,
-    },
-  });
+    { headers: PRIVATE_NO_STORE_HEADERS }
+  );
 }
