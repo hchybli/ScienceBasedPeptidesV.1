@@ -38,50 +38,36 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-6 pb-8 md:space-y-10">
-      <section className="relative min-h-[620px] overflow-hidden border-b border-[var(--border)] bg-[#040807]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_26%,rgba(0,201,167,0.20),transparent_42%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_84%_20%,rgba(81,139,255,0.08),transparent_34%)]" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-full md:w-[78%] lg:w-[66%]">
-          <Image
-            src="/hero-research-header.png"
-            alt=""
-            fill
-            priority
-            className="object-cover object-[78%_54%] opacity-[0.93]"
-            sizes="100vw"
-          />
-        </div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#040807] via-[#040807]/84 to-[#040807]/18" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#040807] via-transparent to-transparent" />
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-[linear-gradient(180deg,rgba(10,14,13,0),rgba(10,14,13,0.72)_52%,rgba(10,14,13,0.95)_100%)]" />
-        <div className="pointer-events-none absolute bottom-8 left-0 right-0 h-px bg-white/10" />
+      <section className="relative w-full min-h-screen overflow-hidden border-b border-[var(--border)] bg-[#050b0a]">
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-black via-[#061c18] to-transparent" />
 
-        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-7xl items-center px-4 py-14 lg:py-20">
-          <div className="max-w-[760px] lg:max-w-[58%]">
-            <Badge variant="purity" className="mb-6 rounded-full px-3 py-1 text-[11px] tracking-wide">
+        <div className="pointer-events-none absolute right-0 top-0 z-10 flex h-full w-[60%] items-center justify-end">
+          <img src="/hero.png" alt="Peptide vials" className="h-[85%] w-auto object-contain" />
+        </div>
+
+        <div className="relative z-20 mx-auto flex h-full max-w-7xl items-center px-6 py-32">
+          <div className="max-w-2xl">
+            <Badge variant="purity" className="mb-6 inline-block rounded-full border border-teal-500/30 px-4 py-2 text-sm text-teal-400">
               Laboratory research materials · Independent COAs
             </Badge>
-            <h1 className="font-display max-w-[680px] text-4xl font-semibold leading-[1.03] tracking-tight md:text-[62px]">
+            <h1 className="mb-6 max-w-[680px] font-display text-5xl font-semibold leading-tight text-white md:text-6xl">
               High-purity peptide research compounds for laboratory use
             </h1>
-            <p className="mt-5 max-w-[620px] text-[17px] leading-relaxed text-[var(--text-muted)]">
+            <p className="mb-8 text-lg text-gray-400">
               Independently tested materials with batch documentation and transparent specifications — for qualified
               research and analytical workflows.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg" asChild>
+            <div className="mb-10 flex gap-4">
+              <Button asChild className="rounded-lg bg-teal-500 px-6 py-3 font-medium text-black hover:bg-teal-400">
                 <Link href="/shop">Shop catalog</Link>
               </Button>
-              <Button size="lg" variant="secondary" asChild>
+              <Button asChild variant="secondary" className="rounded-lg border border-gray-700 px-6 py-3 text-white">
                 <Link href="/research">Research library</Link>
               </Button>
             </div>
-            <div className="mt-9 grid max-w-[760px] grid-cols-2 gap-3 text-sm text-[var(--text-muted)] md:grid-cols-4">
+            <div className="flex flex-wrap gap-3">
               {["Independent lab tested", "Batch-level reporting", "Structured fulfillment", "Research-use compliance"].map((t) => (
-                <div
-                  key={t}
-                  className="flex min-h-[56px] items-center rounded-[var(--radius)] border border-[var(--border)] bg-[rgba(10,15,13,0.82)] px-4 py-3 backdrop-blur-sm"
-                >
+                <div key={t} className="rounded-lg border border-gray-800 px-4 py-2 text-sm text-gray-400">
                   {t}
                 </div>
               ))}
