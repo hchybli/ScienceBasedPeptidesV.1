@@ -88,18 +88,31 @@ export default function ReferralsMarketingPage() {
             Partner Program
           </p>
           <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
-            Earn with Science Based Peptides
+            Partner with premium research peptides
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--text-muted)]">
-            Join our referral program and earn commission on qualified orders from your audience using transparent,
-            trackable partner links.
+            Earn on qualified first orders and recurring purchases through transparent partner attribution and scheduled
+            payouts.
           </p>
+          <div className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
+            {[
+              { v: "20%", l: "First-order commission" },
+              { v: "10%", l: "Recurring commission" },
+              { v: "30 days", l: "Referral cookie window" },
+              { v: "Monthly", l: "Payout cadence" },
+            ].map((s) => (
+              <div key={s.l} className="rounded-[var(--radius)] border border-[var(--border)] bg-surface px-4 py-3">
+                <p className="font-display text-3xl font-semibold tracking-tight">{s.v}</p>
+                <p className="mt-1 text-sm text-[var(--text-muted)]">{s.l}</p>
+              </div>
+            ))}
+          </div>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button size="lg" asChild>
-              <Link href="/contact">Apply now</Link>
+              <Link href="/contact">Become a partner</Link>
             </Button>
             <Button size="lg" variant="secondary" asChild>
-              <Link href="#how-it-works">Learn more</Link>
+              <Link href="#how-it-works">Program details</Link>
             </Button>
           </div>
         </div>
