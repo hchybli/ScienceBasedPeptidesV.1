@@ -38,11 +38,26 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-6 pb-8 md:space-y-10">
-      <section className="relative overflow-hidden border-b border-[var(--border)] bg-[#050908]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(0,201,167,0.22),transparent_40%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_22%,rgba(85,140,255,0.07),transparent_32%)]" />
-        <div className="relative z-10 mx-auto grid min-h-[620px] max-w-7xl gap-8 px-4 py-14 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:gap-12 lg:py-20">
-          <div className="lg:pr-2">
+      <section className="relative min-h-[620px] overflow-hidden border-b border-[var(--border)] bg-[#040807]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_26%,rgba(0,201,167,0.20),transparent_42%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_84%_20%,rgba(81,139,255,0.08),transparent_34%)]" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-full md:w-[78%] lg:w-[66%]">
+          <Image
+            src="/hero-research-header.png"
+            alt=""
+            fill
+            priority
+            className="object-cover object-[78%_54%] opacity-[0.93]"
+            sizes="100vw"
+          />
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#040807] via-[#040807]/84 to-[#040807]/18" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#040807] via-transparent to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-[linear-gradient(180deg,rgba(10,14,13,0),rgba(10,14,13,0.72)_52%,rgba(10,14,13,0.95)_100%)]" />
+        <div className="pointer-events-none absolute bottom-8 left-0 right-0 h-px bg-white/10" />
+
+        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-7xl items-center px-4 py-14 lg:py-20">
+          <div className="max-w-[760px] lg:max-w-[58%]">
             <Badge variant="purity" className="mb-6 rounded-full px-3 py-1 text-[11px] tracking-wide">
               Laboratory research materials · Independent COAs
             </Badge>
@@ -70,22 +85,6 @@ export default async function HomePage() {
                   {t}
                 </div>
               ))}
-            </div>
-          </div>
-
-          <div className="relative lg:pl-2">
-            <div className="relative mx-auto aspect-[16/11] max-w-[640px] overflow-hidden rounded-[18px] border border-white/10 bg-[#0b1110] shadow-[0_32px_96px_rgba(0,0,0,0.54)]">
-              <Image
-                src="/hero-research-header.png"
-                alt=""
-                fill
-                priority
-                className="object-cover object-[78%_52%]"
-                sizes="(max-width: 1024px) 100vw, 46vw"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#081110]/54 via-transparent to-[#081110]/18" />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081110]/74 via-transparent to-transparent" />
-              <div className="pointer-events-none absolute left-6 right-6 bottom-6 h-[64px] rounded-[12px] bg-[linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.01))] opacity-40 blur-[1px]" />
             </div>
           </div>
         </div>
