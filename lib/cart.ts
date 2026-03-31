@@ -23,8 +23,8 @@ export interface CartTotals {
   pointsToEarn: number;
 }
 
-const FREE_SHIPPING_THRESHOLD = 150;
-const SHIPPING_FLAT_RATE = 9.99;
+const FREE_SHIPPING_THRESHOLD = 0;
+const SHIPPING_FLAT_RATE = 0;
 
 export function calculateTotals(
   items: CartItem[],
@@ -45,8 +45,7 @@ export function calculateTotals(
   }
 
   const afterDiscounts = subtotal - discountAmount;
-  const shippingCost =
-    discount?.type === "free_shipping" || afterDiscounts >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FLAT_RATE;
+  const shippingCost = 0;
   const tax = 0;
   const total = Math.max(0, afterDiscounts + shippingCost + tax);
 
@@ -59,7 +58,7 @@ export function calculateTotals(
     tax,
     total,
     freeShippingThreshold: FREE_SHIPPING_THRESHOLD,
-    amountToFreeShipping: Math.max(0, FREE_SHIPPING_THRESHOLD - afterDiscounts),
+    amountToFreeShipping: 0,
     pointsToEarn: 0,
   };
 }

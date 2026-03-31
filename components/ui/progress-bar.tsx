@@ -9,7 +9,7 @@ export function ProgressBar({
   max?: number;
   className?: string;
 }) {
-  const pct = Math.min(100, Math.max(0, (value / max) * 100));
+  const pct = max <= 0 ? 100 : Math.min(100, Math.max(0, (value / max) * 100));
   return (
     <div className={cn("h-2 w-full overflow-hidden rounded-full bg-surface-2", className)}>
       <div

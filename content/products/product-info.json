@@ -381,7 +381,9 @@
     ],
     "tags": [
       "blend",
-      "spec:compounds:BPC-157 / TB-500",
+      "spec:compound:BPC-157 / TB-500",
+      "spec:compound 1:BPC-157",
+      "spec:compound 2:TB-500",
       "spec:total quantity:[SIZE]"
     ],
     "structure": {
@@ -417,7 +419,10 @@
     ],
     "tags": [
       "blend",
-      "spec:compounds:BPC-157 / GHK-Cu / TB-500",
+      "spec:compound:BPC-157 / GHK-Cu / TB-500",
+      "spec:compound 1:BPC-157",
+      "spec:compound 2:GHK-Cu",
+      "spec:compound 3:TB-500",
       "spec:total quantity:[SIZE]"
     ],
     "structure": {
@@ -491,7 +496,9 @@
     ],
     "tags": [
       "blend",
-      "spec:compounds:CJC-1295 / Ipamorelin",
+      "spec:compound:CJC-1295 / Ipamorelin",
+      "spec:compound 1:CJC-1295",
+      "spec:compound 2:Ipamorelin",
       "spec:total quantity:10mg"
     ],
     "structure": {

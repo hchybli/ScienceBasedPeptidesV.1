@@ -12,7 +12,7 @@ import { useCartStore } from "@/store/cart-store";
 import { useAuthStore } from "@/store/auth-store";
 
 const links = [
-  { href: "/referrals", label: "Referrals" },
+  { href: "/referrals", label: "Affiliate" },
   { href: "/shop", label: "Shop" },
   { href: "/contact", label: "Contact" },
   { href: "/research", label: "Research" },
@@ -29,17 +29,17 @@ export function NavBar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-bg/90 backdrop-blur">
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4">
+      <div className="relative mx-auto flex min-h-[88px] max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="font-display text-xl font-semibold tracking-tight text-[var(--text)] md:text-2xl">
           {process.env.NEXT_PUBLIC_SITE_NAME ?? DEFAULT_SITE_DISPLAY_NAME}
         </Link>
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full border border-transparent px-4 py-2 text-base font-semibold tracking-tight text-[var(--text-muted)] transition hover:border-accent/30 hover:bg-surface hover:text-[var(--text)]",
+                "rounded-full border border-transparent px-4 py-2.5 text-base font-semibold tracking-tight text-[var(--text-muted)] transition hover:border-accent/30 hover:bg-surface hover:text-[var(--text)]",
                 pathname === l.href && "border-accent/40 bg-accent-muted text-accent"
               )}
             >
@@ -55,9 +55,8 @@ export function NavBar() {
           ) : null}
           {user ? (
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/account" className="inline-flex items-center gap-2">
+              <Link href="/account" className="inline-flex items-center rounded-full p-1.5" aria-label="Profile">
                 <User className="h-4 w-4" />
-                <span className="hidden sm:inline">Account</span>
               </Link>
             </Button>
           ) : (

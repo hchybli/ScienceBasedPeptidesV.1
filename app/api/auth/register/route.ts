@@ -25,33 +25,52 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Email already registered" }, { status: 409 });
   }
 
-  const id = nanoid();
-  const referral_code = nanoid(10);
   const hash = hashPassword(password);
   const welcomePoints = 500;
+  let id = "";
+  let referral_code = "";
 
-  const lt = nanoid();
-  const seq = nanoid();
-  await prisma.$transaction([
-    prisma.users.create({
-      data: {
-        id,
-        email: email.toLowerCase(),
-        name: name ?? null,
-        password_hash: hash,
-        role: "customer",
-        loyalty_points: welcomePoints,
-        referral_code,
-        email_consent: 1,
-      },
-    }),
-    prisma.loyalty_transactions.create({
-      data: { id: lt, user_id: id, points: welcomePoints, reason: "signup_bonus", order_id: null },
-    }),
-    prisma.email_sequences.create({
-      data: { id: seq, user_id: id, sequence_type: "welcome", current_step: 0, completed: 0 },
-    }),
-  ]);
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const candidateId = nanoid();
+    const candidateReferralCode = nanoid(10);
+    const lt = nanoid();
+    const seq = nanoid();
+    try {
+      await prisma.$transaction([
+        prisma.users.create({
+          data: {
+            id: candidateId,
+            email: email.toLowerCase(),
+            name: name ?? null,
+            password_hash: hash,
+            role: "customer",
+            loyalty_points: welcomePoints,
+            referral_code: candidateReferralCode,
+            email_consent: 1,
+          },
+        }),
+        prisma.loyalty_transactions.create({
+          data: { id: lt, user_id: candidateId, points: welcomePoints, reason: "signup_bonus", order_id: null },
+        }),
+        prisma.email_sequences.create({
+          data: { id: seq, user_id: candidateId, sequence_type: "welcome", current_step: 0, completed: 0 },
+        }),
+      ]);
+      id = candidateId;
+      referral_code = candidateReferralCode;
+      break;
+    } catch (error) {
+      const msg = String(error);
+      if (msg.includes("referral_code") || msg.toLowerCase().includes("unique")) {
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  if (!id || !referral_code) {
+    return NextResponse.json({ error: "Could not create account at this time" }, { status: 500 });
+  }
 
   if (referralCode) {
     await attributeRegistration(id, referralCode);

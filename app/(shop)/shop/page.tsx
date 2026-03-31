@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/ui/product-card";
 import { parseJsonArray } from "@/lib/utils";
-import { FooterDisclaimer } from "@/components/ui/disclaimer";
 import { ShopToolbar } from "@/components/shop/shop-toolbar";
 
 export const dynamic = "force-dynamic";
@@ -90,7 +89,7 @@ export default async function ShopPage({
   const tailRows = hasCenteredTailRow ? rows.slice(-4) : [];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
+    <div className="mx-auto w-full max-w-[1600px] px-4 py-12 md:px-6">
       <div className="flex flex-col gap-5">
         <div>
           <h1 className="font-display text-3xl font-semibold">All Products</h1>
@@ -98,7 +97,7 @@ export default async function ShopPage({
         </div>
         <ShopToolbar initialQuery={sp.q ?? ""} initialSort={sortKey} />
       </div>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
         {mainRows.map((p, index) => {
           const imgs = parseJsonArray<string>(p.images as string, []);
           return (
@@ -120,7 +119,7 @@ export default async function ShopPage({
         })}
       </div>
       {tailRows.length === 4 ? (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:mx-auto xl:w-[calc(80%-0.3rem)] xl:grid-cols-4">
+        <div className="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-4 xl:mx-auto xl:w-[calc(80%-0.3rem)] xl:grid-cols-4">
           {tailRows.map((p, index) => {
             const imgs = parseJsonArray<string>(p.images as string, []);
             return (
@@ -142,9 +141,6 @@ export default async function ShopPage({
           })}
         </div>
       ) : null}
-      <div className="mt-12 max-w-3xl">
-        <FooterDisclaimer />
-      </div>
     </div>
   );
 }

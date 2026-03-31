@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FooterDisclaimer } from "@/components/ui/disclaimer";
 
 export const metadata: Metadata = {
-  title: "Referral Program",
+  title: "Affiliate Program",
   description: "Become a Science Based Peptides affiliate and earn commission on qualified referral orders.",
 };
 
@@ -37,7 +37,7 @@ const benefits = [
   "Competitive commissions on qualified orders",
   "Recurring earnings from repeat referral customers",
   "Attribution tracking for approved affiliate links",
-  "Scheduled payouts with transparent reporting",
+  "Bi-weekly payouts with transparent reporting",
 ];
 
 const reasons = [
@@ -58,7 +58,7 @@ const reasons = [
 const faqs = [
   {
     q: "How are payouts handled?",
-    a: "Payouts are processed on a scheduled cycle for approved affiliates after referral verification and standard hold windows.",
+    a: "Payouts are processed bi-weekly for approved affiliates after referral verification and standard hold windows.",
   },
   {
     q: "Who can apply?",
@@ -91,24 +91,23 @@ export default function ReferralsMarketingPage() {
             {[
               { v: "20%", l: "First-order commission" },
               { v: "10%", l: "Recurring commission" },
-              { v: "30 days", l: "30 day commission window" },
-              { v: "Monthly", l: "Payout cadence" },
+              { v: "30 days", l: "Commission window" },
+              { v: "Bi-weekly", l: "Payout cadence" },
             ].map((s) => (
               <div
                 key={s.l}
-                className="rounded-[var(--radius)] border border-[var(--border)] bg-surface px-5 py-5"
+                className="flex min-h-[126px] flex-col items-center justify-center rounded-[var(--radius)] border border-[var(--border)] bg-surface px-4 py-4 md:min-h-[132px] md:px-5 md:py-5"
               >
-                <p className="font-display text-4xl font-semibold tracking-tight md:text-5xl">{s.v}</p>
-                <p className="mt-2 text-sm text-[var(--text-muted)]">{s.l}</p>
+                <p className="whitespace-nowrap text-center font-display text-3xl font-semibold tracking-tight md:text-4xl">
+                  {s.v}
+                </p>
+                <p className="mt-1 whitespace-nowrap text-center text-xs text-[var(--text-muted)] md:text-sm">{s.l}</p>
               </div>
             ))}
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button size="lg" asChild>
               <Link href="/contact">Become an affiliate</Link>
-            </Button>
-            <Button size="lg" variant="secondary" asChild>
-              <Link href="#how-it-works">Program details</Link>
             </Button>
           </div>
         </div>

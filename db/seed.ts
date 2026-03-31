@@ -4,7 +4,6 @@ import path from "path";
 import fs from "fs";
 import bcrypt from "bcryptjs";
 import { DEFAULT_ADMIN_EMAIL } from "@/lib/site";
-import { prisma } from "@/lib/prisma";
 
 config({ path: path.join(process.cwd(), ".env.local") });
 
@@ -901,9 +900,11 @@ const discounts = [
 ];
 
 async function main() {
+  const { prisma } = await import("@/lib/prisma");
   const incremental = process.argv.includes("--sync");
-  if (!incremental) {
-    await prisma.$executeRawUnsafe(`
+  try {
+    if (!incremental) {
+      await prisma.$executeRawUnsafe(`
       TRUNCATE TABLE
         "related_products",
         "bundle_items",
@@ -926,35 +927,35 @@ async function main() {
         "users"
       RESTART IDENTITY CASCADE
     `);
-    await prisma.categories.createMany({
-      data: categories.map((c) => ({
-        id: c.id,
-        name: c.name,
-        slug: c.slug,
-        description: c.description,
-        display_order: c.display_order,
-      })),
-    });
-  } else {
-    for (const c of categories) {
-      await prisma.categories.upsert({
-        where: { id: c.id },
-        update: {
-          name: c.name,
-          slug: c.slug,
-          description: c.description,
-          display_order: c.display_order,
-        },
-        create: {
+      await prisma.categories.createMany({
+        data: categories.map((c) => ({
           id: c.id,
           name: c.name,
           slug: c.slug,
           description: c.description,
           display_order: c.display_order,
-        },
+        })),
       });
+    } else {
+      for (const c of categories) {
+        await prisma.categories.upsert({
+          where: { id: c.id },
+          update: {
+            name: c.name,
+            slug: c.slug,
+            description: c.description,
+            display_order: c.display_order,
+          },
+          create: {
+            id: c.id,
+            name: c.name,
+            slug: c.slug,
+            description: c.description,
+            display_order: c.display_order,
+          },
+        });
+      }
     }
-  }
 
   for (const p of products) {
     const tags = JSON.stringify(p.tags);
@@ -1200,14 +1201,14 @@ async function main() {
     ],
   });
 
-  console.log("Seed complete. Admin:", adminEmail);
+    console.log("Seed complete. Admin:", adminEmail);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 main()
   .catch((e) => {
     console.error(e);
     process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
   });

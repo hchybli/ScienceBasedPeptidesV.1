@@ -13,6 +13,7 @@ import { useCartStore } from "@/store/cart-store";
 import { RatingStars } from "@/components/ui/rating-stars";
 import { parseProductMeta } from "@/lib/product-meta";
 import { ProductCard } from "@/components/ui/product-card";
+import { CoaRequestForm } from "@/components/shop/coa-request-form";
 
 const RECENT_KEY = "peptide_recently_viewed";
 
@@ -89,6 +90,15 @@ export function ProductPdp(props: {
   const qty = Number.isFinite(parsedQty) && parsedQty >= 0 ? parsedQty : 0;
   const displayPrice = selected.price;
   const meta = useMemo(() => parseProductMeta(product.tags), [product.tags]);
+  const displaySpecs = useMemo(
+    () =>
+      meta.specs.filter((spec) => {
+        const raw = spec.value.trim();
+        const normalized = raw.toLowerCase();
+        return raw.length > 0 && raw !== "[SIZE]" && normalized !== "size";
+      }),
+    [meta.specs]
+  );
   const normalizedScientific = (product.scientificName ?? "").trim().toLowerCase();
   const normalizedName = product.name.trim().toLowerCase();
 
@@ -244,10 +254,10 @@ export function ProductPdp(props: {
             <h2 className="font-display text-xl font-semibold">Specifications</h2>
             <table className="mt-2 w-full text-left text-sm">
               <tbody className="divide-y divide-[var(--border)]">
-                {meta.specs.map((spec) => (
+                {displaySpecs.map((spec) => (
                   <tr key={`${spec.label}:${spec.value}`}>
                     <th className="py-2 text-[var(--text-muted)]">{spec.label}</th>
-                    <td className="font-mono">{spec.value === "[SIZE]" ? selected.size : spec.value}</td>
+                    <td className="font-mono">{spec.value}</td>
                   </tr>
                 ))}
                 {product.molecularFormula ? (
@@ -301,7 +311,7 @@ export function ProductPdp(props: {
 
         <section className="mt-12">
           <h2 className="font-display text-xl font-semibold">Reviews</h2>
-          <div className="mt-4 rounded-[var(--radius)] border border-accent/30 bg-surface p-5 shadow-[0_0_0_1px_rgba(0,227,201,0.12),0_0_32px_rgba(0,227,201,0.14)]">
+          <div className="mt-4 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-5">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
               <div className="flex items-center gap-3">
                 <RatingStars value={Math.max(1, Math.round(averageRating ?? 5))} />
@@ -327,12 +337,19 @@ export function ProductPdp(props: {
               ))}
             </div>
           </div>
-          <div className="mt-4 rounded-[var(--radius)] border border-accent/30 bg-surface p-5 shadow-[0_0_0_1px_rgba(0,227,201,0.12),0_0_28px_rgba(0,227,201,0.12)]">
+          <div className="mt-4 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-5">
             <h3 className="font-display text-lg font-semibold">Submit a review</h3>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
               Share your lab experience and help others evaluate this product. Verified purchase is required for approval.
             </p>
             <ReviewForm productId={product.id} />
+          </div>
+          <div className="mt-4 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-5">
+            <h3 className="font-display text-lg font-semibold">Request Certificate of Analysis (COA)</h3>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              Need documentation for this product? Submit your name and email and we will send COA details.
+            </p>
+            <CoaRequestForm productSlug={product.slug} productName={product.name} />
           </div>
         </section>
       </div>
@@ -395,3 +412,4 @@ function ReviewForm({ productId }: { productId: string }) {
     </form>
   );
 }
+

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FooterDisclaimer } from "@/components/ui/disclaimer";
 import { DEFAULT_SITE_DISPLAY_NAME } from "@/lib/site";
@@ -7,17 +9,14 @@ const cols = [
     title: "Shop",
     links: [
       { href: "/shop", label: "All products" },
-      { href: "/bundles", label: "Research sets" },
       { href: "/research", label: "Research" },
-      { href: "/protocols", label: "Research overviews" },
     ],
   },
   {
     title: "Company",
     links: [
-      { href: "/about", label: "About" },
-      { href: "/faq", label: "FAQ" },
-      { href: "/contact", label: "Contact" },
+      { href: "/contact#faq", label: "FAQ" },
+      { href: "/contact#contact", label: "Contact" },
     ],
   },
   {
@@ -25,14 +24,14 @@ const cols = [
     links: [
       { href: "/terms", label: "Terms" },
       { href: "/privacy", label: "Privacy" },
-      { href: "/refund-policy", label: "Refund policy" },
+      { href: "/contact#returns", label: "Refund policy" },
     ],
   },
 ];
 
 export function Footer() {
   return (
-    <footer className="mt-16 border-t border-[var(--border)] bg-surface">
+    <footer className="mt-0 border-t border-[var(--border)] bg-surface pt-12">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-4">
         <div>
           <p className="font-display text-lg font-semibold tracking-tight">
@@ -48,9 +47,15 @@ export function Footer() {
             <ul className="mt-3 space-y-2">
               {c.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-[var(--text-muted)] transition hover:text-accent">
-                    {l.label}
-                  </Link>
+                  {l.href.startsWith("/contact#") ? (
+                    <a href={l.href} className="text-sm text-[var(--text-muted)] transition hover:text-accent">
+                      {l.label}
+                    </a>
+                  ) : (
+                    <Link href={l.href} className="text-sm text-[var(--text-muted)] transition hover:text-accent">
+                      {l.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

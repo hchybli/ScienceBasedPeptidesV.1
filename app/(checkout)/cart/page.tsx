@@ -145,7 +145,7 @@ export default function CartPage() {
             </div>
           </div>
           <Button className="w-full" asChild>
-            <Link href="/checkout">Proceed to checkout</Link>
+            <Link href="/checkout#checkout-top">Proceed to checkout</Link>
           </Button>
           <FooterDisclaimer className="mt-4" />
         </div>
