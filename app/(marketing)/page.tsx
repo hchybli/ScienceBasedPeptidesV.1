@@ -43,7 +43,7 @@ export default async function HomePage() {
 
         <div className="relative mx-auto max-w-[1440px] px-8 lg:px-12">
           <div className="grid min-h-[760px] items-center lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="relative z-20 max-w-[760px] pb-20 pt-24">
+            <div className="relative z-30 max-w-[620px] pb-20 pt-24">
               <Badge variant="purity" className="mb-6 inline-flex rounded-full border border-[#19d3bd]/40 bg-[#092420]/70 px-5 py-2 text-sm text-[#22d7c1]">
               Laboratory research materials · Independent COAs
               </Badge>
@@ -86,9 +86,9 @@ export default async function HomePage() {
               <img
                 src="/hero-right.png"
                 alt="Peptide research products"
-                className="pointer-events-none absolute bottom-0 right-[-60px] w-[980px] max-w-none select-none"
+                className="pointer-events-none absolute bottom-0 right-[-20px] z-10 w-[760px] max-w-none select-none"
               />
-              <div className="absolute inset-y-0 left-[-20px] w-[260px] bg-gradient-to-r from-[#050908] via-[#050908]/92 to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-[120px] bg-gradient-to-r from-[#050908] via-[#050908]/70 to-transparent" />
             </div>
           </div>
         </div>
