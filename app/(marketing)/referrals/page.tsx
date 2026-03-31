@@ -80,15 +80,15 @@ const faqs = [
 
 export default function ReferralsMarketingPage() {
   return (
-    <div>
-      <section className="relative overflow-hidden bg-[var(--bg)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(24,211,190,0.16),transparent_42%)]" />
+    <div className="bg-[radial-gradient(circle_at_18%_18%,rgba(24,211,190,0.12),transparent_40%),linear-gradient(180deg,#040908_0%,#05100e_45%,#040908_100%)]">
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(24,211,190,0.10),transparent_48%)]" />
         <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
           <p className="inline-flex rounded-full border border-[var(--border)] bg-surface px-4 py-1.5 text-xs uppercase tracking-[0.14em] text-[var(--text-muted)]">
             Affiliate Program
           </p>
           <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
-            become a sciencebasedpeptides affiliate
+            Become a Science Based Peptides Affiliate
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--text-muted)]">
             Earn on qualified first orders and recurring purchases through transparent affiliate attribution and scheduled
@@ -136,7 +136,7 @@ export default function ReferralsMarketingPage() {
         </div>
       </section>
 
-      <section className="bg-surface py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Commission and benefits</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -164,7 +164,7 @@ export default function ReferralsMarketingPage() {
         </div>
       </section>
 
-      <section className="bg-surface py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Earnings example</h2>
           <div className="mt-8 rounded-[var(--radius)] border border-[var(--border)] bg-surface-2 p-6 md:p-8">
