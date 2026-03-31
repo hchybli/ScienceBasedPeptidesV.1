@@ -249,20 +249,6 @@ export default function AccountDashboard() {
         </section>
       </div>
 
-      <section className="mt-6 rounded-2xl border border-[var(--border)] bg-surface p-6 shadow-[0_12px_28px_rgba(0,0,0,0.24)]">
-        <h2 className="font-display text-2xl font-semibold tracking-tight">Quick Actions</h2>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Button asChild>
-            <Link href="/shop">Shop Products</Link>
-          </Button>
-          <Button variant="secondary" asChild>
-            <Link href="/referrals">View Affiliate Page</Link>
-          </Button>
-          <Button variant="secondary" asChild>
-            <Link href="/contact">Contact Support</Link>
-          </Button>
-        </div>
-      </section>
       {!data && !loading ? (
         <p className="mt-4 text-sm text-[var(--text-muted)]">Unable to load account details right now. Please refresh.</p>
       ) : null}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth-store";
@@ -10,10 +10,17 @@ import { useAuthStore } from "@/store/auth-store";
 export function LoginForm() {
   const router = useRouter();
   const sp = useSearchParams();
+  const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/account");
+    }
+  }, [user, router]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
