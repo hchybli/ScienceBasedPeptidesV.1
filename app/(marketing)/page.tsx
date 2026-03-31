@@ -38,36 +38,33 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-6 pb-8 md:space-y-10">
-      <section className="relative min-h-[760px] overflow-hidden bg-[#040908]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_38%,rgba(0,168,140,0.22),transparent_34%),linear-gradient(90deg,#040908_0%,#05110f_42%,#071a17_62%,#081614_100%)]" />
+      <section className="relative min-h-[760px] overflow-hidden bg-[#050908]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(11,158,139,0.22),transparent_30%),linear-gradient(90deg,#040807_0%,#05100e_38%,#071716_62%,#081514_100%)]" />
 
-        <div className="relative mx-auto max-w-[1400px] px-8 lg:px-12">
-          <div className="grid min-h-[760px] grid-cols-1 items-center lg:grid-cols-[1.02fr_0.98fr]">
+        <div className="relative mx-auto max-w-[1440px] px-8 lg:px-12">
+          <div className="grid min-h-[760px] items-center lg:grid-cols-[0.95fr_1.05fr]">
             <div className="relative z-20 max-w-[760px] pb-20 pt-24">
-              <Badge
-                variant="purity"
-                className="mb-6 inline-flex rounded-full border border-[#19d3bd]/40 bg-[#0a2a25]/70 px-5 py-2 text-[14px] text-[#21d7c0]"
-              >
+              <Badge variant="purity" className="mb-6 inline-flex rounded-full border border-[#19d3bd]/40 bg-[#092420]/70 px-5 py-2 text-sm text-[#22d7c1]">
               Laboratory research materials · Independent COAs
               </Badge>
 
-              <h1 className="max-w-[760px] font-display text-[64px] leading-[0.95] tracking-[-0.04em] text-white lg:text-[82px]">
+              <h1 className="max-w-[760px] font-display text-[68px] leading-[0.94] tracking-[-0.04em] text-white lg:text-[86px]">
               High-purity peptide research compounds for laboratory use
               </h1>
 
-              <p className="mt-7 max-w-[760px] text-[25px] leading-[1.7] text-[#9db0aa]">
+              <p className="mt-7 max-w-[760px] text-[25px] leading-[1.7] text-[#9eafaa]">
               Independently tested materials with batch documentation and transparent specifications — for qualified
               research and analytical workflows.
               </p>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <Button asChild className="rounded-[14px] bg-[#17d3be] px-8 py-4 text-[20px] font-medium text-black hover:bg-[#22dcc8]">
+                <Button asChild className="rounded-[14px] bg-[#18d3be] px-8 py-4 text-[20px] font-medium text-black hover:bg-[#22dcc8]">
                 <Link href="/shop">Shop catalog</Link>
                 </Button>
                 <Button
                   asChild
                   variant="secondary"
-                  className="rounded-[14px] border border-[#24322e] bg-[#0a0f0e]/80 px-8 py-4 text-[20px] font-medium text-white hover:bg-[#0e1513]"
+                  className="rounded-[14px] border border-[#23312d] bg-[#0a0f0e]/80 px-8 py-4 text-[20px] font-medium text-white hover:bg-[#0e1513]"
                 >
                 <Link href="/research">Research library</Link>
                 </Button>
@@ -77,7 +74,7 @@ export default async function HomePage() {
               {["Independent lab tested", "Batch-level reporting", "Structured fulfillment", "Research-use compliance"].map((t) => (
                   <div
                     key={t}
-                    className="rounded-[14px] border border-[#1c2925] bg-[#09100f]/70 px-5 py-4 text-[18px] text-[#96a59f]"
+                    className="rounded-[14px] border border-[#1a2824] bg-[#09100f]/70 px-5 py-4 text-[18px] text-[#93a39d]"
                   >
                   {t}
                   </div>
@@ -86,15 +83,12 @@ export default async function HomePage() {
             </div>
 
             <div className="relative hidden min-h-[760px] lg:block">
-              <div className="absolute inset-y-0 right-[-40px] w-[900px]">
-                <img
-                  src="/hero-scene.png"
-                  alt="Peptide research vials"
-                  className="pointer-events-none absolute bottom-0 right-0 h-auto w-[900px] max-w-none select-none object-contain"
-                />
-              </div>
-
-              <div className="absolute inset-y-0 left-[-60px] w-[220px] bg-gradient-to-r from-[#040908] via-[#040908]/88 to-transparent" />
+              <img
+                src="/hero-right.png"
+                alt="Peptide research products"
+                className="pointer-events-none absolute bottom-0 right-[-60px] w-[980px] max-w-none select-none"
+              />
+              <div className="absolute inset-y-0 left-[-20px] w-[260px] bg-gradient-to-r from-[#050908] via-[#050908]/92 to-transparent" />
             </div>
           </div>
         </div>
