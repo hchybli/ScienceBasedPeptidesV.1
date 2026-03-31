@@ -7,7 +7,7 @@ import { FooterDisclaimer } from "@/components/ui/disclaimer";
 
 export const metadata: Metadata = {
   title: "Referral Program",
-  description: "Partner with Science Based Peptides and earn commission on qualified referral orders.",
+  description: "Become a Science Based Peptides affiliate and earn commission on qualified referral orders.",
 };
 
 const steps = [
@@ -18,7 +18,7 @@ const steps = [
   },
   {
     title: "Get approved",
-    description: "Approved partners receive a unique referral link and onboarding notes.",
+    description: "Approved affiliates receive a unique referral link and onboarding notes.",
     icon: CheckCircle2,
   },
   {
@@ -36,7 +36,7 @@ const steps = [
 const benefits = [
   "Competitive commissions on qualified orders",
   "Recurring earnings from repeat referral customers",
-  "Attribution tracking for approved partner links",
+  "Attribution tracking for approved affiliate links",
   "Scheduled payouts with transparent reporting",
 ];
 
@@ -47,7 +47,7 @@ const reasons = [
   },
   {
     title: "Documentation confidence",
-    body: "Batch COA workflows and verification practices support trust-focused partner positioning.",
+    body: "Batch COA workflows and verification practices support trust-focused affiliate positioning.",
   },
   {
     title: "Focused demand",
@@ -58,15 +58,15 @@ const reasons = [
 const faqs = [
   {
     q: "How are payouts handled?",
-    a: "Payouts are processed on a scheduled cycle for approved partners after referral verification and standard hold windows.",
+    a: "Payouts are processed on a scheduled cycle for approved affiliates after referral verification and standard hold windows.",
   },
   {
     q: "Who can apply?",
-    a: "Researchers, educators, and compliant content partners with relevant audiences may apply for review.",
+    a: "Researchers, educators, and compliant content affiliates with relevant audiences may apply for review.",
   },
   {
     q: "How are referrals tracked?",
-    a: "Each approved partner receives a unique link, and qualified orders are attributed through that tracking flow.",
+    a: "Each approved affiliate receives a unique link, and qualified orders are attributed through that tracking flow.",
   },
   {
     q: "When do earnings appear?",
@@ -74,24 +74,24 @@ const faqs = [
   },
   {
     q: "Can I promote on multiple channels?",
-    a: "Yes. Approved partners can use multiple channels as long as messaging remains compliant and accurate.",
+    a: "Yes. Approved affiliates can use multiple channels as long as messaging remains compliant and accurate.",
   },
 ];
 
 export default function ReferralsMarketingPage() {
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-[var(--border)] bg-[var(--bg)]">
+      <section className="relative overflow-hidden bg-[var(--bg)]">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(24,211,190,0.16),transparent_42%)]" />
         <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
           <p className="inline-flex rounded-full border border-[var(--border)] bg-surface px-4 py-1.5 text-xs uppercase tracking-[0.14em] text-[var(--text-muted)]">
-            Partner Program
+            Affiliate Program
           </p>
           <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
-            Partner with premium research peptides
+            become a sciencebasedpeptides affiliate
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--text-muted)]">
-            Earn on qualified first orders and recurring purchases through transparent partner attribution and scheduled
+            Earn on qualified first orders and recurring purchases through transparent affiliate attribution and scheduled
             payouts.
           </p>
           <div className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
@@ -109,7 +109,7 @@ export default function ReferralsMarketingPage() {
           </div>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button size="lg" asChild>
-              <Link href="/contact">Become a partner</Link>
+              <Link href="/contact">Become an affiliate</Link>
             </Button>
             <Button size="lg" variant="secondary" asChild>
               <Link href="#how-it-works">Program details</Link>
@@ -136,7 +136,7 @@ export default function ReferralsMarketingPage() {
         </div>
       </section>
 
-      <section className="border-y border-[var(--border)] bg-surface py-16">
+      <section className="bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Commission and benefits</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -164,12 +164,12 @@ export default function ReferralsMarketingPage() {
         </div>
       </section>
 
-      <section className="border-y border-[var(--border)] bg-surface py-16">
+      <section className="bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Earnings example</h2>
           <div className="mt-8 rounded-[var(--radius)] border border-[var(--border)] bg-surface-2 p-6 md:p-8">
             <p className="text-2xl font-semibold tracking-tight">
-              Refer 10 qualified customers <span className="text-[var(--text-muted)]">→</span> earn partner commission
+              Refer 10 qualified customers <span className="text-[var(--text-muted)]">→</span> earn affiliate commission
             </p>
             <p className="mt-3 text-sm text-[var(--text-muted)]">
               Final payout varies by approved commission terms, product mix, and order volume. No guaranteed earnings.
@@ -182,7 +182,7 @@ export default function ReferralsMarketingPage() {
         <div className="rounded-[var(--radius)] border border-[var(--border)] bg-surface p-8 md:p-10">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Start earning today</h2>
           <p className="mt-4 max-w-2xl text-[var(--text-muted)]">
-            Apply to the Science Based Peptides partner program and get reviewed for referral access.
+            Apply to the Science Based Peptides affiliate program and get reviewed for referral access.
           </p>
           <div className="mt-8">
             <Button size="lg" asChild>
@@ -192,7 +192,7 @@ export default function ReferralsMarketingPage() {
         </div>
       </section>
 
-      <section className="border-t border-[var(--border)] py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-4xl px-4 md:px-6">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">FAQ</h2>
           <div className="mt-8 space-y-3">
