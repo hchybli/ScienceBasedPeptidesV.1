@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 import bcrypt from "bcryptjs";
 import { DEFAULT_ADMIN_EMAIL } from "@/lib/site";
+import { prisma } from "@/lib/prisma";
 
 config({ path: path.join(process.cwd(), ".env.local") });
 
@@ -900,7 +901,6 @@ const discounts = [
 ];
 
 async function main() {
-  const { prisma } = await import("@/lib/prisma");
   const incremental = process.argv.includes("--sync");
   if (!incremental) {
     await prisma.$executeRawUnsafe(`
