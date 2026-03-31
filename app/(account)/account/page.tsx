@@ -96,6 +96,19 @@ export default function AccountDashboard() {
     },
   };
   const formatMoney = (value: number) => `$${Number(value || 0).toFixed(2)}`;
+  const formatPercent = (value: number) => {
+    const rounded = Number(value.toFixed(1));
+    return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded.toFixed(1)}%`;
+  };
+  const conversionRate =
+    performance.totalReferrals > 0 && performance.referredOrders > 0
+      ? (performance.referredOrders / performance.totalReferrals) * 100
+      : 0;
+  const payoutStatusLabel = performance.payout.payoutEligible ? "Eligible" : "Rolling to Next Cycle";
+  const payoutProgress = Math.min(
+    performance.payout.payoutThreshold > 0 ? performance.payout.approvedBalance / performance.payout.payoutThreshold : 0,
+    1
+  );
 
   const displayName = account?.name?.trim() || persistedUser?.name?.trim() || "Not provided";
   const displayEmail = account?.email || persistedUser?.email || "Not available";
@@ -210,7 +223,7 @@ export default function AccountDashboard() {
             {[
               { label: "Total Referrals", value: performance.totalReferrals },
               { label: "Total Orders Referred", value: performance.referredOrders },
-              { label: "Estimated Commissions", value: `$${performance.estimatedCommissions.toFixed(2)}` },
+              { label: "Conversion Rate", value: formatPercent(conversionRate) },
             ].map((item) => (
               <div key={item.label} className="rounded-xl border border-[var(--border)] bg-surface px-3 py-3">
                 <p className="text-[11px] uppercase tracking-wide text-[var(--text-muted)]">{item.label}</p>
@@ -267,11 +280,13 @@ export default function AccountDashboard() {
         <section className="rounded-2xl border border-[var(--border)] bg-surface p-6 shadow-[0_12px_28px_rgba(0,0,0,0.24)]">
           <h2 className="font-display text-2xl font-semibold tracking-tight">Affiliate Performance</h2>
           <p className="mt-2 text-sm text-[var(--text-muted)]">Performance data updates as referral activity is recorded.</p>
+          <p className="mt-4 text-xs uppercase tracking-wide text-[var(--text-muted)]">Performance</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {[
               { label: "Clicks", value: performance.clicks },
-              { label: "Conversions", value: performance.conversions },
+              { label: "Total Referrals", value: performance.totalReferrals },
               { label: "Referred Orders", value: performance.referredOrders },
+              { label: "Conversion Rate", value: formatPercent(conversionRate) },
               { label: "Estimated Earnings", value: `$${performance.estimatedCommissions.toFixed(2)}` },
             ].map((item) => (
               <div key={item.label} className="rounded-xl border border-[var(--border)] bg-surface-2/70 px-4 py-4">
@@ -280,11 +295,12 @@ export default function AccountDashboard() {
               </div>
             ))}
           </div>
+          <p className="mt-5 text-xs uppercase tracking-wide text-[var(--text-muted)]">Payout</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {[
               { label: "Approved Balance", value: formatMoney(performance.payout.approvedBalance) },
               { label: "Payout Threshold", value: formatMoney(performance.payout.payoutThreshold) },
-              { label: "Next Payout Status", value: performance.payout.nextPayoutStatus },
+              { label: "Next Payout Status", value: payoutStatusLabel },
               {
                 label: performance.payout.payoutEligible ? "Next Payout Amount" : "Amount Needed for Payout",
                 value: performance.payout.payoutEligible
@@ -299,9 +315,17 @@ export default function AccountDashboard() {
               </div>
             ))}
           </div>
+          <div className="mt-4 rounded-xl border border-[var(--border)] bg-surface-2/70 px-4 py-4">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-black/30">
+              <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${payoutProgress * 100}%` }} />
+            </div>
+            <p className="mt-2 text-xs text-[var(--text-muted)]">
+              {formatMoney(performance.payout.approvedBalance)} / {formatMoney(performance.payout.payoutThreshold)}
+            </p>
+          </div>
           <p className="mt-4 text-xs text-[var(--text-muted)]">
-            Payouts are processed bi-weekly once your approved balance reaches $100. Balances below $100 automatically
-            roll over to the next cycle.
+            Payouts are issued bi-weekly once your approved balance reaches $100. Balances below $100 automatically roll
+            over to the next cycle.
           </p>
         </section>
       </div>
