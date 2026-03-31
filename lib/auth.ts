@@ -2,7 +2,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
-const JWT_SECRET = process.env.JWT_SECRET ?? "change-this-to-a-long-random-secret-minimum-32-chars";
+const DEFAULT_JWT_SECRET = "change-this-to-a-long-random-secret-minimum-32-chars";
+const envJwtSecret = process.env.JWT_SECRET?.trim();
+const JWT_SECRET = envJwtSecret && envJwtSecret.length > 0 ? envJwtSecret : DEFAULT_JWT_SECRET;
 const COOKIE_NAME = "peptide_session";
 
 export interface JWTPayload {

@@ -89,7 +89,7 @@ export default async function ShopPage({
   const tailRows = hasCenteredTailRow ? rows.slice(-4) : [];
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] px-4 py-12 md:px-6">
+    <div className="mx-auto w-full max-w-[1600px] px-4 pb-24 pt-12 md:px-6 md:pb-28">
       <div className="flex flex-col gap-5">
         <div>
           <h1 className="font-display text-3xl font-semibold">All Products</h1>

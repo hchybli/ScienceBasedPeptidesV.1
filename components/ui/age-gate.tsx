@@ -6,8 +6,6 @@ import { usePathname } from "next/navigation";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 
-const STORAGE_KEY = "site_access_verified_v1";
-
 export function AgeGate() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -20,21 +18,13 @@ export function AgeGate() {
       setOpen(false);
       return;
     }
-    try {
-      const v = localStorage.getItem(STORAGE_KEY);
-      if (v !== "true") setOpen(true);
-    } catch {
-      setOpen(true);
-    }
+    setOpen(true);
+    setAgeConfirmed(false);
+    setPolicyConfirmed(false);
   }, [isLegalPage]);
 
   const confirm = () => {
     if (!ageConfirmed || !policyConfirmed) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, "true");
-    } catch {
-      /* ignore */
-    }
     setOpen(false);
   };
 

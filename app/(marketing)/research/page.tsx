@@ -64,7 +64,7 @@ export default async function ResearchHubPage({
   const tailRows = hasCenteredTailRow ? rows.slice(-4) : [];
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] px-4 py-12 md:px-6">
+    <div className="mx-auto w-full max-w-[1600px] px-4 pb-24 pt-12 md:px-6 md:pb-28">
       <section className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(120deg,rgba(0,227,201,0.08),rgba(27,36,44,0.35),rgba(0,227,201,0.04))] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.25)] md:p-8">
         <h1 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">Research Catalog Overview</h1>
         <p className="mt-3 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
