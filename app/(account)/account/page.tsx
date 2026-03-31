@@ -23,6 +23,15 @@ type DashboardPayload = {
     conversions: number;
     referredOrders: number;
     estimatedCommissions: number;
+    payout: {
+      approvedBalance: number;
+      payoutThreshold: number;
+      payoutEligible: boolean;
+      amountNeeded: number;
+      nextPayoutAmount: number;
+      nextPayoutStatus: "Eligible" | "Rollover";
+      lifetimePaid: number;
+    };
   };
 };
 
@@ -76,7 +85,17 @@ export default function AccountDashboard() {
     conversions: 0,
     referredOrders: 0,
     estimatedCommissions: 0,
+    payout: {
+      approvedBalance: 0,
+      payoutThreshold: 100,
+      payoutEligible: false,
+      amountNeeded: 100,
+      nextPayoutAmount: 0,
+      nextPayoutStatus: "Rollover" as const,
+      lifetimePaid: 0,
+    },
   };
+  const formatMoney = (value: number) => `$${Number(value || 0).toFixed(2)}`;
 
   const displayName = account?.name?.trim() || persistedUser?.name?.trim() || "Not provided";
   const displayEmail = account?.email || persistedUser?.email || "Not available";
@@ -261,6 +280,29 @@ export default function AccountDashboard() {
               </div>
             ))}
           </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {[
+              { label: "Approved Balance", value: formatMoney(performance.payout.approvedBalance) },
+              { label: "Payout Threshold", value: formatMoney(performance.payout.payoutThreshold) },
+              { label: "Next Payout Status", value: performance.payout.nextPayoutStatus },
+              {
+                label: performance.payout.payoutEligible ? "Next Payout Amount" : "Amount Needed for Payout",
+                value: performance.payout.payoutEligible
+                  ? formatMoney(performance.payout.nextPayoutAmount)
+                  : formatMoney(performance.payout.amountNeeded),
+              },
+              { label: "Lifetime Paid", value: formatMoney(performance.payout.lifetimePaid) },
+            ].map((item) => (
+              <div key={item.label} className="rounded-xl border border-[var(--border)] bg-surface-2/70 px-4 py-4">
+                <p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">{item.label}</p>
+                <p className="mt-1 text-xl font-semibold">{item.value}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-xs text-[var(--text-muted)]">
+            Payouts are processed bi-weekly once your approved balance reaches $100. Balances below $100 automatically
+            roll over to the next cycle.
+          </p>
         </section>
       </div>
 

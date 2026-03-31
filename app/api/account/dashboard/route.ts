@@ -6,6 +6,7 @@ import { getCurrentUser } from "@/lib/auth";
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const codeSuffix = customAlphabet(CODE_ALPHABET, 6);
 const FIRST_ORDER_COMMISSION_RATE = 0.2;
+const PAYOUT_THRESHOLD = 100;
 const QUALIFYING_ORDER_STATUSES = ["confirmed", "processing", "shipped", "delivered"] as const;
 const PRIVATE_NO_STORE_HEADERS = {
   "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
@@ -113,6 +114,14 @@ export async function GET() {
     estimatedCommissions = Number((firstOrderTotal * FIRST_ORDER_COMMISSION_RATE).toFixed(2));
   }
 
+  // Until a dedicated payable ledger exists, use the current earnings metric as approved balance.
+  const approvedBalance = estimatedCommissions;
+  const payoutEligible = approvedBalance >= PAYOUT_THRESHOLD;
+  const amountNeeded = Number(Math.max(0, PAYOUT_THRESHOLD - approvedBalance).toFixed(2));
+  const nextPayoutAmount = payoutEligible ? approvedBalance : 0;
+  const nextPayoutStatus = payoutEligible ? "Eligible" : "Rollover";
+  const lifetimePaid = 0;
+
   return NextResponse.json(
     {
       account: {
@@ -134,6 +143,15 @@ export async function GET() {
         conversions,
         referredOrders,
         estimatedCommissions,
+        payout: {
+          approvedBalance,
+          payoutThreshold: PAYOUT_THRESHOLD,
+          payoutEligible,
+          amountNeeded,
+          nextPayoutAmount,
+          nextPayoutStatus,
+          lifetimePaid,
+        },
       },
     },
     { headers: PRIVATE_NO_STORE_HEADERS }
