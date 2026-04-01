@@ -40,31 +40,31 @@ export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="relative bg-[#0F0F0F] text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,227,201,0.16),_transparent_42%),radial-gradient(circle_at_80%_20%,_rgba(95,84,255,0.1),_transparent_38%)]" />
+    <div className="relative bg-[var(--bg)] text-[var(--text)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(169,212,236,0.2),_transparent_42%),radial-gradient(circle_at_80%_20%,_rgba(207,231,245,0.22),_transparent_38%)]" />
 
       <div className="relative mx-auto max-w-5xl scroll-smooth px-4 pb-0 pt-16 md:pt-24">
         <section className="text-center">
           <h1 className="font-display text-4xl font-semibold tracking-tight md:text-6xl">Support</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-[#a6a6a6] md:text-base">
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">
             Questions about your order, products, or policies? Find answers below or send us a message.
           </p>
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
-            <a href="#contact" className="rounded-full border border-white/10 bg-[#171717] px-4 py-2 text-[#d2d2d2] hover:text-white">
+            <a href="#contact" className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 text-[var(--text-muted)] hover:text-[var(--text)]">
               Contact
             </a>
-            <a href="#faq" className="rounded-full border border-white/10 bg-[#171717] px-4 py-2 text-[#d2d2d2] hover:text-white">
+            <a href="#faq" className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 text-[var(--text-muted)] hover:text-[var(--text)]">
               FAQ
             </a>
-            <a href="#returns" className="rounded-full border border-white/10 bg-[#171717] px-4 py-2 text-[#d2d2d2] hover:text-white">
+            <a href="#returns" className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 text-[var(--text-muted)] hover:text-[var(--text)]">
               Returns
             </a>
           </div>
         </section>
 
-        <section id="contact" className="mt-14 scroll-mt-28 rounded-2xl border border-white/10 bg-[#141414] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)] md:p-8">
+        <section id="contact" className="mt-14 scroll-mt-28 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)] md:p-8">
           <h2 className="font-display text-2xl font-semibold">Contact Us</h2>
-          <p className="mt-2 text-sm text-[#9a9a9a]">Send us your details and we will get back to you quickly.</p>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">Send us your details and we will get back to you quickly.</p>
           <form
             className="mt-6 space-y-4"
             onSubmit={async (e) => {
@@ -92,50 +92,50 @@ export default function ContactPage() {
             }}
           >
             <div>
-              <label className="text-sm text-[#cccccc]">Full Name</label>
+              <label className="text-sm text-[var(--text)]">Full Name</label>
               <input
                 name="name"
                 required
-                className="mt-1 h-11 w-full rounded-xl border border-white/15 bg-[#161616] px-3 text-sm text-white placeholder:text-[#7e7e7e] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(0,227,201,0.2),0_0_22px_rgba(0,227,201,0.16)]"
+                className="mt-1 h-11 w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(169,212,236,0.45),0_0_22px_rgba(169,212,236,0.24)]"
                 placeholder="Your full name"
               />
             </div>
             <div>
-              <label className="text-sm text-[#cccccc]">Email Address</label>
+              <label className="text-sm text-[var(--text)]">Email Address</label>
               <input
                 name="email"
                 type="email"
                 required
-                className="mt-1 h-11 w-full rounded-xl border border-white/15 bg-[#161616] px-3 text-sm text-white placeholder:text-[#7e7e7e] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(0,227,201,0.2),0_0_22px_rgba(0,227,201,0.16)]"
+                className="mt-1 h-11 w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(169,212,236,0.45),0_0_22px_rgba(169,212,236,0.24)]"
                 placeholder="you@example.com"
               />
             </div>
             <div>
-              <label className="text-sm text-[#cccccc]">Order Number (optional)</label>
+              <label className="text-sm text-[var(--text)]">Order Number (optional)</label>
               <input
                 name="order_number"
-                className="mt-1 h-11 w-full rounded-xl border border-white/15 bg-[#161616] px-3 text-sm text-white placeholder:text-[#7e7e7e] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(0,227,201,0.2),0_0_22px_rgba(0,227,201,0.16)]"
+                className="mt-1 h-11 w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(169,212,236,0.45),0_0_22px_rgba(169,212,236,0.24)]"
                 placeholder="e.g. ORD-12345"
               />
             </div>
             <div>
-              <label className="text-sm text-[#cccccc]">Message</label>
+              <label className="text-sm text-[var(--text)]">Message</label>
               <textarea
                 name="message"
                 required
-                className="mt-1 min-h-[140px] w-full rounded-xl border border-white/15 bg-[#161616] p-3 text-sm text-white placeholder:text-[#7e7e7e] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(0,227,201,0.2),0_0_22px_rgba(0,227,201,0.16)]"
+                className="mt-1 min-h-[140px] w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(169,212,236,0.45),0_0_22px_rgba(169,212,236,0.24)]"
                 placeholder="How can we help?"
               />
             </div>
             <Button
               type="submit"
               disabled={sending}
-              className="h-11 w-full rounded-xl shadow-[0_10px_30px_rgba(0,227,201,0.24)] transition hover:shadow-[0_14px_36px_rgba(0,227,201,0.32)] sm:w-[220px]"
+              className="h-11 w-full rounded-xl shadow-[0_10px_30px_rgba(169,212,236,0.24)] transition hover:shadow-[0_14px_36px_rgba(169,212,236,0.32)] sm:w-[220px]"
             >
               {sending ? "Sending..." : sent ? "Message Sent" : "Send Message"}
             </Button>
           </form>
-          <div className="mt-6 text-center text-sm text-[#a7a7a7]">
+          <div className="mt-6 text-center text-sm text-[var(--text-muted)]">
             <p>We typically respond within the same day.</p>
             <p className="mt-1">Support Hours: 24/7</p>
           </div>
@@ -147,17 +147,17 @@ export default function ContactPage() {
             {FAQ_ITEMS.map((item, index) => {
               const open = openFaq === index;
               return (
-                <div key={item.q} className="rounded-2xl border border-white/10 bg-[#141414] px-5 py-4 shadow-[0_10px_24px_rgba(0,0,0,0.25)]">
+                <div key={item.q} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4 shadow-[0_10px_24px_rgba(30,26,23,0.1)]">
                   <button
                     type="button"
                     className="flex w-full items-center justify-between gap-4 text-left"
                     onClick={() => setOpenFaq(open ? null : index)}
                   >
-                    <span className="text-base font-medium text-white">{item.q}</span>
-                    <span className="text-xl leading-none text-[#9b9b9b]">{open ? "−" : "+"}</span>
+                    <span className="text-base font-medium text-[var(--text)]">{item.q}</span>
+                    <span className="text-xl leading-none text-[var(--text-muted)]">{open ? "−" : "+"}</span>
                   </button>
                   <div className={`overflow-hidden transition-all duration-300 ${open ? "mt-3 max-h-40 opacity-100" : "max-h-0 opacity-0"}`}>
-                    <p className="text-sm leading-relaxed text-[#a4a4a4]">{item.a}</p>
+                    <p className="text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
                   </div>
                 </div>
               );
@@ -165,9 +165,9 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section id="returns" className="mt-14 scroll-mt-28 rounded-2xl border border-white/10 bg-[#141414] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)] md:p-8">
+        <section id="returns" className="mt-14 scroll-mt-28 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)] md:p-8">
           <h2 className="font-display text-3xl font-semibold tracking-tight">Returns &amp; Refund Policy</h2>
-          <div className="mt-5 space-y-4 text-sm leading-relaxed text-[#a6a6a6]">
+          <div className="mt-5 space-y-4 text-sm leading-relaxed text-[var(--text-muted)]">
             <p>We offer free shipping on all orders.</p>
             <p>Refund requests must be submitted within 3 days of confirmed delivery.</p>
             <div>

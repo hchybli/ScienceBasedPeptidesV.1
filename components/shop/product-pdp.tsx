@@ -138,7 +138,7 @@ export function ProductPdp(props: {
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-28 pt-10 md:grid-cols-[minmax(240px,360px)_1fr] md:items-start md:pb-36">
       <div className="space-y-4 md:sticky md:top-24">
-        <div className="relative mx-auto aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-[#05070b] shadow-sm">
+        <div className="relative mx-auto aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-[var(--surface-2)] shadow-sm">
           <Image
             src={heroImage}
             alt={product.name}
@@ -214,7 +214,7 @@ export function ProductPdp(props: {
                 const next = Number(qtyInput);
                 if (!Number.isFinite(next) || next < 0) setQtyInput("0");
               }}
-              className="mt-1 h-10 w-16 rounded-[var(--radius)] border border-accent/40 bg-surface-2 px-2 text-center font-mono text-sm shadow-[0_0_0_1px_rgba(0,227,201,0.1),0_0_22px_rgba(0,227,201,0.16)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(0,227,201,0.28),0_0_26px_rgba(0,227,201,0.24)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="mt-1 h-10 w-16 rounded-[var(--radius)] border border-accent/40 bg-surface-2 px-2 text-center font-mono text-sm shadow-[0_0_0_1px_rgba(169,212,236,0.22),0_0_22px_rgba(169,212,236,0.22)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(169,212,236,0.4),0_0_26px_rgba(169,212,236,0.3)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
           </div>
         </div>

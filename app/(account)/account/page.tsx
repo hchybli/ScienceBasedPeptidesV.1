@@ -188,7 +188,7 @@ export default function AccountDashboard() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(145deg,rgba(16,26,31,0.96),rgba(13,20,24,0.96))] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.24)]">
+        <section className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(145deg,rgba(255,253,249,0.96),rgba(243,239,231,0.96))] p-6 shadow-[0_12px_28px_rgba(30,26,23,0.12)]">
           <h2 className="font-display text-2xl font-semibold tracking-tight">Your Affiliate Link</h2>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
             Share your unique referral link and earn commission on qualifying referrals.
@@ -316,7 +316,7 @@ export default function AccountDashboard() {
             ))}
           </div>
           <div className="mt-4 rounded-xl border border-[var(--border)] bg-surface-2/70 px-4 py-4">
-            <div className="h-2 w-full overflow-hidden rounded-full bg-black/30">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-[rgba(138,130,120,0.25)]">
               <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${payoutProgress * 100}%` }} />
             </div>
             <p className="mt-2 text-xs text-[var(--text-muted)]">

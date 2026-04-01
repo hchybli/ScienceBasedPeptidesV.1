@@ -72,8 +72,8 @@ export function FeaturedProductsCarousel({ items }: { items: Item[] }) {
           </div>
         ))}
       </div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-[#0F0F0F] via-[#0F0F0F]/78 to-transparent md:hidden" />
-      <div className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-black/25 p-1 text-[var(--text-muted)] md:hidden">
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-[var(--bg)] via-[rgba(247,244,238,0.78)] to-transparent md:hidden" />
+      <div className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full border border-[var(--border)] bg-[rgba(255,253,249,0.88)] p-1 text-[var(--text-muted)] md:hidden">
         <ChevronRight className="h-3.5 w-3.5" />
       </div>
     </div>

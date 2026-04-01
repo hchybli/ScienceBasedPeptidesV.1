@@ -210,25 +210,25 @@ const TERMS_TABS = [
 
 export default function TermsPage() {
   return (
-    <div className="relative overflow-hidden bg-[#0F0F0F] text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,227,201,0.16),_transparent_42%),radial-gradient(circle_at_80%_20%,_rgba(95,84,255,0.1),_transparent_38%)]" />
+    <div className="relative overflow-hidden bg-[var(--bg)] text-[var(--text)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(169,212,236,0.2),_transparent_42%),radial-gradient(circle_at_80%_20%,_rgba(207,231,245,0.22),_transparent_38%)]" />
       <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24">
         <section className="text-center">
           <h1 className="font-display text-4xl font-semibold tracking-tight md:text-6xl">Terms of Service</h1>
-          <p className="mx-auto mt-4 max-w-3xl text-sm text-[#a6a6a6] md:text-base">
+          <p className="mx-auto mt-4 max-w-3xl text-sm text-[var(--text-muted)] md:text-base">
             These terms govern your use of this website and all products offered. Please review carefully.
           </p>
-          <p className="mt-2 text-xs text-[#8f8f8f]">Last Updated: March 31, 2026</p>
+          <p className="mt-2 text-xs text-[var(--text-muted)]">Last Updated: March 31, 2026</p>
         </section>
 
-        <section className="mt-12 rounded-2xl border border-white/10 bg-[#141414] p-4 shadow-[0_16px_48px_rgba(0,0,0,0.35)] md:p-6">
+        <section className="mt-12 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-[0_16px_48px_rgba(30,26,23,0.12)] md:p-6">
           <Tabs defaultValue={TERMS_TABS[0].id} className="w-full">
-            <TabsList className="flex h-auto w-full flex-wrap justify-center gap-2 rounded-xl bg-[#171717] p-2">
+            <TabsList className="flex h-auto w-full flex-wrap justify-center gap-2 rounded-xl bg-[var(--surface-2)] p-2">
               {TERMS_TABS.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="rounded-lg border border-transparent bg-transparent px-3 py-2 text-xs font-semibold text-[#bbbbbb] data-[state=active]:border-accent/40 data-[state=active]:bg-accent-muted data-[state=active]:text-accent md:text-sm"
+                  className="rounded-lg border border-transparent bg-transparent px-3 py-2 text-xs font-semibold text-[var(--text-muted)] data-[state=active]:border-accent/40 data-[state=active]:bg-accent-muted data-[state=active]:text-[var(--text)] md:text-sm"
                 >
                   {tab.label}
                 </TabsTrigger>
@@ -236,9 +236,9 @@ export default function TermsPage() {
             </TabsList>
 
             {TERMS_TABS.map((tab) => (
-              <TabsContent key={tab.id} value={tab.id} className="mt-4 rounded-xl border border-white/10 bg-[#141414] p-5 md:p-6">
+              <TabsContent key={tab.id} value={tab.id} className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-5 md:p-6">
                 <h2 className="font-display text-2xl font-semibold tracking-tight">{tab.label}</h2>
-                <div className="mt-4 space-y-3 text-sm leading-relaxed text-[#a6a6a6] md:text-base">
+                <div className="mt-4 space-y-3 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
                   {tab.content.map((line, index) =>
                     line.startsWith("- ") ? (
                       <li key={`${tab.id}-${index}`} className="ml-5 list-disc">
@@ -254,7 +254,7 @@ export default function TermsPage() {
           </Tabs>
         </section>
 
-        <p className="mt-10 text-center text-xs text-[#7f7f7f]">For laboratory research use only. Not for human consumption.</p>
+        <p className="mt-10 text-center text-xs text-[var(--text-muted)]">For laboratory research use only. Not for human consumption.</p>
       </div>
     </div>
   );

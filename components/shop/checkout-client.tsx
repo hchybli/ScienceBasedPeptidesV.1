@@ -111,24 +111,24 @@ export function CheckoutClient({
   }
 
   return (
-    <div id="checkout-top" className="relative overflow-hidden bg-[#0F0F0F]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(0,227,201,0.14),transparent_36%),radial-gradient(circle_at_82%_14%,rgba(0,182,255,0.08),transparent_34%)]" />
+    <div id="checkout-top" className="relative overflow-hidden bg-[var(--bg)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(169,212,236,0.2),transparent_36%),radial-gradient(circle_at_82%_14%,rgba(207,231,245,0.24),transparent_34%)]" />
       <div className="relative mx-auto max-w-7xl px-4 py-12 md:py-16">
-        <div className="rounded-2xl border border-white/10 bg-[linear-gradient(120deg,#132120,#101818)] p-6 md:p-8">
+        <div className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(120deg,#fffdf9,#f3efe7)] p-6 md:p-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8f8f8f]">Secure checkout</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">Secure checkout</p>
               <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight">Complete your order</h1>
               <p className="mt-2 max-w-2xl text-sm text-[var(--text-muted)]">
                 Finalize shipping and payment details below. Your order is secured and processed through our encrypted checkout flow.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:w-auto">
-              <div className="rounded-xl border border-white/10 bg-[#11201e] px-4 py-3 text-center">
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 text-center">
                 <p className="text-xs text-[var(--text-muted)]">Items</p>
                 <p className="font-mono text-xl font-semibold">{itemCount}</p>
               </div>
-              <div className="rounded-xl border border-white/10 bg-[#11201e] px-4 py-3 text-center">
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 text-center">
                 <p className="text-xs text-[var(--text-muted)]">Order total</p>
                 <p className="font-mono text-xl font-semibold">{formatCurrency(totals.total)}</p>
               </div>
@@ -146,7 +146,7 @@ export function CheckoutClient({
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <section className="space-y-8">
-            <div className="rounded-2xl border border-white/10 bg-[#141814] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)] md:p-8">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)] md:p-8">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-accent" />
                 <h2 className="font-display text-2xl font-semibold tracking-tight">Shipping details</h2>
@@ -170,7 +170,7 @@ export function CheckoutClient({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-[#141814] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)] md:p-8">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)] md:p-8">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-accent" />
                 <h2 className="font-display text-2xl font-semibold tracking-tight">Cryptocurrency payment</h2>
@@ -187,7 +187,7 @@ export function CheckoutClient({
                     className={`rounded-full border px-4 py-2 text-sm font-mono transition ${
                       symbol === o.symbol
                         ? "border-accent bg-accent-muted text-accent"
-                        : "border-white/15 bg-[#101917] text-[var(--text-muted)] hover:border-accent/40 hover:text-[var(--text)]"
+                        : "border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)] hover:border-accent/40 hover:text-[var(--text)]"
                     }`}
                   >
                     {o.symbol}
@@ -201,7 +201,7 @@ export function CheckoutClient({
               </Button>
             </div>
 
-            <section className="rounded-2xl border border-white/10 bg-[linear-gradient(110deg,#1b2a2a,#222932,#2d2731)] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)] md:p-8">
+            <section className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(110deg,#fffdf9,#f3efe7,#fffdf9)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.1)] md:p-8">
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div className="max-w-xl">
                   <h3 className="font-display text-2xl font-semibold tracking-tight text-[var(--text)]">
@@ -213,19 +213,19 @@ export function CheckoutClient({
                   <p className="mt-2 text-xs text-[var(--text-muted)]">Be a part of 100+ subscribers, unsubscribe anytime.</p>
                 </div>
                 <form onSubmit={submitNewsletter} className="w-full max-w-md">
-                  <div className="flex w-full items-center rounded-full border border-white/20 bg-black p-1 shadow-inner">
+                  <div className="flex w-full items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] p-1 shadow-inner">
                     <input
                       value={newsletterEmail}
                       onChange={(e) => setNewsletterEmail(e.target.value)}
                       type="email"
                       required
                       placeholder="Enter your email"
-                      className="h-10 flex-1 bg-transparent px-4 text-sm text-white placeholder:text-[#8e8e8e] outline-none"
+                      className="h-10 flex-1 bg-transparent px-4 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] outline-none"
                     />
                     <button
                       type="submit"
                       disabled={newsletterSending}
-                      className="h-10 rounded-full bg-accent px-5 text-sm font-semibold text-[#0a0f0d] transition hover:bg-[var(--accent-hover)] disabled:opacity-60"
+                      className="h-10 rounded-full bg-accent px-5 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--accent-hover)] disabled:opacity-60"
                     >
                       {newsletterSending ? "..." : "Subscribe"}
                     </button>
@@ -237,11 +237,11 @@ export function CheckoutClient({
           </section>
 
           <aside className="flex h-full flex-col gap-6">
-            <div className="rounded-2xl border border-white/10 bg-[#141814] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)]">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)]">
               <h2 className="font-display text-2xl font-semibold tracking-tight">Order summary</h2>
               <div className="mt-4 space-y-3">
                 {items.length === 0 ? (
-                  <div className="rounded-xl border border-white/10 bg-[#101917] p-4">
+                  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
                     <p className="text-sm text-[var(--text-muted)]">Your cart is empty.</p>
                     <Button className="mt-4 w-full" variant="secondary" asChild>
                       <Link href="/shop">
@@ -251,7 +251,7 @@ export function CheckoutClient({
                   </div>
                 ) : (
                   items.map((i) => (
-                    <div key={i.variantId} className="rounded-xl border border-white/10 bg-[#101917] p-3">
+                    <div key={i.variantId} className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-3">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <p className="text-sm font-medium">{i.name}</p>
@@ -266,7 +266,7 @@ export function CheckoutClient({
                 )}
               </div>
 
-              <div className="mt-5 space-y-2 border-t border-white/10 pt-4 text-sm">
+              <div className="mt-5 space-y-2 border-t border-[var(--border)] pt-4 text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-[var(--text-muted)]">Subtotal</span>
                   <span className="font-mono">{formatCurrency(totals.subtotal)}</span>
@@ -281,13 +281,13 @@ export function CheckoutClient({
                   <span className="text-[var(--text-muted)]">Shipping</span>
                   <span className="font-mono">{totals.shippingCost === 0 ? "FREE" : formatCurrency(totals.shippingCost)}</span>
                 </div>
-                <div className="flex items-center justify-between border-t border-white/10 pt-3">
+                <div className="flex items-center justify-between border-t border-[var(--border)] pt-3">
                   <span className="font-semibold">Total</span>
                   <span className="font-mono text-lg font-semibold">{formatCurrency(totals.total)}</span>
                 </div>
               </div>
 
-              <div className="mt-5 rounded-xl border border-white/10 bg-[#101917] p-3 text-xs text-[var(--text-muted)]">
+              <div className="mt-5 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-3 text-xs text-[var(--text-muted)]">
                 <p className="inline-flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-accent" />
                   You will confirm crypto transfer details after placing your order.
@@ -301,16 +301,16 @@ export function CheckoutClient({
             </div>
 
             {selected ? (
-              <div className="flex flex-1 flex-col rounded-2xl border border-white/10 bg-[#141814] p-6 shadow-[0_16px_48px_rgba(0,0,0,0.35)]">
+              <div className="flex flex-1 flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)]">
                 <h3 className="font-display text-xl font-semibold tracking-tight">Payment details</h3>
-                <div className="mt-4 rounded-xl border border-white/10 bg-[#101917] p-4">
+                <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
                   <p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">USD total</p>
                   <p className="mt-1 font-mono text-3xl font-semibold">{formatCurrency(totals.total)}</p>
                   <p className="mt-3 text-sm text-[var(--text-muted)]">
                     Send exactly this amount in {selected.symbol} (shown on confirmation after placing order).
                   </p>
                 </div>
-                <div className="mt-4 rounded-xl border border-white/10 bg-[#101917] p-4">
+                <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
                   <ol className="list-decimal space-y-2 pl-5 text-sm text-[var(--text-muted)]">
                     <li>Place your order to lock totals.</li>
                     <li>Copy the wallet address and exact crypto amount from the confirmation page.</li>
@@ -318,7 +318,7 @@ export function CheckoutClient({
                     <li>Paste your transaction hash on the left (optional before or after placing).</li>
                   </ol>
                 </div>
-                <div className="mt-4 flex flex-1 items-center justify-center rounded-xl border border-white/10 bg-[#101917] p-4">
+                <div className="mt-4 flex flex-1 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
                   <CryptoQR className="mx-auto w-full max-w-[300px] text-center" address={selected.walletAddress} qrDataUrl={qrMap[selected.symbol] ?? ""} />
                 </div>
               </div>

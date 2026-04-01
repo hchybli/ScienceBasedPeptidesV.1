@@ -133,12 +133,12 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" />
-        <Dialog.Content className="fixed right-0 top-0 z-50 flex h-full w-full max-w-[440px] flex-col border-l border-white/10 bg-[#090b0f] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
-          <div className="border-b border-white/10 bg-[linear-gradient(120deg,#171b24,#12151c)] px-5 py-4">
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-[rgba(30,26,23,0.22)] backdrop-blur-sm" />
+        <Dialog.Content className="fixed right-0 top-0 z-50 flex h-full w-full max-w-[440px] flex-col border-l border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_80px_rgba(30,26,23,0.16)]">
+          <div className="border-b border-[var(--border)] bg-[linear-gradient(120deg,#fffdf9,#f3efe7)] px-5 py-4">
             <div className="flex items-center justify-between">
               <Dialog.Title className="font-display text-2xl font-semibold tracking-tight">Your cart</Dialog.Title>
-              <Dialog.Close className="rounded-md p-2 transition hover:bg-white/10">
+              <Dialog.Close className="rounded-md p-2 transition hover:bg-accent-muted">
                 <X className="h-5 w-5" />
               </Dialog.Close>
             </div>
@@ -148,7 +148,7 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
           </div>
           <div className="flex-1 overflow-y-auto px-4 py-4">
             {items.length === 0 ? (
-              <div className="flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-white/10 bg-[#11151c] px-6 text-center">
+              <div className="flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] px-6 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-muted">
                   <ShoppingBag className="h-5 w-5 text-accent" />
                 </div>
@@ -165,10 +165,10 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
                 {items.map((i) => (
                   <li
                     key={i.variantId}
-                    className="rounded-xl border border-white/10 bg-[linear-gradient(120deg,#12161d,#0f1319)] p-3"
+                    className="rounded-xl border border-[var(--border)] bg-[linear-gradient(120deg,#fffdf9,#f3efe7)] p-3"
                   >
                     <div className="flex gap-3">
-                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-[#0a0d12]">
+                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]">
                         <Image
                           src={i.image || "/placeholder-peptide.svg"}
                           alt={i.name}
@@ -191,7 +191,7 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
                     <div className="mt-3 flex items-center gap-2">
                       <button
                         type="button"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-white/15 bg-[#0d1118] transition hover:border-accent/40 hover:text-accent"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--surface-2)] transition hover:border-accent/40 hover:text-accent"
                         onClick={() => updateQuantity(i.variantId, i.quantity - 1)}
                         aria-label={`Decrease ${i.name} quantity`}
                       >
@@ -200,7 +200,7 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
                       <span className="min-w-8 text-center font-mono text-sm">{i.quantity}</span>
                       <button
                         type="button"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-white/15 bg-[#0d1118] transition hover:border-accent/40 hover:text-accent"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--surface-2)] transition hover:border-accent/40 hover:text-accent"
                         onClick={() => updateQuantity(i.variantId, i.quantity + 1)}
                         aria-label={`Increase ${i.name} quantity`}
                       >
@@ -219,12 +219,12 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
               </ul>
             )}
           </div>
-          <div className="border-t border-white/10 bg-[#0d1118] p-4">
+          <div className="border-t border-[var(--border)] bg-[var(--surface-2)] p-4">
             {items.length > 0 && activeUpsell ? (
-              <div className="mb-4 rounded-xl border border-white/10 bg-[linear-gradient(120deg,#111723,#0f131b)] p-3">
+              <div className="mb-4 rounded-xl border border-[var(--border)] bg-[linear-gradient(120deg,#fffdf9,#f3efe7)] p-3">
                 <p className="text-[11px] uppercase tracking-[0.16em] text-accent/85">{activeUpsell.title}</p>
                 <div className="mt-2 flex items-center gap-3">
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-white/10 bg-[#0a0d12]">
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-[var(--border)] bg-[var(--surface)]">
                     <Image src={activeUpsell.image} alt={activeUpsell.name} fill className="object-cover object-center" sizes="48px" unoptimized />
                   </div>
                   <div className="min-w-0 flex-1">

@@ -67,14 +67,14 @@ export function NavBar() {
           <Button variant="secondary" size="sm" type="button" onClick={() => setCartOpen(true)} className="relative">
             <ShoppingBag className="h-4 w-4" />
             {mounted && count > 0 ? (
-              <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-[#0a0f0d]">
+              <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-[var(--text)]">
                 {count}
               </span>
             ) : null}
           </Button>
           <button
             type="button"
-            className="rounded-xl border border-white/10 bg-surface/80 p-2.5 shadow-[0_8px_18px_rgba(0,0,0,0.28)] transition active:scale-[0.98] md:hidden"
+            className="rounded-xl border border-[var(--border)] bg-surface/80 p-2.5 shadow-[0_8px_18px_rgba(30,26,23,0.1)] transition active:scale-[0.98] md:hidden"
             aria-label="Menu"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
@@ -84,11 +84,11 @@ export function NavBar() {
       </div>
       {mobileOpen ? (
         <div
-          className="mobile-menu-backdrop fixed inset-0 z-50 bg-black/60 px-4 pb-6 pt-[calc(env(safe-area-inset-top)+84px)] backdrop-blur-[6px] md:hidden"
+          className="mobile-menu-backdrop fixed inset-0 z-50 bg-[rgba(30,26,23,0.24)] px-4 pb-6 pt-[calc(env(safe-area-inset-top)+84px)] backdrop-blur-[6px] md:hidden"
           onClick={() => setMobileOpen(false)}
         >
           <div
-            className="mobile-menu-panel mx-auto w-full max-w-lg rounded-2xl border border-white/10 bg-[linear-gradient(165deg,rgba(12,18,22,0.98),rgba(9,13,16,0.98))] p-3 shadow-[0_22px_50px_rgba(0,0,0,0.44)]"
+            className="mobile-menu-panel mx-auto w-full max-w-lg rounded-2xl border border-[var(--border)] bg-[linear-gradient(165deg,rgba(255,253,249,0.98),rgba(243,239,231,0.98))] p-3 shadow-[0_22px_50px_rgba(30,26,23,0.14)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col gap-2">

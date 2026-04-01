@@ -13,7 +13,7 @@ export function ResearchCard(props: {
 }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-surface shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40">
-      <Link href={`/research/product/${props.slug}`} className="relative aspect-[3/4] bg-[#05070b]">
+      <Link href={`/research/product/${props.slug}`} className="relative aspect-[3/4] bg-[var(--surface-2)]">
         <Image
           src={props.image || "/placeholder-peptide.svg"}
           alt={props.name}

@@ -23,7 +23,7 @@ export function Modal({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-[rgba(30,26,23,0.22)] backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out" />
         <Dialog.Content
           className={cn(
             "fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-6 shadow-xl",

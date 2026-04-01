@@ -136,9 +136,9 @@ const faqs = [
 
 export default function ReferralsMarketingPage() {
   return (
-    <div className="bg-[#040908]">
+    <div className="bg-[var(--bg)]">
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(24,211,190,0.08),transparent_56%),radial-gradient(circle_at_78%_18%,rgba(70,106,255,0.08),transparent_48%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(169,212,236,0.18),transparent_56%),radial-gradient(circle_at_78%_18%,rgba(207,231,245,0.22),transparent_48%)]" />
         <div className="mx-auto flex max-w-7xl flex-col items-center px-4 py-20 text-center md:px-6 md:py-28">
           <h1 className="max-w-5xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
             Become a Science Based Peptides Affiliate
@@ -200,7 +200,7 @@ export default function ReferralsMarketingPage() {
             </Card>
           ))}
         </div>
-        <div className="mt-6 rounded-2xl border border-accent/30 bg-[linear-gradient(135deg,rgba(24,211,190,0.12),rgba(10,26,24,0.7))] p-5 md:p-6">
+        <div className="mt-6 rounded-2xl border border-accent/30 bg-[linear-gradient(135deg,rgba(169,212,236,0.24),rgba(255,253,249,0.95))] p-5 md:p-6">
           <p className="text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">Illustrative monthly total</p>
           <p className="mt-2 font-display text-4xl font-semibold tracking-tight">$3,539</p>
           <p className="mt-3 text-xs text-[var(--text-muted)]">
@@ -210,7 +210,7 @@ export default function ReferralsMarketingPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(145deg,rgba(14,20,24,0.95),rgba(10,14,18,0.95))] p-6 md:p-8">
+        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(145deg,rgba(255,253,249,0.96),rgba(243,239,231,0.96))] p-6 md:p-8">
           <h2 className="text-center font-display text-3xl font-semibold tracking-tight md:text-4xl">
             Built for High-Quality Affiliate Growth
           </h2>
@@ -219,7 +219,7 @@ export default function ReferralsMarketingPage() {
           </p>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {commissionCards.map((item) => (
-              <Card key={item.title} className="h-full border-[var(--border)] bg-surface/95">
+              <Card key={item.title} className="h-full border-[var(--border)] bg-surface-2/95">
                 <CardContent className="flex h-full flex-col items-center p-6 text-center">
                   <p className="font-display text-5xl font-semibold tracking-tight">{item.value}</p>
                   <p className="mt-2 text-xl font-semibold">{item.title}</p>
@@ -236,7 +236,7 @@ export default function ReferralsMarketingPage() {
               </Card>
             ))}
           </div>
-          <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[#0d1418]/80 p-5 md:p-6">
+          <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[rgba(255,253,249,0.88)] p-5 md:p-6">
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">Partner Fit</p>
             <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight md:text-3xl">Who This Structure Is Built For</h3>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -258,7 +258,7 @@ export default function ReferralsMarketingPage() {
             {commissionFooter.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.label} className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[#11181c] px-3 py-2 text-xs text-[var(--text-muted)]">
+                <div key={item.label} className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-xs text-[var(--text-muted)]">
                   <Icon className="h-3.5 w-3.5 text-accent" />
                   <span>{item.label}</span>
                 </div>
@@ -269,7 +269,7 @@ export default function ReferralsMarketingPage() {
       </section>
 
       <section id="how-it-works" className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(145deg,rgba(18,30,34,0.92),rgba(14,18,24,0.92))] p-6 md:p-8">
+        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(145deg,rgba(243,239,231,0.98),rgba(255,253,249,0.95))] p-6 md:p-8">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">Process</p>
           <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight md:text-4xl">How it works</h2>
           <p className="mt-3 max-w-3xl text-sm text-[var(--text-muted)] md:text-base">
@@ -279,7 +279,7 @@ export default function ReferralsMarketingPage() {
             {steps.map((step) => {
               const Icon = step.icon;
               return (
-                <Card key={step.title} className="border-[var(--border)] bg-[linear-gradient(145deg,rgba(24,34,39,0.95),rgba(16,24,30,0.95))]">
+                <Card key={step.title} className="border-[var(--border)] bg-[linear-gradient(145deg,rgba(255,253,249,0.98),rgba(243,239,231,0.95))]">
                   <CardContent className="p-6">
                     <Icon className="h-5 w-5 text-accent" />
                     <p className="mt-4 font-semibold">{step.title}</p>
@@ -308,7 +308,7 @@ export default function ReferralsMarketingPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-18 pt-4 md:px-6 md:pb-20 md:pt-4">
-        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(140deg,rgba(17,28,28,0.95),rgba(17,17,20,0.95))] p-8 text-center shadow-[0_20px_40px_rgba(0,0,0,0.28)] md:p-12">
+        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(140deg,rgba(255,253,249,0.98),rgba(243,239,231,0.95))] p-8 text-center shadow-[0_20px_40px_rgba(30,26,23,0.1)] md:p-12">
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">Ready to Become an Affiliate?</h2>
           <p className="mx-auto mt-4 max-w-3xl text-sm text-[var(--text-muted)] md:text-base">
             Join the program and start earning from first orders and recurring commissions.
@@ -319,7 +319,7 @@ export default function ReferralsMarketingPage() {
             </Button>
           </div>
         </div>
-        <div className="mt-8 h-px bg-white/10 md:hidden" />
+        <div className="mt-8 h-px bg-[var(--border)] md:hidden" />
       </section>
     </div>
   );

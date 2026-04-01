@@ -65,7 +65,7 @@ export default async function ResearchHubPage({
 
   return (
     <div className="mx-auto w-full max-w-[1600px] px-4 pb-24 pt-12 md:px-6 md:pb-28">
-      <section className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(120deg,rgba(0,227,201,0.08),rgba(27,36,44,0.35),rgba(0,227,201,0.04))] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.25)] md:p-8">
+      <section className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(120deg,rgba(169,212,236,0.2),rgba(243,239,231,0.95),rgba(207,231,245,0.16))] p-6 shadow-[0_16px_40px_rgba(30,26,23,0.1)] md:p-8">
         <h1 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">Research Catalog Overview</h1>
         <p className="mt-3 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
           This research catalog is structured for analytical workflows across peptides, blends, and lab solutions. Every product page is

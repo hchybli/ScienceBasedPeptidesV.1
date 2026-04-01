@@ -86,15 +86,15 @@ export default async function HomePage() {
   const sectionTitle = "font-display text-3xl font-semibold tracking-tight md:text-4xl";
 
   return (
-    <div className="bg-[#0F0F0F]">
+    <div className="bg-[var(--bg)]">
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(0,227,201,0.13),transparent_40%),radial-gradient(circle_at_80%_22%,rgba(82,142,255,0.08),transparent_36%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(169,212,236,0.18),transparent_40%),radial-gradient(circle_at_80%_22%,rgba(207,231,245,0.22),transparent_36%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-12 md:py-16 lg:grid-cols-[1.05fr_1.25fr] lg:items-center">
           <div>
-            <h1 className="font-display max-w-4xl text-4xl font-semibold tracking-tight text-white md:text-6xl">
+            <h1 className="font-display max-w-4xl text-4xl font-semibold tracking-tight text-[var(--text)] md:text-6xl">
               <span className="whitespace-nowrap">Premium Research</span> Compounds. Built for Serious Standards.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#a6a6a6] md:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">
               High-quality research products, clean presentation, and a premium buying experience designed for
               consistency, clarity, and confidence.
             </p>
@@ -112,7 +112,7 @@ export default async function HomePage() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="inline-flex items-center gap-2.5 rounded-xl border border-white/12 bg-[linear-gradient(145deg,rgba(24,24,24,0.88),rgba(15,15,15,0.86))] px-4 py-2.5 text-[13px] font-medium text-[#d3d3d3] shadow-[0_8px_20px_rgba(0,0,0,0.2)]"
+                  className="inline-flex items-center gap-2.5 rounded-xl border border-[var(--border)] bg-[linear-gradient(145deg,#fffdf9,#f3efe7)] px-4 py-2.5 text-[13px] font-medium text-[var(--text)] shadow-[0_8px_20px_rgba(30,26,23,0.08)]"
                 >
                   <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-accent/35 bg-accent/10">
                     <BadgeCheck className="h-3 w-3 text-accent" />
@@ -211,7 +211,7 @@ export default async function HomePage() {
               For laboratory research use only. Not for human consumption.
             </p>
           </div>
-          <div className="relative rounded-2xl border border-[var(--border)] bg-[#0d1015] p-2 sm:p-3">
+          <div className="relative rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-2 sm:p-3">
             <Image
               src="/hero-stack-builder-reference-v2.png"
               alt="Build your research stack visual"

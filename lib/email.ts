@@ -303,24 +303,95 @@ export async function sendSupportIntakeEmail(payload: {
 }
 
 export async function sendNewsletterWelcomeEmail(payload: { to: string }) {
+  const welcomeHtml = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Welcome to ${SITE_NAME}</title>
+      <style>
+        @media only screen and (max-width: 640px) {
+          .wrap { width: 100% !important; border-radius: 0 !important; }
+          .pad { padding: 28px 20px !important; }
+          .hero { font-size: 34px !important; line-height: 1.15 !important; }
+          .cta { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: center !important; }
+        }
+      </style>
+    </head>
+    <body style="margin:0;padding:0;background:#0b0f11;color:#e8ecef;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#0b0f11;padding:24px 12px;">
+        <tr>
+          <td align="center">
+            <table role="presentation" class="wrap" width="620" cellspacing="0" cellpadding="0" border="0" style="width:620px;max-width:620px;background:#0f1417;border:1px solid #1e2a2f;border-radius:16px;overflow:hidden;">
+              <tr>
+                <td align="center" class="pad" style="padding:30px 40px;background:linear-gradient(180deg,#0f1519 0%,#0d1215 100%);border-bottom:1px solid #1f2b31;">
+                  <div style="font-size:28px;line-height:1.2;font-weight:700;letter-spacing:0.2px;color:#f5f8fa;text-shadow:0 0 14px rgba(0,201,167,0.22);">
+                    Science Based Peptides
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="pad" align="center" style="padding:40px 40px 26px 40px;">
+                  <div class="hero" style="font-size:42px;line-height:1.1;font-weight:800;letter-spacing:-0.5px;color:#ffffff;">
+                    Welcome to the Inner Circle
+                  </div>
+                  <div style="margin-top:14px;font-size:16px;line-height:1.6;color:#a9b7bf;max-width:520px;">
+                    You’re now part of a select group getting early access to new research compounds, restocks, and exclusive updates.
+                  </div>
+                  <div style="height:1px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(0,201,167,0.55),rgba(255,255,255,0));margin:26px 0 24px 0;"></div>
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                      <td style="padding:0 0 10px 0;font-size:15px;line-height:1.5;color:#e1e9ee;">- Early access to new compounds</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:0 0 10px 0;font-size:15px;line-height:1.5;color:#e1e9ee;">- Limited restocks before public release</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:0 0 18px 0;font-size:15px;line-height:1.5;color:#e1e9ee;">- Research-focused updates and drops</td>
+                    </tr>
+                  </table>
+                  <a
+                    href="${SITE_URL}/shop"
+                    class="cta"
+                    style="display:inline-block;margin-top:8px;background:#00c9a7;color:#042520 !important;text-decoration:none;font-weight:700;font-size:15px;line-height:1;padding:14px 28px;border-radius:999px;box-shadow:0 0 22px rgba(0,201,167,0.33);"
+                  >
+                    Explore the Catalog
+                  </a>
+                  <div style="margin-top:14px;">
+                    <a href="${SITE_URL}/shop" style="font-size:13px;line-height:1.4;color:#7fd6c8;text-decoration:none;">
+                      View Latest Releases
+                    </a>
+                  </div>
+                  <div style="margin-top:14px;font-size:12px;line-height:1.5;color:#90a0a8;">
+                    Most inventory releases in limited batches.
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="pad" style="padding:22px 40px 28px 40px;border-top:1px solid #1f2b31;background:#0d1215;text-align:center;">
+                  <div style="font-size:11px;line-height:1.55;color:#81919a;">
+                    ${RESEARCH_USE_DISCLAIMER}
+                  </div>
+                  <div style="margin-top:10px;font-size:11px;line-height:1.5;color:#6f818b;">
+                    <a href="${SITE_URL}" style="color:#9fb6c2;text-decoration:none;">${SITE_URL}</a>
+                    &nbsp;|&nbsp;
+                    <a href="${SITE_URL}/privacy" style="color:#9fb6c2;text-decoration:none;">Privacy Policy</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+  </html>
+  `;
+
   await send(
     payload.to,
     `Welcome to ${SITE_NAME} updates`,
-    layout(`
-    <h2>Welcome to the community</h2>
-    <p>You are now subscribed to ${SITE_NAME} email updates.</p>
-    <p>You can expect occasional updates including:</p>
-    <ul>
-      <li>New product and catalog additions</li>
-      <li>Restock and availability updates</li>
-      <li>Site updates and announcements</li>
-      <li>Relevant promotional campaign notices</li>
-    </ul>
-    <a class="btn" href="${SITE_URL}">Visit ${SITE_NAME}</a>
-    <p style="margin-top:16px;font-size:12px;color:#999;">
-      You can unsubscribe anytime from your account email preferences.
-    </p>
-  `)
+    welcomeHtml
   );
 }
 
