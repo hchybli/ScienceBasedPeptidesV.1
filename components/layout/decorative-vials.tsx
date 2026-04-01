@@ -154,9 +154,19 @@ function enforceTilt(value: number) {
 }
 
 function getTemplate(pathname: string): TemplateKey {
-  if (pathname.startsWith("/shop") || pathname.startsWith("/research")) return "shop";
-  // Reuse the same working visual baseline used on Shop/Research across all public routes.
-  return "shop";
+  if (pathname === "/") return "home";
+  if (pathname.startsWith("/shop")) return "shop";
+  if (pathname.startsWith("/products/")) return "product";
+  if (pathname.startsWith("/research/product/")) return "researchProduct";
+  if (pathname.startsWith("/research")) return "shop";
+  if (pathname === "/contact") return "contact";
+  if (pathname === "/referrals" || pathname.startsWith("/account/referrals")) return "affiliate";
+  if (pathname === "/login" || pathname === "/register" || pathname === "/forgot-password" || pathname === "/reset-password") {
+    return "auth";
+  }
+  if (pathname.startsWith("/checkout")) return "checkout";
+  if (pathname === "/terms" || pathname === "/privacy" || pathname === "/refund-policy" || pathname === "/faq") return "legal";
+  return "generic";
 }
 
 export function DecorativeVials() {
@@ -167,19 +177,21 @@ export function DecorativeVials() {
     const base = TEMPLATE_MAP[template];
     return base
       .map((spec, index) => {
-        const y = Math.max(10, Math.min(88, spec.y + seededValue(seed, index + 5, -2.2, 2.2)));
-        // Keep decorations in outer background gutters only.
-        const x = Math.max(4, Math.min(12, spec.x + seededValue(seed, index + 11, -1.8, 1.8)));
-        const size = Math.round(Math.max(82, spec.size + seededValue(seed, index + 17, -9, 9)));
+        const y = Math.max(8, Math.min(92, spec.y + seededValue(seed, index + 5, -4.6, 4.6)));
+        // Keep decorations in strict outer gutters to avoid content overlap.
+        const x = Math.max(3, Math.min(16, spec.x + seededValue(seed, index + 11, -2.8, 2.8)));
+        const size = Math.round(Math.max(80, spec.size + seededValue(seed, index + 17, -12, 12)));
         const rawRotate = spec.rotate + seededValue(seed, index + 23, -2.6, 2.6);
         const rotate = enforceTilt(rawRotate);
         // Subtle, premium range to avoid content competition.
-        const opacity = Math.max(0.07, Math.min(0.13, spec.opacity + seededValue(seed, index + 29, -0.018, 0.018)));
+        const opacity = Math.max(0.06, Math.min(0.11, spec.opacity + seededValue(seed, index + 29, -0.02, 0.015)));
         const routeShift = seed % SOURCES.length;
         const src = SOURCES[(spec.srcIndex + routeShift + index * 2) % SOURCES.length];
         // Route-level deterministic skip to avoid repeated silhouettes page-to-page.
         const show = ((seed + index * 19) % 11) > 1;
         if (!show) return null;
+        const duration = Math.round(seededValue(seed, index + 31, 22, 34));
+        const delay = Math.round(seededValue(seed, index + 37, 0, 9)) * -1;
         return {
           src,
           className: `absolute ${SHOW_AT[spec.breakpoint]} ${spec.blur ? "blur-[1.5px]" : ""}`,
@@ -190,6 +202,7 @@ export function DecorativeVials() {
             height: `${size}px`,
             transform: `translateY(-50%) rotate(${rotate.toFixed(1)}deg)`,
             opacity,
+            animation: `vialDrift ${duration}s ease-in-out ${delay}s infinite alternate`,
           } as Record<string, string | number>,
         };
       })
@@ -201,14 +214,14 @@ export function DecorativeVials() {
   }, [seed, template]);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[30] overflow-hidden">
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[1] overflow-hidden">
       {placements.map((vial, index) => (
         <div key={`${vial.src}-${index}`} className={vial.className} style={vial.style}>
           <Image
             src={vial.src}
             alt=""
             fill
-            className="object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+            className="object-contain drop-shadow-[0_8px_24px_rgba(30,26,23,0.22)]"
             sizes="200px"
             priority={index < 2}
           />

@@ -71,3 +71,14 @@
     animation: mobileMenuPanelIn 260ms ease-out;
   }
 }
+
+@keyframes vialDrift {
+  0% {
+    margin-top: 0;
+    margin-left: 0;
+  }
+  100% {
+    margin-top: 8px;
+    margin-left: 4px;
+  }
+}
