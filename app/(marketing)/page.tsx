@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ui/product-card";
-import { FeaturedProductsCarousel } from "@/components/home/featured-products-carousel";
+import { FeaturedProductsShowcase } from "@/components/home/featured-products-showcase";
 import { ResearchCard } from "@/components/ui/research-card";
 import { parseJsonArray } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
@@ -142,11 +142,11 @@ export default async function HomePage() {
       </section>
 
       <section className={sectionWrap}>
-        <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">Featured</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-[var(--text-muted)]">Featured</p>
         <h2 className={`${sectionTitle} mt-2`}>Featured Products</h2>
-        <p className="mt-2 text-sm text-[var(--text-muted)]">Explore some of the most sought-after products in the catalog.</p>
-        <div className="mt-8">
-          <FeaturedProductsCarousel items={featuredCarouselItems} />
+        <p className="mt-3 text-sm text-[var(--text-muted)]">Explore some of the most sought-after products in the catalog.</p>
+        <div className="mt-7">
+          <FeaturedProductsShowcase items={featuredCarouselItems} />
         </div>
       </section>
 
