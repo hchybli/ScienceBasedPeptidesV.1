@@ -579,9 +579,13 @@
     }
   },
   "epitalon": {},
-  "mots-c": {},
+  "mots-c": {
+    "short_description": "Mitochondrial-derived peptide for metabolic pathway research.",
+    "description": "Mitochondrial-derived peptide sequence for in vitro and animal metabolic pathway studies in published literature. Supplied as lyophilized research compound only.",
+    "images": ["/products/mots-c-clean-2.png"]
+  },
   "thymosin-alpha-1": {},
-  "pt-141": {},
+  "pt-141": { "images": ["/products/pt141-clean-2.png"] },
   "selank": {},
   "semax": {},
   "bacteriostatic-water-30ml": {
@@ -621,5 +625,23 @@
     }
   },
   "precision-syringes-29g": {},
-  "alcohol-prep-pads": {}
+  "alcohol-prep-pads": {},
+  "glow": { "images": ["/products/glow-clean-2.png"] },
+  "klow": { "images": ["/products/klow-clean-2.png"] },
+  "kpv": { "images": ["/products/kpv-clean-2.png"] },
+  "igf-1": { "images": ["/products/igf-1-clean-2.png"] },
+  "aod-9604": { "images": ["/products/aod-9604-clean-2.png"] },
+  "calgrilinitide": {
+    "short_description": "A synthetic peptide analog utilized in controlled laboratory research environments.",
+    "description": "This compound is produced under controlled conditions to ensure consistency and analytical reliability. Intended strictly for laboratory research use only. Not for human consumption.",
+    "images": ["/products/calgrilinitide-clean-2.png"]
+  },
+  "5-amino-1mq": {
+    "short_description": "A small-molecule compound studied in biochemical and metabolic research.",
+    "description": "This compound is produced under controlled conditions to ensure consistency and analytical reliability. Intended strictly for laboratory research use only. Not for human consumption.",
+    "images": ["/products/amino-1mq-clean-2.png"]
+  },
+  "snap-8": { "images": ["/products/snap-8-clean-2.png"] },
+  "glutathione": { "images": ["/products/glutathione-clean-2.png"] },
+  "dsip": { "images": ["/placeholder-peptide.svg"] }
 }

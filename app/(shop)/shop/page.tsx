@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/ui/product-card";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
 import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
-import { parseJsonArray } from "@/lib/utils";
+import { parseJsonArray, stableCatalogOrder } from "@/lib/utils";
 import { ShopToolbar } from "@/components/shop/shop-toolbar";
 
 export const dynamic = "force-dynamic";
@@ -72,7 +72,7 @@ export default async function ShopPage({
     if (!next.includes(row.size)) next.push(row.size);
     sizesByProduct.set(row.product_id, next);
   }
-  const rows = products
+  let rows = products
     .map((p) => {
       const v = variantByProduct.get(p.id);
       if (!v) return null;
@@ -86,6 +86,8 @@ export default async function ShopPage({
     rows.sort((a, b) => Number(a.price) - Number(b.price));
   } else if (sort === "price_desc") {
     rows.sort((a, b) => Number(b.price) - Number(a.price));
+  } else if (sort === "most_popular") {
+    rows = stableCatalogOrder(rows, "shop");
   }
   const hasCenteredTailRow = rows.length > 5 && rows.length % 5 === 4;
   const mainRows = hasCenteredTailRow ? rows.slice(0, -4) : rows;

@@ -23,7 +23,8 @@ export function ProductCard(props: {
   priority?: boolean;
 }) {
   const addItem = useCartStore((s) => s.addItem);
-  const imageClassName = "object-cover object-center transition duration-300 group-hover:scale-[1.02]";
+  const imageClassName =
+    "z-[1] object-cover object-center transition duration-300 group-hover:scale-[1.02]";
   const onAdd = () => {
     const item: CartItem = {
       productId: props.id,

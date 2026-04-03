@@ -79,3 +79,24 @@ export function primaryProductImage(images: string[] | null | undefined): string
   const ordered = orderedProductImages(images);
   return ordered[0] ?? PLACEHOLDER_PRODUCT_IMAGE;
 }
+
+/**
+ * Fixed “random” catalog order: same products → same order on every load until the catalog changes.
+ * (Avoids A–Z tie-break from `sold_count` + `name` without reshuffling every request.)
+ */
+export function stableCatalogOrder<T extends { id?: unknown }>(items: T[], salt: string): T[] {
+  return [...items].sort((a, b) => {
+    const ka = `${salt}:${String(a.id)}`;
+    const kb = `${salt}:${String(b.id)}`;
+    return fnv1a32(ka) - fnv1a32(kb);
+  });
+}
+
+function fnv1a32(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}

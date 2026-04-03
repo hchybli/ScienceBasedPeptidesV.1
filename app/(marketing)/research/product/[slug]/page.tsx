@@ -6,6 +6,7 @@ import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/pr
 import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
 import { parseJsonArray } from "@/lib/utils";
 import { parseProductMeta } from "@/lib/product-meta";
+import { buildPdpSpecificationRows } from "@/lib/product-specifications";
 import { CoaRequestForm } from "@/components/shop/coa-request-form";
 import { Disclaimer } from "@/components/ui/disclaimer";
 
@@ -25,20 +26,23 @@ export default async function ProductResearchPage({ params }: { params: Promise<
 
   const tags = parseJsonArray<string>(p.tags, []);
   const meta = parseProductMeta(tags);
-  const displaySpecs = meta.specs.filter((spec) => {
-    const raw = spec.value.trim();
-    const normalized = raw.toLowerCase();
-    return raw.length > 0 && raw !== "[SIZE]" && normalized !== "size";
-  });
-  const productFiles = listPublicProductFilenames();
-  const merged = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images, []), productFiles);
-  const image = getCanonicalProductImage(p.slug as string, merged);
-  const heroGradient = getPdpHeroGradient(p.slug as string);
   const variants = await prisma.variants.findMany({
     where: { product_id: p.id },
     orderBy: { display_order: "asc" },
     select: { size: true },
   });
+  const defaultSize = variants[0]?.size ?? "—";
+  const specificationRows = buildPdpSpecificationRows({
+    slug: p.slug as string,
+    name: p.name as string,
+    scientificName: p.scientific_name as string | null,
+    selectedSize: defaultSize,
+    meta,
+  });
+  const productFiles = listPublicProductFilenames();
+  const merged = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images, []), productFiles);
+  const image = getCanonicalProductImage(p.slug as string, merged);
+  const heroGradient = getPdpHeroGradient(p.slug as string);
 
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-28 pt-10 md:grid-cols-[minmax(240px,360px)_1fr] md:items-start md:pb-36">
@@ -53,7 +57,7 @@ export default async function ProductResearchPage({ params }: { params: Promise<
             fill
             unoptimized
             quality={100}
-            className="object-cover object-center"
+            className="z-[1] object-cover object-center"
             sizes="(max-width: 768px) 100vw, 340px"
             priority
           />
@@ -105,7 +109,7 @@ export default async function ProductResearchPage({ params }: { params: Promise<
             <h2 className="font-display text-xl font-semibold">Specifications</h2>
             <table className="mt-2 w-full text-left text-sm">
               <tbody className="divide-y divide-[var(--border)]">
-                {displaySpecs.map((spec) => (
+                {specificationRows.map((spec) => (
                   <tr key={`${spec.label}:${spec.value}`}>
                     <th className="py-2 text-[var(--text-muted)]">{spec.label}</th>
                     <td className="font-mono">{spec.value}</td>

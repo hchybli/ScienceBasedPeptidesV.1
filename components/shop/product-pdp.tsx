@@ -12,6 +12,7 @@ import type { CartItem } from "@/lib/cart";
 import { useCartStore } from "@/store/cart-store";
 import { RatingStars } from "@/components/ui/rating-stars";
 import { parseProductMeta } from "@/lib/product-meta";
+import { buildPdpSpecificationRows } from "@/lib/product-specifications";
 import { ProductCard } from "@/components/ui/product-card";
 import { CoaRequestForm } from "@/components/shop/coa-request-form";
 
@@ -94,14 +95,16 @@ export function ProductPdp(props: {
   const qty = Number.isFinite(parsedQty) && parsedQty >= 0 ? parsedQty : 0;
   const displayPrice = selected.price;
   const meta = useMemo(() => parseProductMeta(product.tags), [product.tags]);
-  const displaySpecs = useMemo(
+  const specificationRows = useMemo(
     () =>
-      meta.specs.filter((spec) => {
-        const raw = spec.value.trim();
-        const normalized = raw.toLowerCase();
-        return raw.length > 0 && raw !== "[SIZE]" && normalized !== "size";
+      buildPdpSpecificationRows({
+        slug: product.slug,
+        name: product.name,
+        scientificName: product.scientificName,
+        selectedSize: selected.size,
+        meta,
       }),
-    [meta.specs]
+    [product.slug, product.name, product.scientificName, selected.size, meta],
   );
   const normalizedScientific = (product.scientificName ?? "").trim().toLowerCase();
   const normalizedName = product.name.trim().toLowerCase();
@@ -150,7 +153,7 @@ export function ProductPdp(props: {
             fill
             unoptimized
             quality={100}
-            className="object-cover object-center transition duration-300 hover:scale-[1.02]"
+            className="z-[1] object-cover object-center transition duration-300 hover:scale-[1.02]"
             sizes="(max-width: 768px) 100vw, 340px"
             priority
           />
@@ -256,7 +259,7 @@ export function ProductPdp(props: {
             <h2 className="font-display text-xl font-semibold">Specifications</h2>
             <table className="mt-2 w-full text-left text-sm">
               <tbody className="divide-y divide-[var(--border)]">
-                {displaySpecs.map((spec) => (
+                {specificationRows.map((spec) => (
                   <tr key={`${spec.label}:${spec.value}`}>
                     <th className="py-2 text-[var(--text-muted)]">{spec.label}</th>
                     <td className="font-mono">{spec.value}</td>

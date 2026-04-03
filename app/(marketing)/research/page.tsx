@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
 import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
-import { parseJsonArray } from "@/lib/utils";
+import { parseJsonArray, stableCatalogOrder } from "@/lib/utils";
 import { ShopToolbar } from "@/components/shop/shop-toolbar";
 import { ResearchCard } from "@/components/ui/research-card";
 
@@ -48,7 +48,7 @@ export default async function ResearchHubPage({
   const variantByProduct = new Map(variants.map((v) => [v.product_id, v]));
   const productFiles = listPublicProductFilenames();
 
-  const rows = products
+  let rows = products
     .map((p) => {
       const v = variantByProduct.get(p.id);
       if (!v) return null;
@@ -60,7 +60,8 @@ export default async function ResearchHubPage({
     .filter(Boolean) as Array<Record<string, unknown>>;
 
   if (sort === "price_asc") rows.sort((a, b) => Number(a.price) - Number(b.price));
-  if (sort === "price_desc") rows.sort((a, b) => Number(b.price) - Number(a.price));
+  else if (sort === "price_desc") rows.sort((a, b) => Number(b.price) - Number(a.price));
+  else if (sort === "most_popular") rows = stableCatalogOrder(rows, "research");
 
   const hasCenteredTailRow = rows.length > 5 && rows.length % 5 === 4;
   const mainRows = hasCenteredTailRow ? rows.slice(0, -4) : rows;
@@ -109,6 +110,7 @@ export default async function ResearchHubPage({
             slug={p.slug as string}
             name={p.name as string}
             purity={p.purity as number | null}
+            imageGradient={getPdpHeroGradient(p.slug as string)}
             image={p.image as string}
           />
         ))}

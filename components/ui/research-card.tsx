@@ -23,7 +23,7 @@ export function ResearchCard(props: {
           src={props.image || "/placeholder-peptide.svg"}
           alt={props.name}
           fill
-          className="object-cover object-center transition duration-300 group-hover:scale-[1.02]"
+          className="z-[1] object-cover object-center transition duration-300 group-hover:scale-[1.02]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 25vw, 20vw"
           quality={100}
           unoptimized
