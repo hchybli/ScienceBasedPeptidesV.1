@@ -33,8 +33,16 @@ const EXCLUDED_FROM_FEATURED_SHOWCASE = new Set([
   "tesamorelin",
 ]);
 
-/** Shown in featured carousel even when `is_featured` is not set in DB yet (e.g. new SKUs). */
-const FEATURED_SHOWCASE_EXTRA_SLUGS = new Set([
+/**
+ * Homepage featured vial carousel only — explicit slugs so prod DB `is_featured` flags
+ * cannot add/remove items vs local seed (same code → same lineup everywhere).
+ * Order is display order.
+ */
+const FEATURED_CAROUSEL_SLUGS = [
+  "bpc-157",
+  "bpc-157-tb-500-blend",
+  "bpc-157-ghk-cu-tb-blend",
+  "cjc-1295-ipamorelin-blend",
   "glow",
   "klow",
   "kpv",
@@ -45,7 +53,7 @@ const FEATURED_SHOWCASE_EXTRA_SLUGS = new Set([
   "snap-8",
   "glutathione",
   "dsip",
-]);
+] as const;
 
 export default async function HomePage() {
   const allProducts = (await prisma.$queryRawUnsafe(`
@@ -75,7 +83,6 @@ export default async function HomePage() {
         compareAt: (p.compare_at as number | null) ?? null,
         variantId: p.vid as string,
         size: p.size as string,
-        isFeatured: Number(p.is_featured) === 1,
       };
     })
     .filter(Boolean) as Array<{
@@ -89,14 +96,14 @@ export default async function HomePage() {
     compareAt: number | null;
     variantId: string;
     size: string;
-    isFeatured: boolean;
   }>;
 
-  const featuredCarouselItems = featuredCarouselItemsRaw.filter(
-    (item) =>
-      (item.isFeatured || FEATURED_SHOWCASE_EXTRA_SLUGS.has(item.slug)) &&
-      !EXCLUDED_FROM_FEATURED_SHOWCASE.has(item.slug),
-  );
+  const featuredBySlug = new Map(featuredCarouselItemsRaw.map((item) => [item.slug, item]));
+  const featuredCarouselItems = FEATURED_CAROUSEL_SLUGS.map((slug) => featuredBySlug.get(slug))
+    .filter(
+      (item): item is NonNullable<typeof item> =>
+        item != null && !EXCLUDED_FROM_FEATURED_SHOWCASE.has(item.slug),
+    );
 
   const featuredIds = featuredCarouselItems.map((i) => i.id);
   const featuredVariantsRows =
@@ -115,8 +122,6 @@ export default async function HomePage() {
   }
 
   const featuredCarouselItemsWithVariants = featuredCarouselItems.map((item) => {
-    const { isFeatured, ...itemForShowcase } = item;
-    void isFeatured;
     const rows = variantsByProductId.get(item.id) ?? [];
     const variants =
       rows.length > 0
@@ -136,7 +141,7 @@ export default async function HomePage() {
               isDefault: true,
             },
           ];
-    return { ...itemForShowcase, variants };
+    return { ...item, variants };
   });
   const catalogVialDecorUrls =
     featuredCarouselItems.length > 0 ? featuredCarouselItems.map((item) => item.image) : [];
