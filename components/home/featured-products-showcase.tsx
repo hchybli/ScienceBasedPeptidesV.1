@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { VialSideDecorations } from "@/components/home/vial-side-decorations";
 import { formatCurrency } from "@/lib/utils";
 import type { CartItem } from "@/lib/cart";
 import { useCartStore } from "@/store/cart-store";
@@ -44,37 +45,6 @@ function defaultVariant(item: Item | null) {
   if (!item?.variants?.length) return null;
   return item.variants.find((v) => v.isDefault) ?? item.variants[0] ?? null;
 }
-
-type SideDecorSlot = {
-  top: string;
-  lateral: string;
-  w: number;
-  h: number;
-  rot: number;
-};
-
-/** Tilted vials for left / right strips (percent positions within each strip). */
-const LEFT_DECOR_SLOTS: SideDecorSlot[] = [
-  { top: "4%", lateral: "6%", w: 76, h: 108, rot: -18 },
-  { top: "22%", lateral: "-2%", w: 68, h: 96, rot: 14 },
-  { top: "38%", lateral: "18%", w: 72, h: 102, rot: -11 },
-  { top: "56%", lateral: "4%", w: 64, h: 90, rot: 19 },
-  { top: "72%", lateral: "22%", w: 70, h: 98, rot: -15 },
-  { top: "88%", lateral: "8%", w: 60, h: 84, rot: 10 },
-  { top: "12%", lateral: "28%", w: 56, h: 78, rot: 22 },
-  { top: "48%", lateral: "-8%", w: 58, h: 82, rot: -20 },
-];
-
-const RIGHT_DECOR_SLOTS: SideDecorSlot[] = [
-  { top: "6%", lateral: "8%", w: 74, h: 104, rot: 16 },
-  { top: "24%", lateral: "-4%", w: 70, h: 100, rot: -13 },
-  { top: "40%", lateral: "16%", w: 66, h: 94, rot: 18 },
-  { top: "58%", lateral: "6%", w: 72, h: 102, rot: -12 },
-  { top: "74%", lateral: "20%", w: 62, h: 88, rot: 11 },
-  { top: "90%", lateral: "10%", w: 68, h: 96, rot: -17 },
-  { top: "14%", lateral: "26%", w: 54, h: 76, rot: -21 },
-  { top: "50%", lateral: "-6%", w: 60, h: 86, rot: 15 },
-];
 
 /** Compact label under non-selected thumbs; blends use short tokens (e.g. CJC + IPA). */
 function featuredThumbShortLabel(name: string): string {
@@ -177,12 +147,6 @@ export function FeaturedProductsShowcase({ items }: { items: Item[] }) {
 
   const activeVariant = useMemo(() => defaultVariant(selected), [selected]);
 
-  const decorImageUrls = useMemo(() => {
-    const urls = items.map((i) => i.image);
-    if (urls.length === 0) return [];
-    return Array.from({ length: 24 }, (_, i) => urls[i % urls.length]!);
-  }, [items]);
-
   if (!selected || !activeVariant) return null;
 
   function onAddToCart() {
@@ -203,51 +167,7 @@ export function FeaturedProductsShowcase({ items }: { items: Item[] }) {
   return (
     <LayoutGroup id="homepage-featured-showcase">
       <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[linear-gradient(150deg,rgba(255,253,249,0.98),rgba(243,239,231,0.96))] p-5 md:p-7">
-        {/* Tilted vial fills — only this featured card; desktop+ side gutters */}
-        <div
-          className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden w-[min(20%,7.25rem)] select-none md:block lg:w-[min(22%,9.5rem)]"
-          aria-hidden
-        >
-          <div className="relative h-full w-full [mask-image:linear-gradient(to_right,black_50%,transparent)]">
-            {LEFT_DECOR_SLOTS.map((slot, i) => (
-              <div
-                key={`decor-l-${i}`}
-                className="absolute bg-contain bg-center bg-no-repeat opacity-[0.22]"
-                style={{
-                  backgroundImage: decorImageUrls[i] ? `url(${decorImageUrls[i]})` : undefined,
-                  top: slot.top,
-                  left: slot.lateral,
-                  width: slot.w,
-                  height: slot.h,
-                  transform: `rotate(${slot.rot}deg)`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[min(20%,7.25rem)] select-none md:block lg:w-[min(22%,9.5rem)]"
-          aria-hidden
-        >
-          <div className="relative h-full w-full [mask-image:linear-gradient(to_left,black_50%,transparent)]">
-            {RIGHT_DECOR_SLOTS.map((slot, i) => (
-              <div
-                key={`decor-r-${i}`}
-                className="absolute bg-contain bg-center bg-no-repeat opacity-[0.22]"
-                style={{
-                  backgroundImage: decorImageUrls[i + LEFT_DECOR_SLOTS.length]
-                    ? `url(${decorImageUrls[i + LEFT_DECOR_SLOTS.length]})`
-                    : undefined,
-                  top: slot.top,
-                  right: slot.lateral,
-                  width: slot.w,
-                  height: slot.h,
-                  transform: `rotate(${slot.rot}deg)`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
+        <VialSideDecorations imageUrls={items.map((i) => i.image)} />
 
         <div className="relative z-10">
         <div className="flex flex-col items-center gap-6 md:flex-row md:items-center md:justify-center md:gap-6 lg:gap-8">

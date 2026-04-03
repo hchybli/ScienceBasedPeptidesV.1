@@ -8,32 +8,29 @@ export interface CryptoOption {
   icon: string;
 }
 
-function isConfigured(address: string): boolean {
-  return !address.includes("CONFIGURE_");
-}
+/** Production defaults; override with WALLET_* env vars on Vercel if needed. */
+export const DEFAULT_WALLET_BTC = "bc1qyyfe64ms49cpztjsz4f0rj93f5rf28wcdjcntq";
+/** Same Ethereum address for USDC (ERC-20) and USDT (ERC-20). */
+export const DEFAULT_WALLET_ERC20 = "0xD00DE72680ebCe9549729F202E860f4ca75894eB";
 
 function isValidWalletAddress(symbol: string, address: string): boolean {
   const value = address.trim();
   if (!value || value.length > 128) return false;
-  // Basic chain-level validation to prevent malformed/unsafe QR payloads.
   switch (symbol) {
     case "BTC":
       return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,62}$/.test(value);
-    case "ETH":
     case "USDC":
-      return /^0x[a-fA-F0-9]{40}$/.test(value);
     case "USDT":
-      return /^T[1-9A-HJ-NP-Za-km-z]{25,40}$/.test(value) || /^0x[a-fA-F0-9]{40}$/.test(value);
-    case "XRP":
-      return /^r[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(value);
+      return /^0x[a-fA-F0-9]{40}$/.test(value);
     default:
       return false;
   }
 }
 
-function safeWalletAddress(symbol: string, rawAddress: string, fallback: string): string {
-  if (!isConfigured(rawAddress)) return fallback;
-  return isValidWalletAddress(symbol, rawAddress) ? rawAddress.trim() : fallback;
+function resolveWallet(symbol: string, envValue: string | undefined, fallback: string): string {
+  const trimmed = (envValue ?? "").trim();
+  if (trimmed && isValidWalletAddress(symbol, trimmed)) return trimmed;
+  return fallback;
 }
 
 export function getCryptoOptions(): CryptoOption[] {
@@ -41,37 +38,23 @@ export function getCryptoOptions(): CryptoOption[] {
     {
       currency: "Bitcoin",
       symbol: "BTC",
-      walletAddress: safeWalletAddress("BTC", process.env.WALLET_BTC || "", "CONFIGURE_BTC_WALLET_IN_ENV"),
+      walletAddress: resolveWallet("BTC", process.env.WALLET_BTC, DEFAULT_WALLET_BTC),
       network: "Bitcoin",
       icon: "₿",
     },
     {
-      currency: "Ethereum",
-      symbol: "ETH",
-      walletAddress: safeWalletAddress("ETH", process.env.WALLET_ETH || "", "CONFIGURE_ETH_WALLET_IN_ENV"),
-      network: "Ethereum",
-      icon: "Ξ",
-    },
-    {
       currency: "USD Coin",
       symbol: "USDC",
-      walletAddress: safeWalletAddress("USDC", process.env.WALLET_USDC || "", "CONFIGURE_USDC_WALLET_IN_ENV"),
-      network: "ERC-20",
+      walletAddress: resolveWallet("USDC", process.env.WALLET_USDC, DEFAULT_WALLET_ERC20),
+      network: "Ethereum (ERC-20)",
       icon: "$",
     },
     {
       currency: "Tether",
       symbol: "USDT",
-      walletAddress: safeWalletAddress("USDT", process.env.WALLET_USDT || "", "CONFIGURE_USDT_WALLET_IN_ENV"),
-      network: "TRC-20",
-      icon: "$",
-    },
-    {
-      currency: "XRP",
-      symbol: "XRP",
-      walletAddress: safeWalletAddress("XRP", process.env.WALLET_XRP || "", "CONFIGURE_XRP_WALLET_IN_ENV"),
-      network: "XRP Ledger",
-      icon: "✕",
+      walletAddress: resolveWallet("USDT", process.env.WALLET_USDT, DEFAULT_WALLET_ERC20),
+      network: "Ethereum (ERC-20)",
+      icon: "₮",
     },
   ];
 }
@@ -79,10 +62,8 @@ export function getCryptoOptions(): CryptoOption[] {
 export async function getExchangeRate(symbol: string): Promise<number> {
   const ids: Record<string, string> = {
     BTC: "bitcoin",
-    ETH: "ethereum",
     USDC: "usd-coin",
     USDT: "tether",
-    XRP: "ripple",
   };
   const id = ids[symbol];
   if (!id) return 1;
@@ -104,19 +85,14 @@ export async function calculateCryptoAmount(usdAmount: number, symbol: string): 
 }
 
 function buildPaymentUri(symbol: string, walletAddress: string): string {
-  if (walletAddress.includes("CONFIGURE_")) return walletAddress;
   if (!isValidWalletAddress(symbol, walletAddress)) return walletAddress;
 
   switch (symbol) {
     case "BTC":
       return `bitcoin:${walletAddress}`;
-    case "ETH":
     case "USDC":
-      return `ethereum:${walletAddress}`;
     case "USDT":
-      return walletAddress.startsWith("T") ? `tron:${walletAddress}` : `ethereum:${walletAddress}`;
-    case "XRP":
-      return `xrpl:${walletAddress}`;
+      return `ethereum:${walletAddress}`;
     default:
       return walletAddress;
   }
@@ -124,7 +100,7 @@ function buildPaymentUri(symbol: string, walletAddress: string): string {
 
 export async function generateQRCode(walletAddress: string, symbol: string): Promise<string> {
   const payload = buildPaymentUri(symbol, walletAddress);
-  if (!payload || payload.length > 256) {
+  if (!payload || payload.length > 512) {
     throw new Error("Invalid QR payload");
   }
   return QRCode.toDataURL(payload, {

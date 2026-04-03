@@ -176,7 +176,9 @@ export function CheckoutClient({
                 <h2 className="font-display text-2xl font-semibold tracking-tight">Cryptocurrency payment</h2>
               </div>
               <p className="mt-2 text-sm text-[var(--text-muted)]">
-                Select an asset and send the exact amount shown. Rates refresh from public market data.
+                Pay with <strong className="font-medium text-[var(--text)]">BTC</strong>,{" "}
+                <strong className="font-medium text-[var(--text)]">USDC</strong>, or{" "}
+                <strong className="font-medium text-[var(--text)]">USDT</strong> only. Send the exact amount shown after you place your order.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {options.map((o) => (
@@ -194,6 +196,10 @@ export function CheckoutClient({
                   </button>
                 ))}
               </div>
+              <p className="mt-3 rounded-lg border border-amber-500/35 bg-amber-500/10 px-3 py-2 text-xs text-[var(--text-muted)]">
+                <span className="font-medium text-[var(--text)]">Network:</span> USDC and USDT use the same Ethereum (ERC-20) address. Only
+                send the asset you selected—other tokens sent to this address may be lost.
+              </p>
               <Input className="mt-10" label="Transaction hash (optional)" value={tx} onChange={(e) => setTx(e.target.value)} />
               {err ? <p className="mt-3 text-sm text-danger">{err}</p> : null}
               <Button className="mt-6" size="lg" type="button" disabled={loading || items.length === 0} onClick={placeOrder}>
@@ -303,11 +309,14 @@ export function CheckoutClient({
             {selected ? (
               <div className="flex flex-1 flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)]">
                 <h3 className="font-display text-xl font-semibold tracking-tight">Payment details</h3>
+                <p className="mt-1 text-xs text-[var(--text-muted)]">
+                  {selected.currency} · {selected.network}
+                </p>
                 <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
                   <p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">USD total</p>
                   <p className="mt-1 font-mono text-3xl font-semibold">{formatCurrency(totals.total)}</p>
                   <p className="mt-3 text-sm text-[var(--text-muted)]">
-                    Send exactly this amount in {selected.symbol} (shown on confirmation after placing order).
+                    Send exactly this amount in {selected.symbol} (exact crypto amount on confirmation after placing order).
                   </p>
                 </div>
                 <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">

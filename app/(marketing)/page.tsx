@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ui/product-card";
 import { FeaturedProductsShowcase } from "@/components/home/featured-products-showcase";
+import { VialSideDecorations } from "@/components/home/vial-side-decorations";
 import { ResearchCard } from "@/components/ui/research-card";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
 import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
@@ -23,6 +24,7 @@ export const dynamic = "force-dynamic";
 /** Omitted from homepage featured vial carousel until transparent showcase assets are ready (shop unchanged). */
 const EXCLUDED_FROM_FEATURED_SHOWCASE = new Set([
   "cjc-1295-no-dac",
+  "ghk-cu",
   "melanotan-ii",
   "nad-plus",
   "retatrutide",
@@ -47,8 +49,7 @@ export default async function HomePage() {
       const primaryImage = getCanonicalProductImage(p.slug as string, imgs);
       if (primaryImage === "/placeholder-peptide.svg") return null;
       const slug = p.slug as string;
-      /** Showcase PNGs for featured UI; GHK-Cu only: always canonical shop file (showcase asset was wrong). */
-      const image = slug === "ghk-cu" ? primaryImage : resolveShowcaseImageUrl(primaryImage);
+      const image = resolveShowcaseImageUrl(primaryImage);
       return {
         id: p.id as string,
         slug,
@@ -117,6 +118,9 @@ export default async function HomePage() {
           ];
     return { ...item, variants };
   });
+  const catalogVialDecorUrls =
+    featuredCarouselItems.length > 0 ? featuredCarouselItems.map((item) => item.image) : [];
+
   const homepageResearchCards = allProducts
     .filter((p) => {
       const imgs = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images as string, []), productFiles);
@@ -409,15 +413,18 @@ export default async function HomePage() {
       </section>
 
       <section className={sectionWrap}>
-        <div className="rounded-3xl border border-[var(--border)] bg-surface px-6 py-12 text-center shadow-[0_18px_34px_rgba(0,0,0,0.3)] md:px-10">
-          <h2 className="font-display text-4xl font-semibold tracking-tight">Explore the Full Catalog</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">
-            Browse the latest products, blends, and essentials in one streamlined shopping experience.
-          </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Button size="lg" asChild>
-              <Link href="/shop">Shop All Products</Link>
-            </Button>
+        <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[linear-gradient(150deg,rgba(255,253,249,0.98),rgba(243,239,231,0.96))] px-6 py-12 text-center shadow-[0_18px_34px_rgba(0,0,0,0.3)] md:px-10">
+          <VialSideDecorations imageUrls={catalogVialDecorUrls} />
+          <div className="relative z-10">
+            <h2 className="font-display text-4xl font-semibold tracking-tight">Explore the Full Catalog</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">
+              Browse the latest products, blends, and essentials in one streamlined shopping experience.
+            </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              <Button size="lg" asChild>
+                <Link href="/shop">Shop All Products</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

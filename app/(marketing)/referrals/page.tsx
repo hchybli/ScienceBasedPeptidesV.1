@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { VialSideDecorations } from "@/components/home/vial-side-decorations";
+import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
+import { prisma } from "@/lib/prisma";
+import { getCanonicalProductImage } from "@/lib/product-pdp-theme";
+import { resolveShowcaseImageUrl } from "@/lib/showcase-image";
+import { parseJsonArray } from "@/lib/utils";
 import {
   CalendarClock,
   CheckCircle2,
@@ -16,6 +22,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Affiliate Program",
@@ -134,7 +142,55 @@ const faqs = [
   },
 ];
 
-export default function ReferralsMarketingPage() {
+/** Same set as homepage featured vial carousel (catalog CTA uses these URLs for decorations). */
+const EXCLUDED_FROM_FEATURED_SHOWCASE = new Set([
+  "cjc-1295-no-dac",
+  "ghk-cu",
+  "melanotan-ii",
+  "nad-plus",
+  "retatrutide",
+  "semaglutide",
+  "tb-500",
+  "tesamorelin",
+]);
+
+export default async function ReferralsMarketingPage() {
+  const allProducts = (await prisma.$queryRawUnsafe(`
+      SELECT p.*, v.id as vid, v.price, v.size, v.compare_at, c.slug as category_slug FROM products p
+      JOIN variants v ON v.product_id = p.id AND v.is_default = 1
+      JOIN categories c ON c.id = p.category_id
+      WHERE p.is_active = 1 ORDER BY p.sold_count DESC, p.name ASC
+    `)) as Array<Record<string, unknown>>;
+
+  const productFiles = listPublicProductFilenames();
+
+  const featuredCarouselItemsRaw = allProducts
+    .map((p) => {
+      const imgs = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images as string, []), productFiles);
+      const primaryImage = getCanonicalProductImage(p.slug as string, imgs);
+      if (primaryImage === "/placeholder-peptide.svg") return null;
+      const slug = p.slug as string;
+      const image = resolveShowcaseImageUrl(primaryImage);
+      return {
+        id: p.id as string,
+        slug,
+        name: p.name as string,
+        purity: (p.purity as number | null) ?? null,
+        image,
+        shopImage: primaryImage,
+        price: p.price as number,
+        compareAt: (p.compare_at as number | null) ?? null,
+        variantId: p.vid as string,
+        size: p.size as string,
+      };
+    })
+    .filter(Boolean) as Array<{ slug: string; image: string }>;
+
+  const featuredCarouselItems = featuredCarouselItemsRaw.filter((item) => !EXCLUDED_FROM_FEATURED_SHOWCASE.has(item.slug));
+
+  const affiliateCtaDecorUrls =
+    featuredCarouselItems.length > 0 ? featuredCarouselItems.map((item) => item.image) : [];
+
   return (
     <div className="bg-[var(--bg)]">
       <section className="relative overflow-hidden">
@@ -308,15 +364,18 @@ export default function ReferralsMarketingPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-18 pt-4 md:px-6 md:pb-20 md:pt-4">
-        <div className="rounded-3xl border border-[var(--border)] bg-[linear-gradient(140deg,rgba(255,253,249,0.98),rgba(243,239,231,0.95))] p-8 text-center shadow-[0_20px_40px_rgba(30,26,23,0.1)] md:p-12">
-          <h2 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">Ready to Become an Affiliate?</h2>
-          <p className="mx-auto mt-4 max-w-3xl text-sm text-[var(--text-muted)] md:text-base">
-            Join the program and start earning from first orders and recurring commissions.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button size="lg" asChild>
-              <Link href="/account/referrals">Become an affiliate</Link>
-            </Button>
+        <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[linear-gradient(150deg,rgba(255,253,249,0.98),rgba(243,239,231,0.96))] p-8 text-center shadow-[0_18px_34px_rgba(0,0,0,0.3)] md:p-12">
+          <VialSideDecorations imageUrls={affiliateCtaDecorUrls} />
+          <div className="relative z-10">
+            <h2 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">Ready to Become an Affiliate?</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-sm text-[var(--text-muted)] md:text-base">
+              Join the program and start earning from first orders and recurring commissions.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Button size="lg" asChild>
+                <Link href="/account/referrals">Become an affiliate</Link>
+              </Button>
+            </div>
           </div>
         </div>
         <div className="mt-8 h-px bg-[var(--border)] md:hidden" />
