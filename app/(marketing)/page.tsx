@@ -15,7 +15,7 @@ import { VialSideDecorations } from "@/components/home/vial-side-decorations";
 import { ResearchCard } from "@/components/ui/research-card";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
 import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
-import { resolveShowcaseImageUrl } from "@/lib/showcase-image";
+import { resolveFeaturedShowcaseImageUrl } from "@/lib/showcase-image";
 import { parseJsonArray } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 
@@ -43,11 +43,7 @@ const FEATURED_CAROUSEL_SLUGS = [
   "bpc-157-tb-500-blend",
   "bpc-157-ghk-cu-tb-blend",
   "cjc-1295-ipamorelin-blend",
-  "glow",
-  "klow",
-  "kpv",
   "igf-1",
-  "aod-9604",
   "calgrilinitide",
   "5-amino-1mq",
   "snap-8",
@@ -71,7 +67,7 @@ export default async function HomePage() {
       const primaryImage = getCanonicalProductImage(p.slug as string, imgs);
       if (primaryImage === "/placeholder-peptide.svg") return null;
       const slug = p.slug as string;
-      const image = resolveShowcaseImageUrl(primaryImage);
+      const image = resolveFeaturedShowcaseImageUrl(primaryImage);
       return {
         id: p.id as string,
         slug,

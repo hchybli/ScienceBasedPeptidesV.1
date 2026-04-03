@@ -202,48 +202,49 @@ export function FeaturedProductsShowcase({ items }: { items: Item[] }) {
             </motion.div>
           </AnimatePresence>
 
-          <div className="relative flex h-[300px] w-[240px] shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-2)] sm:h-[330px] sm:w-[260px] md:h-[360px] md:w-[280px]">
+          <div className="relative flex h-[300px] w-[240px] shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-[var(--border)] bg-transparent sm:h-[330px] sm:w-[260px] md:h-[360px] md:w-[280px]">
             <FeaturedVialHero key={selected.id} item={selected} />
           </div>
         </div>
 
         <div className="mt-6 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {/* w-max + justify-start: stable horizontal scroll; avoid mx-auto/justify-center (centers wide row and breaks alignment vs viewport). */}
-          <div className="flex w-max max-w-none flex-nowrap items-start justify-start gap-3 md:gap-4">
-            {items.map((item) => {
-              const active = item.id === selected.id;
-              const shortLabel = featuredThumbShortLabel(item.name);
-              return (
-                <div
-                  key={item.id}
-                  className="flex w-[82px] shrink-0 flex-col items-center gap-1.5 md:w-[100px]"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setSelectedId(item.id)}
-                    className={`group relative flex h-[104px] w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border transition md:h-[128px] ${
-                      active
-                        ? "border-accent/50 bg-accent-muted/40"
-                        : "border-[var(--border)] bg-[var(--surface-2)] opacity-80 hover:scale-[1.03] hover:opacity-100"
-                    }`}
-                    aria-label={`Select ${item.name}`}
+          <div className="flex min-w-full justify-center">
+            <div className="flex w-max max-w-none flex-nowrap items-start justify-start gap-3 md:gap-4">
+              {items.map((item) => {
+                const active = item.id === selected.id;
+                const shortLabel = featuredThumbShortLabel(item.name);
+                return (
+                  <div
+                    key={item.id}
+                    className="flex w-[82px] shrink-0 flex-col items-center gap-1.5 md:w-[100px]"
                   >
-                    <FeaturedVialThumb item={item} active={active} />
-                  </button>
-                  {/* Same width as vial column; truncate so label width never widens the flex track */}
-                  <div className="flex min-h-[2.125rem] w-full flex-col items-center justify-start md:min-h-[2.375rem]">
-                    <span
-                      className={`block w-full break-words text-center text-[10px] font-medium leading-snug tracking-wide [overflow-wrap:anywhere] line-clamp-2 md:text-[11px] ${
-                        active ? "invisible pointer-events-none select-none" : "text-[var(--text-muted)]"
+                    <button
+                      type="button"
+                      onClick={() => setSelectedId(item.id)}
+                      className={`group relative flex h-[104px] w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border transition md:h-[128px] ${
+                        active
+                          ? "border-accent/60 bg-transparent ring-1 ring-accent/25"
+                          : "border-[var(--border)] bg-transparent opacity-80 hover:scale-[1.03] hover:opacity-100"
                       }`}
-                      aria-hidden={active}
+                      aria-label={`Select ${item.name}`}
                     >
-                      {shortLabel}
-                    </span>
+                      <FeaturedVialThumb item={item} active={active} />
+                    </button>
+                    {/* Same width as vial column; truncate so label width never widens the flex track */}
+                    <div className="flex min-h-[2.125rem] w-full flex-col items-center justify-start md:min-h-[2.375rem]">
+                      <span
+                        className={`block w-full break-words text-center text-[10px] font-medium leading-snug tracking-wide [overflow-wrap:anywhere] line-clamp-2 md:text-[11px] ${
+                          active ? "invisible pointer-events-none select-none" : "text-[var(--text-muted)]"
+                        }`}
+                        aria-hidden={active}
+                      >
+                        {shortLabel}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
         </div>
