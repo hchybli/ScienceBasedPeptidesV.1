@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,14 +18,13 @@ export function ResearchCard(props: {
         className={cn("relative aspect-[3/4]", !props.imageGradient && "bg-[var(--surface-2)]")}
         style={props.imageGradient ? { background: props.imageGradient } : undefined}
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={props.image || "/placeholder-peptide.svg"}
           alt={props.name}
-          fill
-          className="z-[1] object-cover object-center transition duration-300 group-hover:scale-[1.02]"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 25vw, 20vw"
-          quality={100}
-          unoptimized
+          className="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]"
+          loading="lazy"
+          decoding="async"
         />
       </Link>
       <div className="flex flex-1 flex-col p-5">

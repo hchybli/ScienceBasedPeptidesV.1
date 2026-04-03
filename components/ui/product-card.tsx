@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn, formatCurrency } from "@/lib/utils";
@@ -24,7 +23,7 @@ export function ProductCard(props: {
 }) {
   const addItem = useCartStore((s) => s.addItem);
   const imageClassName =
-    "z-[1] object-cover object-center transition duration-300 group-hover:scale-[1.02]";
+    "absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]";
   const onAdd = () => {
     const item: CartItem = {
       productId: props.id,
@@ -46,15 +45,14 @@ export function ProductCard(props: {
         className={cn("relative aspect-[3/4]", !props.imageGradient && "bg-[var(--surface-2)]")}
         style={props.imageGradient ? { background: props.imageGradient } : undefined}
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element -- local /public PNGs; avoids Next/Image black-frame issues on some hosts */}
+        <img
           src={props.image || "/placeholder-peptide.svg"}
           alt=""
-          fill
           className={imageClassName}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 25vw, 20vw"
-          quality={100}
-          unoptimized
-          priority={props.priority}
+          loading={props.priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={props.priority ? "high" : undefined}
         />
       </Link>
       <div className="flex flex-1 flex-col p-5">

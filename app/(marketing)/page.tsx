@@ -320,6 +320,7 @@ export default async function HomePage() {
                   slug={p.slug as string}
                   name={`${p.name as string} Research`}
                   image={img}
+                  imageGradient={getPdpHeroGradient(p.slug as string)}
                   purity={(p.purity as number | null) ?? null}
                 />
               );
