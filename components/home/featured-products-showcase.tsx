@@ -208,16 +208,20 @@ export function FeaturedProductsShowcase({ items }: { items: Item[] }) {
         </div>
 
         <div className="mt-6 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="mx-auto flex min-w-max items-start justify-center gap-3 md:gap-4">
+          {/* w-max + justify-start: stable horizontal scroll; avoid mx-auto/justify-center (centers wide row and breaks alignment vs viewport). */}
+          <div className="flex w-max max-w-none flex-nowrap items-start justify-start gap-3 md:gap-4">
             {items.map((item) => {
               const active = item.id === selected.id;
               const shortLabel = featuredThumbShortLabel(item.name);
               return (
-                <div key={item.id} className="flex flex-col items-center gap-1.5">
+                <div
+                  key={item.id}
+                  className="flex w-[82px] shrink-0 flex-col items-center gap-1.5 md:w-[100px]"
+                >
                   <button
                     type="button"
                     onClick={() => setSelectedId(item.id)}
-                    className={`group relative flex h-[104px] w-[82px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border transition md:h-[128px] md:w-[100px] ${
+                    className={`group relative flex h-[104px] w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border transition md:h-[128px] ${
                       active
                         ? "border-accent/50 bg-accent-muted/40"
                         : "border-[var(--border)] bg-[var(--surface-2)] opacity-80 hover:scale-[1.03] hover:opacity-100"
@@ -226,10 +230,10 @@ export function FeaturedProductsShowcase({ items }: { items: Item[] }) {
                   >
                     <FeaturedVialThumb item={item} active={active} />
                   </button>
-                  {/* Fixed label slot so 1- vs 2-line names never shift the image holders */}
-                  <div className="flex min-h-[2.125rem] w-full max-w-[6.5rem] flex-col items-center justify-start md:min-h-[2.375rem]">
+                  {/* Same width as vial column; truncate so label width never widens the flex track */}
+                  <div className="flex min-h-[2.125rem] w-full flex-col items-center justify-start md:min-h-[2.375rem]">
                     <span
-                      className={`block max-w-[5.5rem] text-center text-[10px] font-medium leading-snug tracking-wide md:max-w-[6.25rem] md:text-[11px] ${
+                      className={`block w-full break-words text-center text-[10px] font-medium leading-snug tracking-wide [overflow-wrap:anywhere] line-clamp-2 md:text-[11px] ${
                         active ? "invisible pointer-events-none select-none" : "text-[var(--text-muted)]"
                       }`}
                       aria-hidden={active}
