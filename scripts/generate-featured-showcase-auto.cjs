@@ -11,8 +11,8 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const PRODUCTS_DIR = path.join(process.cwd(), "public", "products");
-const OUT_DIR = path.join(process.cwd(), "public", "products", "showcase-auto");
+const PRODUCTS_DIR = path.join(process.cwd(), "public", "product-media");
+const OUT_DIR = path.join(process.cwd(), "public", "product-media", "showcase-auto");
 
 /** Basenames for FEATURED_CAROUSEL_SLUGS (must match canonical filenames in `lib/product-pdp-theme.ts`). */
 const FEATURED_BASENAMES = [
@@ -123,7 +123,7 @@ async function stripPanelToTransparent(inputPath, outputPath) {
 
 async function run() {
   if (!fs.existsSync(PRODUCTS_DIR)) {
-    console.log("No public/products — skipping.");
+    console.log("No public/product-media — skipping.");
     return;
   }
   fs.mkdirSync(OUT_DIR, { recursive: true });

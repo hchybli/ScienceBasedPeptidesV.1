@@ -5,11 +5,11 @@ import { orderedProductImages } from "@/lib/utils";
 const IMAGE_EXT = /\.(png|webp|jpe?g|svg)$/i;
 
 /**
- * Filenames in `public/products` (flat; excludes subfolders like `showcase/`).
+ * Filenames in `public/product-media` (flat; excludes subfolders like `showcase/`).
  * Call once per request when rendering many products, then pass into merge.
  */
 export function listPublicProductFilenames(): string[] {
-  const dir = path.join(process.cwd(), "public", "products");
+  const dir = path.join(process.cwd(), "public", "product-media");
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir).filter((name) => {
     if (!IMAGE_EXT.test(name)) return false;

@@ -1,5 +1,5 @@
 /**
- * Rewrites each product's `images` JSON to the merged + ordered list (DB + public/products).
+ * Rewrites each product's `images` JSON to the merged + ordered list (DB + public/product-media).
  * Run after deploy or seed: npx tsx scripts/canonicalize-product-images.ts
  */
 import { config } from "dotenv";

@@ -1,4 +1,4 @@
-/** Product images in `public/products/` are used everywhere as-is (transparent PNG). */
+/** Product images in `public/product-media/` are served at `/products/…` via middleware (transparent PNG). */
 
 export function resolveShowcaseImageUrl(productImagePath: string): string {
   return productImagePath;

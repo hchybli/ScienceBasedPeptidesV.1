@@ -1,6 +1,6 @@
 /**
  * Homepage Featured Selection only (shop grid unchanged).
- * Art lives in `public/products/featured-selection/`. Vials must match **HALVECO** label exports —
+ * Art lives in `public/product-media/featured-selection/`. Vials must match **HALVECO** label exports —
  * not legacy shop `*-clean-2.png` art. Rebuild from your `*_HALVECO-*` sources with
  * `scripts/fit-studio-vial-to-nad-canvas.cjs` (1024×559 PNG + alpha). Replace files in place when
  * updating art.

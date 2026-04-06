@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const PRODUCTS_DIR = path.join(process.cwd(), "public", "products");
+const PRODUCTS_DIR = path.join(process.cwd(), "public", "product-media");
 const IMAGE_EXT = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 
 function clamp(v, min, max) {
@@ -142,7 +142,7 @@ async function processFile(filePath) {
 
 async function run() {
   if (!fs.existsSync(PRODUCTS_DIR)) {
-    console.log("No public/products directory found. Skipping.");
+    console.log("No public/product-media directory found. Skipping.");
     return;
   }
 

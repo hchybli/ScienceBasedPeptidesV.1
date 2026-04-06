@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const DIR = path.join(process.cwd(), "public", "products", "featured-selection");
+const DIR = path.join(process.cwd(), "public", "product-media", "featured-selection");
 
 function magicLabel(buf) {
   if (buf.length < 4) return "empty";

@@ -956,7 +956,7 @@ function resolveImagesForSlug(slug: string, explicit?: string[]): string[] {
     explicit && explicit.length > 0
       ? imageSet(...explicit)
       : (() => {
-          const publicProducts = path.join(process.cwd(), "public", "products");
+          const publicProducts = path.join(process.cwd(), "public", "product-media");
           if (!fs.existsSync(publicProducts)) return [PLACEHOLDER_IMAGE];
           const files = fs.readdirSync(publicProducts);
           const preferred: string[] = [];

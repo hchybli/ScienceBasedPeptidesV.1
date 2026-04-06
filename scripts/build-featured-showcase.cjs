@@ -12,7 +12,7 @@ const path = require("path");
 const { execSync } = require("child_process");
 
 const ROOT = process.cwd();
-const PRODUCTS = path.join(ROOT, "public", "products");
+const PRODUCTS = path.join(ROOT, "public", "product-media");
 const SHOWCASE = path.join(PRODUCTS, "showcase");
 
 /** Basenames matching PRODUCT_CANONICAL_IMAGE for FEATURED_CAROUSEL_SLUGS (see app/(marketing)/page.tsx). */
@@ -43,7 +43,7 @@ function run() {
       continue;
     }
     fs.copyFileSync(src, dest);
-    execSync(`node "${creamScript}" "${path.join("public", "products", "showcase", name)}"`, {
+    execSync(`node "${creamScript}" "${path.join("public", "product-media", "showcase", name)}"`, {
       stdio: "inherit",
       cwd: ROOT,
     });

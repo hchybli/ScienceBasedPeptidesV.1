@@ -2,7 +2,7 @@ import { primaryProductImage } from "@/lib/utils";
 
 /**
  * Single source of truth: which `/products/...` file is the vial hero for shop + PDP.
- * Every slug listed here must match a file in `public/products/`.
+ * Every slug listed here must match a file in `public/product-media/` (URL stays `/products/…`).
  * Most heroes are opaque studio shots (background baked in). A few SKUs use transparent PNGs
  * plus `HERO_FRAME_BACKGROUND_BY_SLUG` (e.g. 5-amino-1mq).
  */
