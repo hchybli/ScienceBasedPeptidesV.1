@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "npm run verify:homepage-png && npm run verify:featured-selection-png",
-    "build": "prisma migrate deploy && next build",
+    "build": "prisma generate && next build",
+    "migrate:deploy": "prisma migrate deploy",
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx db/seed.ts",
