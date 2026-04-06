@@ -27,7 +27,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Affiliate Program",
-  description: "Become a Science Based Peptides affiliate and earn commission on qualified referral orders.",
+  description: "Become a HALVECO affiliate and earn commission on qualified referral orders.",
 };
 
 const steps = [
@@ -145,7 +145,6 @@ const faqs = [
 /** Same set as homepage featured vial carousel (catalog CTA uses these URLs for decorations). */
 const EXCLUDED_FROM_FEATURED_SHOWCASE = new Set([
   "cjc-1295-no-dac",
-  "ghk-cu",
   "melanotan-ii",
   "nad-plus",
   "retatrutide",
@@ -197,7 +196,7 @@ export default async function ReferralsMarketingPage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(169,212,236,0.18),transparent_56%),radial-gradient(circle_at_78%_18%,rgba(207,231,245,0.22),transparent_48%)]" />
         <div className="mx-auto flex max-w-7xl flex-col items-center px-4 py-20 text-center md:px-6 md:py-28">
           <h1 className="max-w-5xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
-            Become a Science Based Peptides Affiliate
+            Become a HALVECO Affiliate
           </h1>
           <p className="mt-5 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-lg">
             Earn 20% on first orders and 10% recurring commissions.

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { RESEARCH_USE_DISCLAIMER } from "@/lib/compliance";
 import { DEFAULT_SITE_DISPLAY_NAME, DEFAULT_SITE_URL } from "@/lib/site";
 
-const SITE = process.env.NEXT_PUBLIC_SITE_NAME || DEFAULT_SITE_DISPLAY_NAME;
+/** Public brand name (see `lib/site.ts`). Not driven by env so stale `NEXT_PUBLIC_SITE_NAME` cannot override. */
+const SITE = DEFAULT_SITE_DISPLAY_NAME;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
 
 export function siteMetadata(overrides: Partial<Metadata> = {}): Metadata {

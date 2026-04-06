@@ -14,7 +14,7 @@ function getTransporter() {
   });
 }
 
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || DEFAULT_SITE_DISPLAY_NAME;
+const SITE_NAME = DEFAULT_SITE_DISPLAY_NAME;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || DEFAULT_SUPPORT_EMAIL;
 const FROM = SUPPORT_EMAIL;
@@ -327,7 +327,7 @@ export async function sendNewsletterWelcomeEmail(payload: { to: string }) {
               <tr>
                 <td align="center" class="pad" style="padding:30px 40px;background:linear-gradient(180deg,#0f1519 0%,#0d1215 100%);border-bottom:1px solid #1f2b31;">
                   <div style="font-size:28px;line-height:1.2;font-weight:700;letter-spacing:0.2px;color:#f5f8fa;text-shadow:0 0 14px rgba(0,201,167,0.22);">
-                    Science Based Peptides
+                    ${SITE_NAME}
                   </div>
                 </td>
               </tr>

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/ui/product-card";
-import { getPdpHeroGradient } from "@/lib/product-pdp-theme";
+import { getProductHeroBackgroundCss } from "@/lib/product-pdp-theme";
 
 type Item = {
   id: string;
@@ -63,13 +63,13 @@ export function FeaturedProductsCarousel({ items }: { items: Item[] }) {
               slug={p.slug}
               name={p.name}
               purity={p.purity}
-              imageGradient={getPdpHeroGradient(p.slug)}
               image={p.image}
               price={p.price}
               compareAt={p.compareAt}
               variantId={p.variantId}
               size={p.size}
               priority={idx < 5}
+              heroBackgroundCss={getProductHeroBackgroundCss(p.slug)}
             />
           </div>
         ))}

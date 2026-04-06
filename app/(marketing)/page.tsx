@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   BadgeCheck,
   FlaskConical,
@@ -12,44 +11,20 @@ import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ui/product-card";
 import { FeaturedProductsShowcase } from "@/components/home/featured-products-showcase";
 import { VialSideDecorations } from "@/components/home/vial-side-decorations";
-import { ResearchCard } from "@/components/ui/research-card";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
-import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
+import { FEATURED_CAROUSEL_SLUGS, FEATURED_SELECTION_IMAGE_BY_SLUG } from "@/lib/featured-selection-images";
+import { getCanonicalProductImage, getProductHeroBackgroundCss } from "@/lib/product-pdp-theme";
 import { resolveFeaturedShowcaseImageUrl } from "@/lib/showcase-image";
 import { parseJsonArray } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-/** Omitted from homepage featured vial carousel until transparent showcase assets are ready (shop unchanged). */
+/** Omitted from homepage featured vial carousel (shop unchanged). */
 const EXCLUDED_FROM_FEATURED_SHOWCASE = new Set([
   "cjc-1295-no-dac",
-  "ghk-cu",
-  "melanotan-ii",
-  "nad-plus",
-  "retatrutide",
   "semaglutide",
-  "tb-500",
-  "tesamorelin",
 ]);
-
-/**
- * Homepage featured vial carousel only — explicit slugs so prod DB `is_featured` flags
- * cannot add/remove items vs local seed (same code → same lineup everywhere).
- * Order is display order.
- */
-const FEATURED_CAROUSEL_SLUGS = [
-  "bpc-157",
-  "bpc-157-tb-500-blend",
-  "bpc-157-ghk-cu-tb-blend",
-  "cjc-1295-ipamorelin-blend",
-  "igf-1",
-  "calgrilinitide",
-  "5-amino-1mq",
-  "snap-8",
-  "glutathione",
-  "dsip",
-] as const;
 
 export default async function HomePage() {
   const allProducts = (await prisma.$queryRawUnsafe(`
@@ -67,7 +42,8 @@ export default async function HomePage() {
       const primaryImage = getCanonicalProductImage(p.slug as string, imgs);
       if (primaryImage === "/placeholder-peptide.svg") return null;
       const slug = p.slug as string;
-      const image = resolveFeaturedShowcaseImageUrl(primaryImage);
+      const featuredArt = FEATURED_SELECTION_IMAGE_BY_SLUG[slug];
+      const image = featuredArt ?? resolveFeaturedShowcaseImageUrl(primaryImage);
       return {
         id: p.id as string,
         slug,
@@ -216,16 +192,16 @@ export default async function HomePage() {
 
           <div className="relative flex min-h-[400px] items-center justify-center sm:min-h-[500px] lg:justify-end">
             <div className="relative mx-auto w-full max-w-[1180px] translate-y-8 sm:max-w-[1320px] sm:translate-y-12 lg:mx-0 lg:translate-x-3 lg:translate-y-7">
-              <Image
-                src="/hero-home-stack.png"
-                alt="Premium research peptide vials — Retatrutide, BPC-157, GHK-Cu, TB-500"
+              {/* Plain img: transparent hero PNG; Next/Image can show a dark frame on alpha assets. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/hero-home-stack.png?v=hero-png-knockout-1"
+                alt="Premium research peptide vials — GLP, BPC-157, GHK-Cu, TB-500"
                 width={1024}
                 height={682}
-                className="h-auto w-full max-md:-translate-x-1 md:-translate-x-6 scale-[1.08] object-contain object-center drop-shadow-[0_24px_50px_rgba(0,0,0,0.35)] sm:scale-[1.14]"
-                sizes="(max-width: 1024px) 98vw, 1520px"
-                quality={100}
-                unoptimized
-                priority
+                className="h-auto w-full max-md:-translate-x-1 md:-translate-x-6 scale-[1.08] object-contain object-center [background:none] drop-shadow-[0_24px_50px_rgba(0,0,0,0.35)] sm:scale-[1.14]"
+                fetchPriority="high"
+                decoding="async"
               />
             </div>
           </div>
@@ -235,9 +211,11 @@ export default async function HomePage() {
       <section className={sectionWrap}>
         <p className="text-xs uppercase tracking-[0.18em] text-[var(--text-muted)]">Featured</p>
         <h2 className={`${sectionTitle} mt-2`}>Featured Products</h2>
-        <p className="mt-3 text-sm text-[var(--text-muted)]">Explore some of the most sought-after products in the catalog.</p>
+        <p className="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
+          Explore some of the most sought-after products in the catalog.
+        </p>
         {featuredCarouselItems.length > 0 ? (
-          <div className="mt-7">
+          <div className="mt-10">
             <FeaturedProductsShowcase items={featuredCarouselItemsWithVariants} />
           </div>
         ) : (
@@ -252,7 +230,7 @@ export default async function HomePage() {
 
       <section className={sectionWrap}>
         <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">Trust</p>
-        <h2 className={`${sectionTitle} mt-2`}>Why Choose Science Based Peptides</h2>
+        <h2 className={`${sectionTitle} mt-2`}>Why Choose HALVECO</h2>
         <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
@@ -311,53 +289,58 @@ export default async function HomePage() {
               For laboratory research use only. Not for human consumption.
             </p>
           </div>
-          <div className="relative rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-2 sm:p-3">
-            <Image
-              src="/stack-builder-vials.png"
+          <div className="relative isolate rounded-2xl border border-[var(--border)] bg-transparent p-2 sm:p-3">
+            {/* Local PNG with alpha — plain img avoids Next/Image black-frame on transparent PNGs (see ProductCard). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/stack-builder-vials.png?v=stack-png-knockout-1"
               alt="Build your research stack visual"
-              width={1400}
-              height={1400}
-              className="h-auto w-full object-contain object-center"
-              sizes="(max-width: 768px) 100vw, 76vw"
-              quality={100}
-              unoptimized
-              priority={false}
+              className="h-auto w-full object-contain object-center [background:none]"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
       </section>
 
       <section className={sectionWrap}>
-        <div className="grid gap-8 rounded-3xl border border-[var(--border)] bg-surface p-6 shadow-[0_16px_32px_rgba(0,0,0,0.28)] md:grid-cols-2 md:p-8">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {homepageResearchCards.map((p) => {
+        <div className="grid gap-10 rounded-3xl border border-[var(--border)] bg-[#F5F2E9] p-10 shadow-[0_12px_40px_rgba(30,26,23,0.08)] md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:items-start md:gap-12 lg:gap-14">
+          <div className="grid min-w-0 grid-cols-2 gap-4 sm:gap-5">
+            {homepageResearchCards.map((p, idx) => {
               const img = getCanonicalProductImage(
                 p.slug as string,
                 mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images as string, []), productFiles),
               );
               return (
-                <ResearchCard
+                <ProductCard
                   key={`research-card-${p.id as string}`}
+                  id={p.id as string}
                   slug={p.slug as string}
                   name={`${p.name as string} Research`}
-                  image={img}
-                  imageGradient={getPdpHeroGradient(p.slug as string)}
                   purity={(p.purity as number | null) ?? null}
+                  image={img}
+                  price={p.price as number}
+                  compareAt={(p.compare_at as number | null) ?? null}
+                  variantId={p.vid as string}
+                  size={p.size as string}
+                  context="research"
+                  priority={idx < 2}
+                  heroBackgroundCss={getProductHeroBackgroundCss(p.slug as string)}
                 />
               );
             })}
           </div>
           <div className="relative grid min-h-0 gap-6 md:min-h-[min(24rem,100%)] md:grid-cols-[minmax(0,1fr)_min(9.5rem)] md:items-stretch lg:grid-cols-[minmax(0,1fr)_min(11rem)]">
             <div className="relative z-10 min-w-0">
-              <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
+              <h2 className="font-display text-3xl font-semibold tracking-tight text-[var(--text)] md:text-4xl">
                 A More Refined Research Buying Experience
               </h2>
-              <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
+              <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] md:text-[15px] md:leading-[1.65]">
                 This storefront is built to provide a cleaner, more consistent experience across the full catalog - from
                 browsing and product selection to support and policy clarity. Every section is designed to feel
                 intentional, organized, and easy to navigate.
               </p>
-              <ul className="mt-6 space-y-3 text-sm text-[var(--text)]">
+              <ul className="mt-6 space-y-3 text-sm text-[var(--text-muted)]">
                 {[
                   "Clear product structure",
                   "Consistent variant organization",
@@ -365,7 +348,9 @@ export default async function HomePage() {
                   "Built for a smoother customer experience",
                 ].map((point) => (
                   <li key={point} className="flex items-start gap-2.5 leading-relaxed">
-                    <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                    <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/25 text-[var(--accent)]">
+                      <BadgeCheck className="h-3 w-3" />
+                    </span>
                     <span>{point}</span>
                   </li>
                 ))}
@@ -396,12 +381,12 @@ export default async function HomePage() {
                 slug={p.slug as string}
                 name={p.name as string}
                 purity={(p.purity as number | null) ?? null}
-                imageGradient={getPdpHeroGradient(p.slug as string)}
                 image={primaryImage}
                 price={p.price as number}
                 compareAt={(p.compare_at as number | null) ?? null}
                 variantId={p.vid as string}
                 size={p.size as string}
+                heroBackgroundCss={getProductHeroBackgroundCss(p.slug as string)}
               />
             );
           })}

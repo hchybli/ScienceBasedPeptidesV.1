@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
-import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
-import { parseJsonArray, stableCatalogOrder } from "@/lib/utils";
+import { getCanonicalProductImage, getProductHeroBackgroundCss } from "@/lib/product-pdp-theme";
+import { mostPopularCatalogOrder, parseJsonArray } from "@/lib/utils";
 import { ShopToolbar } from "@/components/shop/shop-toolbar";
-import { ResearchCard } from "@/components/ui/research-card";
+import { ProductCard } from "@/components/ui/product-card";
 
 export const dynamic = "force-dynamic";
 
@@ -55,13 +55,20 @@ export default async function ResearchHubPage({
       const imgs = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images, []), productFiles);
       const primaryImage = getCanonicalProductImage(p.slug as string, imgs);
       if (primaryImage === "/placeholder-peptide.svg") return null;
-      return { ...p, price: v.price, image: primaryImage };
+      return {
+        ...p,
+        price: v.price,
+        compareAt: v.compare_at,
+        variantId: v.id,
+        size: v.size,
+        image: primaryImage,
+      };
     })
     .filter(Boolean) as Array<Record<string, unknown>>;
 
   if (sort === "price_asc") rows.sort((a, b) => Number(a.price) - Number(b.price));
   else if (sort === "price_desc") rows.sort((a, b) => Number(b.price) - Number(a.price));
-  else if (sort === "most_popular") rows = stableCatalogOrder(rows, "research");
+  else if (sort === "most_popular") rows = mostPopularCatalogOrder(rows);
 
   const hasCenteredTailRow = rows.length > 5 && rows.length % 5 === 4;
   const mainRows = hasCenteredTailRow ? rows.slice(0, -4) : rows;
@@ -104,27 +111,40 @@ export default async function ResearchHubPage({
         <ShopToolbar initialQuery={sp.q ?? ""} initialSort={sort} />
       </div>
       <div className="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-        {mainRows.map((p) => (
-          <ResearchCard
+        {mainRows.map((p, idx) => (
+          <ProductCard
             key={p.id as string}
+            id={p.id as string}
             slug={p.slug as string}
             name={p.name as string}
-            purity={p.purity as number | null}
-            imageGradient={getPdpHeroGradient(p.slug as string)}
+            purity={(p.purity as number | null) ?? null}
             image={p.image as string}
+            price={p.price as number}
+            compareAt={(p.compareAt as number | null) ?? null}
+            variantId={p.variantId as string}
+            size={p.size as string}
+            context="research"
+            priority={idx < 8}
           />
         ))}
       </div>
       {tailRows.length === 4 ? (
         <div className="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-4 xl:mx-auto xl:w-[calc(80%-0.3rem)] xl:grid-cols-4">
-          {tailRows.map((p) => (
-            <ResearchCard
+          {tailRows.map((p, idx) => (
+            <ProductCard
               key={p.id as string}
+              id={p.id as string}
               slug={p.slug as string}
               name={p.name as string}
-              purity={p.purity as number | null}
-              imageGradient={getPdpHeroGradient(p.slug as string)}
+              purity={(p.purity as number | null) ?? null}
               image={p.image as string}
+              price={p.price as number}
+              compareAt={(p.compareAt as number | null) ?? null}
+              variantId={p.variantId as string}
+              size={p.size as string}
+              context="research"
+              priority={idx < 4}
+              heroBackgroundCss={getProductHeroBackgroundCss(p.slug as string)}
             />
           ))}
         </div>

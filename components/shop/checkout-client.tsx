@@ -211,7 +211,7 @@ export function CheckoutClient({
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div className="max-w-xl">
                   <h3 className="font-display text-2xl font-semibold tracking-tight text-[var(--text)]">
-                    Stay Updated with Science Based Peptides
+                    Stay Updated with HALVECO
                   </h3>
                   <p className="mt-2 text-sm text-[var(--text-muted)]">
                     Get product release alerts, lab-focused insights, and catalog update notifications.

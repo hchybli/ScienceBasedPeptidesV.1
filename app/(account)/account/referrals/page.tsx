@@ -38,7 +38,7 @@ export default function ReferralsPage() {
       <div className="mt-4 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-4">
         <p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">Your affiliate link</p>
         <a href={url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-base font-semibold text-accent hover:underline">
-          ScienceBasedPeptides
+          HALVECO
         </a>
         <div className="mt-3">
           <Button type="button" size="sm" variant="secondary" onClick={copyLink} disabled={!url}>

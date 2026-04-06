@@ -49,7 +49,7 @@ export function NewsletterStrip() {
       <div className="mx-auto max-w-7xl rounded-2xl border border-[var(--border)] bg-[linear-gradient(110deg,#fffdf9,#f3efe7,#fffdf9)] p-6 shadow-[0_20px_50px_rgba(30,26,23,0.1)] md:p-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="max-w-xl">
-            <h3 className="font-display text-2xl font-semibold tracking-tight text-[var(--text)]">Stay Updated with Science Based Peptides</h3>
+            <h3 className="font-display text-2xl font-semibold tracking-tight text-[var(--text)]">Stay Updated with HALVECO</h3>
             <p className="mt-2 text-sm text-[var(--text-muted)]">
               Get product release alerts, lab-focused insights, and catalog update notifications.
             </p>

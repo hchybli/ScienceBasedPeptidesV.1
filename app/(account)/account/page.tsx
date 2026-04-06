@@ -140,8 +140,8 @@ export default function AccountDashboard() {
     if (!referralUrl) return;
     if (typeof navigator !== "undefined" && navigator.share) {
       await navigator.share({
-        title: "Science Based Peptides Affiliate Link",
-        text: "Check out Science Based Peptides using my referral link.",
+        title: "HALVECO Affiliate Link",
+        text: "Check out HALVECO using my referral link.",
         url: referralUrl,
       });
       return;

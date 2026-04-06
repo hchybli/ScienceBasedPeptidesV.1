@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/ui/product-card";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
-import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
-import { parseJsonArray, stableCatalogOrder } from "@/lib/utils";
+import { getCanonicalProductImage, getProductHeroBackgroundCss } from "@/lib/product-pdp-theme";
+import { mostPopularCatalogOrder, parseJsonArray } from "@/lib/utils";
 import { ShopToolbar } from "@/components/shop/shop-toolbar";
 
 export const dynamic = "force-dynamic";
@@ -87,7 +87,7 @@ export default async function ShopPage({
   } else if (sort === "price_desc") {
     rows.sort((a, b) => Number(b.price) - Number(a.price));
   } else if (sort === "most_popular") {
-    rows = stableCatalogOrder(rows, "shop");
+    rows = mostPopularCatalogOrder(rows);
   }
   const hasCenteredTailRow = rows.length > 5 && rows.length % 5 === 4;
   const mainRows = hasCenteredTailRow ? rows.slice(0, -4) : rows;
@@ -116,7 +116,6 @@ export default async function ShopPage({
               slug={p.slug as string}
               name={p.name as string}
               purity={p.purity as number | null}
-              imageGradient={getPdpHeroGradient(p.slug as string)}
               image={getCanonicalProductImage(p.slug as string, imgs)}
               price={p.price as number}
               compareAt={p.compare_at as number | null}
@@ -124,6 +123,7 @@ export default async function ShopPage({
               size={p.size as string}
               variantSizes={sizesByProduct.get(p.id as string)}
               priority={index < 5}
+              heroBackgroundCss={getProductHeroBackgroundCss(p.slug as string)}
             />
           );
         })}
@@ -143,7 +143,6 @@ export default async function ShopPage({
                 slug={p.slug as string}
                 name={p.name as string}
                 purity={p.purity as number | null}
-                imageGradient={getPdpHeroGradient(p.slug as string)}
                 image={getCanonicalProductImage(p.slug as string, imgs)}
                 price={p.price as number}
                 compareAt={p.compare_at as number | null}
@@ -151,6 +150,7 @@ export default async function ShopPage({
                 size={p.size as string}
                 variantSizes={sizesByProduct.get(p.id as string)}
                 priority={mainRows.length + index < 5}
+                heroBackgroundCss={getProductHeroBackgroundCss(p.slug as string)}
               />
             );
           })}

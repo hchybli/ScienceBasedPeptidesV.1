@@ -1,17 +1,19 @@
 {
-  "name": "sciencebasedpeptides",
+  "name": "halveco-site",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm run images:match-backgrounds",
     "dev": "next dev",
-    "prebuild": "npm run images:match-backgrounds",
+    "prebuild": "npm run verify:homepage-png && npm run verify:featured-selection-png",
     "build": "prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx db/seed.ts",
-    "postseed": "npm run images:match-backgrounds",
     "images:match-backgrounds": "node scripts/auto-match-product-backgrounds.cjs",
+    "images:featured-showcase": "node scripts/build-featured-showcase.cjs",
+    "verify:homepage-png": "node scripts/verify-homepage-png-assets.cjs",
+    "verify:featured-selection-png": "node scripts/verify-featured-selection-png.cjs",
+    "images:featured-selection-knockout": "node scripts/knockout-featured-selection-black.cjs",
     "featured:showcase-auto": "node scripts/generate-featured-showcase-auto.cjs",
     "seed:sync": "tsx db/seed.ts --sync",
     "db:canonicalize-images": "tsx scripts/canonicalize-product-images.ts"

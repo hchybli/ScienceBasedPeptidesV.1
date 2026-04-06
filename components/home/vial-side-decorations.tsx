@@ -31,11 +31,12 @@ const RIGHT_DECOR_SLOTS: SideDecorSlot[] = [
   { top: "50%", lateral: "-6%", w: 60, h: 86, rot: 15 },
 ];
 
+/** Only HALVECO featured art — never legacy shop PNGs (different label branding). */
 const FALLBACK_URLS = [
-  "/products/bpc-157-clean-2.png",
-  "/products/tb-500-clean-2.png",
-  "/products/cjc-1295-ipamorelin-blend-clean-2.png",
-  "/products/melanotan-i-clean-2.png",
+  "/products/featured-selection/bpc-157.png",
+  "/products/featured-selection/ghk-cu.png",
+  "/products/featured-selection/nad-plus.png",
+  "/products/featured-selection/tb-500.png",
 ] as const;
 
 export function buildDecorUrlCycle(sourceUrls: string[]): string[] {

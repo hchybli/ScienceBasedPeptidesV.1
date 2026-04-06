@@ -1,4 +1,8 @@
 /* eslint-disable no-console */
+/**
+ * Legacy: replaces dark studio backgrounds with a baked gradient. Do not run on
+ * transparent PNG catalog assets — it will flatten alpha. Not wired into `npm run build`.
+ */
 const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");

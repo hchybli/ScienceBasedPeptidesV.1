@@ -32,7 +32,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SBP-001",
@@ -72,7 +72,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SBP-001",
@@ -153,7 +153,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SBP-001",
@@ -235,7 +235,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SBP-001",
@@ -267,7 +267,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SHR-001",
@@ -299,7 +299,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SHR-001",
@@ -347,7 +347,7 @@
     ],
     "structure": {
       "type": "Research Peptide",
-      "brand": "SCIENCE BASED PEPTIDES",
+      "brand": "HALVECO",
       "family": "Peptides",
       "form": "Lyophilized Powder",
       "batch": "SBP-001",
@@ -584,10 +584,22 @@
     "description": "Mitochondrial-derived peptide sequence for in vitro and animal metabolic pathway studies in published literature. Supplied as lyophilized research compound only.",
     "images": ["/products/mots-c-clean-2.png"]
   },
-  "thymosin-alpha-1": {},
+  "thymosin-alpha-1": {
+    "short_description": "Thymic peptide for immunological pathway research models.",
+    "description": "Thymosin alpha-1 reference peptide for cytokine and cell-signaling studies in controlled in vitro and preclinical models.",
+    "images": ["/products/thymosin-alpha-1-clean-2.png"]
+  },
   "pt-141": { "images": ["/products/pt141-clean-2.png"] },
-  "selank": {},
-  "semax": {},
+  "selank": {
+    "short_description": "Synthetic heptapeptide for neuropeptide pathway research.",
+    "description": "Synthetic heptapeptide for neuropeptide signaling studies in validated animal models described in the primary literature.",
+    "images": ["/products/selank-clean-2.png"]
+  },
+  "semax": {
+    "short_description": "ACTH-derived peptide analog for neuropharmacology research.",
+    "description": "ACTH-derived synthetic peptide analog for neuropharmacology and neuropeptide pathway research in controlled animal models.",
+    "images": ["/products/semax-clean-2.png"]
+  },
   "bacteriostatic-water-30ml": {
     "base_price": 9.99,
     "name": "Bac Water",
@@ -643,5 +655,9 @@
   },
   "snap-8": { "images": ["/products/snap-8-clean-2.png"] },
   "glutathione": { "images": ["/products/glutathione-clean-2.png"] },
-  "dsip": { "images": ["/placeholder-peptide.svg"] }
+  "dsip": {
+    "short_description": "Nonapeptide studied in sleep and neuroendocrine research models.",
+    "description": "Delta sleep–inducing peptide (DSIP) is referenced in sleep physiology, stress-response, and neuroendocrine literature in controlled laboratory and preclinical models. Supplied as lyophilized research material only.",
+    "images": ["/products/dsip-clean-2.png"]
+  }
 }

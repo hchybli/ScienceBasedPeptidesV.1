@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ProductPdp } from "@/components/shop/product-pdp";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
-import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
+import { getCanonicalProductImage } from "@/lib/product-pdp-theme";
 import { parseJsonArray } from "@/lib/utils";
 import { productJsonLd, siteMetadata } from "@/lib/seo";
 
@@ -89,7 +89,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const mergedImages = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images, []), productFiles);
   const heroImage = getCanonicalProductImage(p.slug as string, mergedImages);
-  const heroGradient = getPdpHeroGradient(p.slug as string);
 
   const jsonLd = productJsonLd({
     name: p.name as string,
@@ -103,7 +102,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ProductPdp
         heroImage={heroImage}
-        heroGradient={heroGradient}
         product={{
           id: p.id as string,
           name: p.name,

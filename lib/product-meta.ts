@@ -11,7 +11,7 @@ export type ProductMeta = {
 
 const DEFAULT_META: ProductMeta = {
   type: "Research Peptide",
-  brand: "SCIENCE BASED PEPTIDES",
+  brand: "HALVECO",
   family: "Peptides",
   form: "Lyophilized Powder",
   batch: "SBP-001",

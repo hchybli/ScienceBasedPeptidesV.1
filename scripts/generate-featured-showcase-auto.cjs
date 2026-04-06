@@ -24,8 +24,9 @@ const FEATURED_BASENAMES = [
   "calgrilinitide-clean-2.png",
   "amino-1mq-clean-2.png",
   "snap-8-clean-2.png",
+  "tb-500-clean-2.png",
+  "tesamorelin-clean-2.png",
   "glutathione-clean-2.png",
-  "dsip-clean-2.png",
 ];
 
 /** Max RGB distance between 4-neighbors for BFS to continue across gradient panels (tight = stop at vial). */

@@ -31,7 +31,7 @@ export function NavBar() {
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-bg/90 backdrop-blur">
       <div className="relative mx-auto flex min-h-[88px] max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="font-display text-xl font-semibold tracking-tight text-[var(--text)] md:text-2xl">
-          {process.env.NEXT_PUBLIC_SITE_NAME ?? DEFAULT_SITE_DISPLAY_NAME}
+          {DEFAULT_SITE_DISPLAY_NAME}
         </Link>
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 md:flex">
           {links.map((l) => (

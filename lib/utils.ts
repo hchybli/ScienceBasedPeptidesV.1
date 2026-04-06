@@ -81,22 +81,41 @@ export function primaryProductImage(images: string[] | null | undefined): string
 }
 
 /**
- * Fixed “random” catalog order: same products → same order on every load until the catalog changes.
- * (Avoids A–Z tie-break from `sold_count` + `name` without reshuffling every request.)
+ * Curated “most popular” order (shop + research default sort). Slugs listed first; everything else
+ * follows by `sold_count` desc, then name A–Z.
  */
-export function stableCatalogOrder<T extends { id?: unknown }>(items: T[], salt: string): T[] {
-  return [...items].sort((a, b) => {
-    const ka = `${salt}:${String(a.id)}`;
-    const kb = `${salt}:${String(b.id)}`;
-    return fnv1a32(ka) - fnv1a32(kb);
-  });
-}
+export const MOST_POPULAR_CATALOG_SLUG_ORDER: string[] = [
+  "retatrutide",
+  "bpc-157",
+  "semaglutide",
+  "melanotan-ii",
+  "nad-plus",
+  "ghk-cu",
+  "melanotan-i",
+  "glow",
+  "klow",
+  "tesamorelin",
+  "tb-500",
+  "bacteriostatic-water-30ml",
+  "bpc-157-tb-500-blend",
+  "bpc-157-ghk-cu-tb-blend",
+  "cjc-1295-ipamorelin-blend",
+];
 
-function fnv1a32(s: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
+export function mostPopularCatalogOrder<T extends { slug?: unknown; sold_count?: unknown; name?: unknown }>(
+  items: T[],
+): T[] {
+  const priority = new Map(MOST_POPULAR_CATALOG_SLUG_ORDER.map((s, i) => [s, i]));
+  const tail = 1_000_000;
+  return [...items].sort((a, b) => {
+    const sa = String(a.slug ?? "");
+    const sb = String(b.slug ?? "");
+    const pa = priority.has(sa) ? (priority.get(sa) as number) : tail;
+    const pb = priority.has(sb) ? (priority.get(sb) as number) : tail;
+    if (pa !== pb) return pa - pb;
+    const soldA = Number(a.sold_count ?? 0);
+    const soldB = Number(b.sold_count ?? 0);
+    if (soldA !== soldB) return soldB - soldA;
+    return String(a.name ?? "").localeCompare(String(b.name ?? ""), undefined, { sensitivity: "base" });
+  });
 }

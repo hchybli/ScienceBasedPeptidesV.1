@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { cn, formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import type { CartItem } from "@/lib/cart";
 import { useCartStore } from "@/store/cart-store";
 
@@ -11,8 +11,6 @@ export function ProductCard(props: {
   slug: string;
   name: string;
   purity?: number | null;
-  /** Same tone as PDP hero: vertical gradient behind the vial (lighter → darker). */
-  imageGradient?: string;
   image: string;
   price: number;
   compareAt?: number | null;
@@ -20,10 +18,18 @@ export function ProductCard(props: {
   size: string;
   variantSizes?: string[];
   priority?: boolean;
+  /** Research hub: same card chrome as shop; links to research PDP and View instead of Add to cart. */
+  context?: "shop" | "research";
+  /** CSS `background` for image frame (e.g. label-matched gradient when PNG has transparent edges). */
+  heroBackgroundCss?: string;
 }) {
   const addItem = useCartStore((s) => s.addItem);
+  const listing = props.context ?? "shop";
+  const productHref =
+    listing === "research" ? `/research/product/${props.slug}` : `/products/${props.slug}`;
+  const heroBg = props.heroBackgroundCss;
   const imageClassName =
-    "absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]";
+    "absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02] [background:none]";
   const onAdd = () => {
     const item: CartItem = {
       productId: props.id,
@@ -41,9 +47,9 @@ export function ProductCard(props: {
   return (
     <div className="group flex flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-surface shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40">
       <Link
-        href={`/products/${props.slug}`}
-        className={cn("relative aspect-[3/4]", !props.imageGradient && "bg-[var(--surface-2)]")}
-        style={props.imageGradient ? { background: props.imageGradient } : undefined}
+        href={productHref}
+        className={heroBg ? "relative aspect-[3/4]" : "relative aspect-[3/4] bg-[var(--surface-2)]"}
+        style={heroBg ? { background: heroBg } : undefined}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- local /public PNGs; avoids Next/Image black-frame issues on some hosts */}
         <img
@@ -57,7 +63,7 @@ export function ProductCard(props: {
       </Link>
       <div className="flex flex-1 flex-col p-5">
         <Link
-          href={`/products/${props.slug}`}
+          href={productHref}
           className="font-display min-h-[3.5rem] text-lg font-semibold tracking-tight hover:text-accent"
         >
           {props.name}
@@ -74,9 +80,15 @@ export function ProductCard(props: {
               </span>
             ) : null}
           </div>
-          <Button className="mt-4 w-full" type="button" onClick={onAdd}>
-            Add to cart
-          </Button>
+          {listing === "shop" ? (
+            <Button className="mt-4 w-full" type="button" onClick={onAdd}>
+              Add to cart
+            </Button>
+          ) : (
+            <Button className="mt-4 w-full" asChild>
+              <Link href={productHref}>View</Link>
+            </Button>
+          )}
         </div>
       </div>
     </div>

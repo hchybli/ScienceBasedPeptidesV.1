@@ -521,6 +521,7 @@ const rawProducts: P[] = [
     is_best_seller: 0,
     subscription_eligible: 1,
     tags: ["epitalon", "synthetic peptide", "circadian research", "preclinical"],
+    images: ["/products/epitalon-clean-2.png"],
     variants: [
       { id: "v_epit_10", size: "10mg", price: 34.99, sku: "EPIT-10MG", stock: 300, is_default: true, order: 0 },
       { id: "v_epit_20", size: "20mg", price: 59.99, sku: "EPIT-20MG", stock: 200, order: 1 },
@@ -568,6 +569,7 @@ const rawProducts: P[] = [
     is_best_seller: 0,
     subscription_eligible: 1,
     tags: ["thymosin", "cytokine signaling", "cell signaling", "preclinical models"],
+    images: ["/products/thymosin-alpha-1-clean-2.png"],
     variants: [
       { id: "v_ta1_15", size: "1.5mg", price: 39.99, sku: "TA1-1.5MG", stock: 250, is_default: true, order: 0 },
       {
@@ -631,6 +633,7 @@ const rawProducts: P[] = [
     is_best_seller: 0,
     subscription_eligible: 1,
     tags: ["selank", "neuropeptide", "signaling research", "preclinical"],
+    images: ["/products/selank-clean-2.png"],
     variants: [{ id: "v_sel_5", size: "5mg", price: 29.99, sku: "SELANK-5MG", stock: 250, is_default: true, order: 0 }],
   },
   {
@@ -651,6 +654,7 @@ const rawProducts: P[] = [
     is_best_seller: 0,
     subscription_eligible: 1,
     tags: ["semax", "ACTH analog", "neuropharmacology", "preclinical"],
+    images: ["/products/semax-clean-2.png"],
     variants: [{ id: "v_sem_5", size: "5mg", price: 29.99, sku: "SEMAX-5MG", stock: 250, is_default: true, order: 0 }],
   },
   {
@@ -869,8 +873,8 @@ const rawProducts: P[] = [
     is_featured: 0,
     is_best_seller: 0,
     subscription_eligible: 0,
-    tags: ["synthetic peptide", "laboratory", "research compound"],
-    images: ["/placeholder-peptide.svg"],
+    tags: ["DSIP", "neuropeptide", "sleep research", "laboratory"],
+    images: ["/products/dsip-clean-2.png"],
     variants: [{ id: "v_dsip_10", size: "10mg", price: 39.99, sku: "DSIP-10MG", stock: 100, is_default: true, order: 0 }],
   },
   {
@@ -929,7 +933,7 @@ const rawProducts: P[] = [
 ];
 
 const COMMON_DISCLAIMER = "For laboratory research use only. Not for human consumption.";
-const BRAND_LINE = "SCIENCE BASED PEPTIDES";
+const BRAND_LINE = "HALVECO";
 const OVERRIDES_PATH = path.join(process.cwd(), "content", "products", "product-info.json");
 const IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg"];
 
@@ -1092,7 +1096,7 @@ const bundles: Array<{
     items: [
       { variant_id: "v_bpc_5", qty: 1 },
       { variant_id: "v_tb_5", qty: 1 },
-      { variant_id: "v_bac_30", qty: 3 },
+      { variant_id: "v_bac_10", qty: 3 },
       { variant_id: "v_syr_10", qty: 1 },
     ],
   },

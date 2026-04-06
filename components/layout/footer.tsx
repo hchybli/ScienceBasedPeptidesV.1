@@ -48,7 +48,7 @@ export function Footer() {
       <div className={footerContentClass}>
         <div>
           <p className="font-display text-lg font-semibold tracking-tight">
-            {process.env.NEXT_PUBLIC_SITE_NAME ?? DEFAULT_SITE_DISPLAY_NAME}
+            {DEFAULT_SITE_DISPLAY_NAME}
           </p>
           <p className="mt-3 text-sm text-[var(--text-muted)]">
             Research catalog built for analytical workflows, batch documentation, and consistent specification visibility.

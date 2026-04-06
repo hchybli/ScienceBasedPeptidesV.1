@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { VariantSelector, type VariantOption } from "@/components/ui/variant-selector";
 import { Disclaimer } from "@/components/ui/disclaimer";
-import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
+import { getCanonicalProductImage, getProductHeroBackgroundCss } from "@/lib/product-pdp-theme";
 import { formatCurrency } from "@/lib/utils";
 import type { CartItem } from "@/lib/cart";
 import { useCartStore } from "@/store/cart-store";
@@ -21,8 +20,6 @@ const RECENT_KEY = "peptide_recently_viewed";
 export function ProductPdp(props: {
   /** Canonical vial URL (matches shop grid). */
   heroImage: string;
-  /** CSS linear-gradient for hero card background (label “tab” colors). */
-  heroGradient: string;
   product: {
     id: string;
     name: string;
@@ -77,7 +74,7 @@ export function ProductPdp(props: {
     size: string;
   }>;
 }) {
-  const { heroImage, heroGradient, product, variants, labReports, reviews, related } = props;
+  const { heroImage, product, variants, labReports, reviews, related } = props;
   const [selectedId, setSelectedId] = useState(variants.find((v) => v.stockQty > 0)?.id ?? variants[0]?.id);
   const [qtyInput, setQtyInput] = useState("1");
   const addItem = useCartStore((s) => s.addItem);
@@ -135,6 +132,7 @@ export function ProductPdp(props: {
     addItem(item);
   }
 
+  const heroFrameBg = getProductHeroBackgroundCss(product.slug);
   const currentLab = labReports.find((l) => l.isCurrent) ?? labReports[0];
   const averageRating = reviews.length
     ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
@@ -144,18 +142,16 @@ export function ProductPdp(props: {
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-28 pt-10 md:grid-cols-[minmax(240px,360px)_1fr] md:items-start md:pb-36">
       <div className="space-y-4 md:sticky md:top-24">
         <div
-          className="relative mx-auto aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)] shadow-sm"
-          style={{ background: heroGradient }}
+          className={`relative mx-auto aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)] shadow-sm ${heroFrameBg ? "" : "bg-[var(--surface-2)]"}`}
+          style={heroFrameBg ? { background: heroFrameBg } : undefined}
         >
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element -- fills portrait frame (wide assets use cover, not letterbox) */}
+          <img
             src={heroImage}
             alt={product.name}
-            fill
-            unoptimized
-            quality={100}
-            className="z-[1] object-cover object-center transition duration-300 hover:scale-[1.02]"
-            sizes="(max-width: 768px) 100vw, 340px"
-            priority
+            className="absolute inset-0 z-[1] h-full w-full object-cover object-center transition duration-300 hover:scale-[1.02] [background:none]"
+            loading="eager"
+            decoding="async"
           />
         </div>
         <Disclaimer />
@@ -304,12 +300,12 @@ export function ProductPdp(props: {
                 slug={r.slug}
                 name={r.name}
                 purity={r.purity}
-                imageGradient={getPdpHeroGradient(r.slug)}
                 image={getCanonicalProductImage(r.slug, r.images)}
                 price={r.price}
                 compareAt={r.compareAt}
                 variantId={r.variant_id}
                 size={r.size}
+                heroBackgroundCss={getProductHeroBackgroundCss(r.slug)}
               />
             ))}
           </div>

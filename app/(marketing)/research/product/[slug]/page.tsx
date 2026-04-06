@@ -1,9 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
-import { getCanonicalProductImage, getPdpHeroGradient } from "@/lib/product-pdp-theme";
+import { getCanonicalProductImage, getProductHeroBackgroundCss } from "@/lib/product-pdp-theme";
 import { parseJsonArray } from "@/lib/utils";
 import { parseProductMeta } from "@/lib/product-meta";
 import { buildPdpSpecificationRows } from "@/lib/product-specifications";
@@ -42,24 +41,21 @@ export default async function ProductResearchPage({ params }: { params: Promise<
   const productFiles = listPublicProductFilenames();
   const merged = mergeProductImagesWithDisk(p.slug as string, parseJsonArray<string>(p.images, []), productFiles);
   const image = getCanonicalProductImage(p.slug as string, merged);
-  const heroGradient = getPdpHeroGradient(p.slug as string);
 
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-28 pt-10 md:grid-cols-[minmax(240px,360px)_1fr] md:items-start md:pb-36">
       <div className="space-y-4 md:sticky md:top-24">
         <div
-          className="relative mx-auto aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)] shadow-sm"
-          style={{ background: heroGradient }}
+          className={`relative mx-auto aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)] shadow-sm ${heroFrameBg ? "" : "bg-[var(--surface-2)]"}`}
+          style={heroFrameBg ? { background: heroFrameBg } : undefined}
         >
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={image}
             alt={p.name}
-            fill
-            unoptimized
-            quality={100}
-            className="z-[1] object-cover object-center"
-            sizes="(max-width: 768px) 100vw, 340px"
-            priority
+            className="absolute inset-0 z-[1] h-full w-full object-cover object-center [background:none]"
+            loading="eager"
+            decoding="async"
           />
         </div>
         <Disclaimer />
