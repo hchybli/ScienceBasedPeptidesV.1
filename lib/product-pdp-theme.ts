@@ -62,6 +62,9 @@ const SHOP_GRID_IMAGE_BY_SLUG_LOWER = new Map<string, string>([
   ["melanotan-i", "/products/melanotan-i-shop.png"],
   ["nad-plus", "/products/nad-plus-shop.png"],
   ["ghk-cu", "/products/ghk-cu-shop.png"],
+  ["bacteriostatic-water-30ml", "/products/bacteriostatic-water-30ml-shop.png"],
+  ["tb-500", "/products/tb-500-shop.png"],
+  ["tesamorelin", "/products/tesamorelin-shop.png"],
 ]);
 
 /** Opaque portrait studio shots: shared card frame + object-position (same as BPC-157 treatment). */
@@ -72,6 +75,9 @@ const SHOP_OPAQUE_STUDIO_SLUGS = new Set([
   "melanotan-i",
   "nad-plus",
   "ghk-cu",
+  "bacteriostatic-water-30ml",
+  "tb-500",
+  "tesamorelin",
 ]);
 
 const SHOP_OPAQUE_STUDIO_FRAME_CSS =
