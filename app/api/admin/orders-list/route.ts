@@ -12,5 +12,9 @@ export async function GET() {
     take: 500,
     select: { id: true, user_id: true, guest_email: true, status: true, total: true, created_at: true },
   });
-  return NextResponse.json({ orders });
+  const jsonSafe = orders.map((o) => ({
+    ...o,
+    created_at: typeof o.created_at === "bigint" ? Number(o.created_at) : o.created_at,
+  }));
+  return NextResponse.json({ orders: jsonSafe });
 }

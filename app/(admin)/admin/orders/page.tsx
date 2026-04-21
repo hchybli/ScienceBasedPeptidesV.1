@@ -29,9 +29,8 @@ export default function AdminOrdersPage() {
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="font-display text-3xl font-semibold">Orders</h1>
-      <div className="mt-6 flex flex-wrap gap-4">
+    <div>
+      <div className="flex flex-wrap gap-4">
         <Input placeholder="Search ID or email" value={q} onChange={(e) => setQ(e.target.value)} />
         <select
           className="h-10 rounded-md border border-[var(--border)] bg-surface-2 px-3 text-sm"

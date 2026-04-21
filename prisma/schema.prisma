@@ -95,6 +95,14 @@ model variants {
   display_order       Int    @default(0)
 }
 
+model inventory_adjustments {
+  id         String @id
+  variant_id String
+  delta      Int
+  reason     String?
+  created_at BigInt @default(dbgenerated("(EXTRACT(EPOCH FROM NOW()))::bigint"))
+}
+
 model bundles {
   id               String @id
   name             String

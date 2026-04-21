@@ -25,8 +25,8 @@ export default function NewProductPage() {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-12">
-      <h1 className="font-display text-2xl font-semibold">New product</h1>
+    <div className="max-w-lg">
+      <h2 className="font-display text-2xl font-semibold">New product</h2>
       <form onSubmit={submit} className="mt-8 space-y-4">
         <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
         <Input label="Slug" value={slug} onChange={(e) => setSlug(e.target.value)} required />

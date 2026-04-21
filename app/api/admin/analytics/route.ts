@@ -34,10 +34,14 @@ export async function GET() {
       )
       .then((r) => Number(r[0]?.s ?? 0));
 
-  const byStatus = (await prisma.$queryRawUnsafe(`SELECT status, COUNT(*) as c FROM orders GROUP BY status`)) as Array<{
+  const byStatusRaw = (await prisma.$queryRawUnsafe(`SELECT status, COUNT(*) as c FROM orders GROUP BY status`)) as Array<{
     status: string;
-    c: number;
+    c: unknown;
   }>;
+  const byStatus = byStatusRaw.map((row) => ({
+    status: row.status,
+    c: typeof row.c === "bigint" ? Number(row.c) : Number(row.c ?? 0),
+  }));
 
   const aovAllRow = (await prisma.$queryRawUnsafe<{ a: number | null }[]>(
     `SELECT AVG(total) as a FROM orders WHERE status NOT IN ('cancelled', 'refunded', 'pending_payment')`

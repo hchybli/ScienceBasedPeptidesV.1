@@ -12,8 +12,8 @@ export default function AdminAnalyticsPage() {
     })();
   }, []);
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
-      <h1 className="font-display text-3xl font-semibold">Analytics</h1>
+    <div className="max-w-5xl">
+      <h2 className="font-display text-2xl font-semibold">Analytics</h2>
       <pre className="mt-8 overflow-x-auto rounded-[var(--radius)] border border-[var(--border)] bg-surface p-4 text-xs">
         {JSON.stringify(data, null, 2)}
       </pre>

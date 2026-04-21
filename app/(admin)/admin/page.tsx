@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 
 export default function AdminDashboard() {
@@ -20,9 +21,8 @@ export default function AdminDashboard() {
   const chart = data?.revenueLast30Days as Array<{ day: number; revenue: number }> | undefined;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="font-display text-3xl font-semibold">Admin</h1>
-      <div className="mt-8 grid gap-4 md:grid-cols-4">
+    <div>
+      <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardContent className="p-6">
             <p className="text-sm text-[var(--text-muted)]">Today</p>
@@ -51,43 +51,57 @@ export default function AdminDashboard() {
 
       <div className="mt-10">
         <h2 className="font-display text-xl font-semibold">Revenue (30 days)</h2>
-        <div className="mt-4 flex h-40 items-end gap-1">
+        <div className="mt-4 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-4">
+          <div className="flex h-40 items-end gap-1">
           {chart?.map((d, i) => {
             const max = Math.max(...(chart?.map((x) => x.revenue) ?? [1]), 1);
             const h = (d.revenue / max) * 100;
-            return <div key={i} className="flex-1 rounded-t bg-accent/60" style={{ height: `${Math.max(h, 4)}%` }} title={String(d.revenue)} />;
+            return (
+              <div
+                key={i}
+                className="flex-1 rounded-t bg-accent/50 hover:bg-accent/70 transition-colors"
+                style={{ height: `${Math.max(h, 4)}%` }}
+                title={String(d.revenue)}
+              />
+            );
           })}
+          </div>
         </div>
       </div>
 
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         <div>
           <h2 className="font-display text-xl font-semibold">Orders by status</h2>
-          <ul className="mt-4 space-y-2 text-sm">
-            {byStatus?.map((s) => (
-              <li key={s.status} className="flex justify-between">
-                <span>{s.status}</span>
-                <span>{s.c}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-4 rounded-[var(--radius)] border border-[var(--border)] bg-surface p-4">
+            <ul className="space-y-2 text-sm">
+              {byStatus?.map((s) => (
+                <li key={s.status} className="flex items-center justify-between">
+                  <span className="text-[var(--text-muted)]">{s.status}</span>
+                  <span className="font-mono">{s.c}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div>
           <h2 className="font-display text-xl font-semibold">Quick links</h2>
-          <ul className="mt-4 space-y-2 text-sm text-accent">
-            <li>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <Button asChild variant="secondary">
               <Link href="/admin/orders">Orders</Link>
-            </li>
-            <li>
+            </Button>
+            <Button asChild variant="secondary">
               <Link href="/admin/products">Products</Link>
-            </li>
-            <li>
+            </Button>
+            <Button asChild variant="secondary">
               <Link href="/admin/customers">Customers</Link>
-            </li>
-            <li>
+            </Button>
+            <Button asChild variant="secondary">
               <Link href="/admin/analytics">Analytics</Link>
-            </li>
-          </ul>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link href="/admin/discounts">Discounts</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
