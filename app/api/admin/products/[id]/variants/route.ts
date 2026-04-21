@@ -32,7 +32,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const d = parsed.data;
 
   if (d.is_default) {
-    const [variant] = await prisma.$transaction([
+    const [, variant] = await prisma.$transaction([
       prisma.variants.updateMany({ where: { product_id: productId }, data: { is_default: 0 } }),
       prisma.variants.create({
         data: {

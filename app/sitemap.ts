@@ -6,7 +6,9 @@ import { DEFAULT_SITE_URL } from "@/lib/site";
 const base = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const products = await prisma.products.findMany({ select: { slug: true, created_at: true } });
+  const products = await prisma.products
+    .findMany({ select: { slug: true, created_at: true } })
+    .catch(() => [] as Array<{ slug: string; created_at: bigint }>);
   const entries: MetadataRoute.Sitemap = [
     { url: base, lastModified: new Date() },
     { url: `${base}/shop`, lastModified: new Date() },

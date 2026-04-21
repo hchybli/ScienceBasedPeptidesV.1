@@ -346,7 +346,7 @@ export default function EditProductPage() {
                         ) : null}
                         <Button
                           type="button"
-                          variant="destructive"
+                          variant="danger"
                           onClick={async () => {
                             const res = await fetch(`/api/admin/variants/${v.id}`, { method: "DELETE" });
                             if (res.ok) await load();
