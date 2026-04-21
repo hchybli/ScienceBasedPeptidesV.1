@@ -56,7 +56,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
       images: parseJsonArray<string>(product.images, []),
       category,
     },
-    variants: variants.map((v) => ({
+    variants: variants.map((v: (typeof variants)[number]) => ({
       ...v,
       is_default: Boolean(v.is_default),
     })),
@@ -95,5 +95,29 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       images: parseJsonArray<string>(saved.images, []),
     },
   });
+}
+
+export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "admin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  const { id } = await ctx.params;
+
+  const variantIds = await prisma.variants.findMany({ where: { product_id: id }, select: { id: true } });
+  const ids = variantIds.map((v: (typeof variantIds)[number]) => v.id);
+
+  await prisma.$transaction([
+    prisma.inventory_adjustments.deleteMany({ where: { variant_id: { in: ids } } }),
+    prisma.subscription_items.deleteMany({ where: { OR: [{ product_id: id }, { variant_id: { in: ids } }] } }),
+    prisma.bundle_items.deleteMany({ where: { OR: [{ product_id: id }, { variant_id: { in: ids } }] } }),
+    prisma.reviews.deleteMany({ where: { product_id: id } }),
+    prisma.lab_reports.deleteMany({ where: { product_id: id } }),
+    prisma.related_products.deleteMany({ where: { OR: [{ product_id: id }, { related_id: id }] } }),
+    prisma.variants.deleteMany({ where: { product_id: id } }),
+    prisma.products.delete({ where: { id } }),
+  ]);
+
+  return NextResponse.json({ ok: true });
 }
 

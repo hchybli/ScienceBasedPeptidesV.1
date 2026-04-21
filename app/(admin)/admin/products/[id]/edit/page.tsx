@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -52,9 +52,11 @@ type AdminVariant = {
 export default function EditProductPage() {
   const params = useParams();
   const id = params.id as string;
+  const router = useRouter();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [product, setProduct] = useState<AdminProduct | null>(null);
   const [variants, setVariants] = useState<AdminVariant[]>([]);
@@ -62,6 +64,7 @@ export default function EditProductPage() {
   const [adjustments, setAdjustments] = useState<Record<string, Array<{ id: string; delta: number; reason: string | null; created_at: number }>>>({});
   const [adjustDelta, setAdjustDelta] = useState<Record<string, number>>({});
   const [adjustReason, setAdjustReason] = useState<Record<string, string>>({});
+  const [deleteConfirm, setDeleteConfirm] = useState("");
 
   async function load() {
     setError(null);
@@ -128,6 +131,8 @@ export default function EditProductPage() {
 
   if (loading) return <div className="text-sm text-[var(--text-muted)]">Loading…</div>;
   if (!product) return <div className="text-sm text-[var(--text-muted)]">Not found.</div>;
+
+  const canDelete = deleteConfirm.trim().toLowerCase() === product.slug.trim().toLowerCase();
 
   return (
     <div className="max-w-5xl space-y-6">
@@ -451,6 +456,46 @@ export default function EditProductPage() {
                 </div>
               );
             })}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-6">
+          <h3 className="font-display text-lg font-semibold text-red-600">Danger zone</h3>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
+            This permanently deletes the product and its dependent data (variants, lab reports, reviews, bundle items, related products, subscription items,
+            inventory adjustments). Orders will keep historical line items in JSON.
+          </p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <Input
+              label={`Type the product slug to confirm (${product.slug})`}
+              value={deleteConfirm}
+              onChange={(e) => setDeleteConfirm(e.target.value)}
+              placeholder={product.slug}
+            />
+            <div className="md:mt-7">
+              <Button
+                type="button"
+                variant="danger"
+                disabled={!canDelete || deleting}
+                onClick={async () => {
+                  setDeleting(true);
+                  setError(null);
+                  try {
+                    const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
+                    if (!res.ok) throw new Error(`Delete failed (${res.status})`);
+                    router.push("/admin/products");
+                  } catch (e) {
+                    setError(e instanceof Error ? e.message : "Delete failed");
+                  } finally {
+                    setDeleting(false);
+                  }
+                }}
+              >
+                {deleting ? "Deleting…" : "Delete product"}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
