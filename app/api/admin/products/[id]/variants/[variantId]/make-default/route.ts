@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -13,6 +14,11 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string; v
     prisma.variants.updateMany({ where: { product_id: productId }, data: { is_default: 0 } }),
     prisma.variants.update({ where: { id: variantId }, data: { is_default: 1 } }),
   ]);
+
+  const p = await prisma.products.findFirst({ where: { id: productId }, select: { slug: true } });
+  if (p?.slug) revalidatePath(`/products/${p.slug}`);
+  revalidatePath("/shop");
+  revalidatePath(`/admin/products/${productId}/edit`);
 
   return NextResponse.json({ ok: true });
 }

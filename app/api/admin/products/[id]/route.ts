@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { parseJsonArray } from "@/lib/utils";
@@ -76,15 +77,38 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 
+  const before = await prisma.products.findFirst({ where: { id }, select: { slug: true } });
+
   const d = parsed.data;
   const update: Record<string, unknown> = { ...d };
   if (d.images) update.images = JSON.stringify(d.images);
   if (d.tags) update.tags = JSON.stringify(d.tags);
 
-  const saved = await prisma.products.update({
-    where: { id },
-    data: update,
+  const saved = await prisma.$transaction(async (tx) => {
+    const saved = await tx.products.update({
+      where: { id },
+      data: update,
+    });
+
+    // Storefront pricing is derived from the default variant; keep it aligned when base_price is edited.
+    if (d.base_price !== undefined) {
+      const def = await tx.variants.findFirst({
+        where: { product_id: id, is_default: 1 },
+        select: { id: true },
+      });
+      if (def) {
+        await tx.variants.update({ where: { id: def.id }, data: { price: d.base_price } });
+      }
+    }
+
+    return saved;
   });
+
+  const slug = String(saved.slug ?? before?.slug ?? "");
+  if (slug) revalidatePath(`/products/${slug}`);
+  revalidatePath("/shop");
+  revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${id}/edit`);
 
   return NextResponse.json({
     ok: true,
@@ -104,6 +128,7 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
   }
   const { id } = await ctx.params;
 
+  const before = await prisma.products.findFirst({ where: { id }, select: { slug: true } });
   const variantIds = await prisma.variants.findMany({ where: { product_id: id }, select: { id: true } });
   const ids = variantIds.map((v: (typeof variantIds)[number]) => v.id);
 
@@ -117,6 +142,10 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
     prisma.variants.deleteMany({ where: { product_id: id } }),
     prisma.products.delete({ where: { id } }),
   ]);
+
+  if (before?.slug) revalidatePath(`/products/${before.slug}`);
+  revalidatePath("/shop");
+  revalidatePath("/admin/products");
 
   return NextResponse.json({ ok: true });
 }

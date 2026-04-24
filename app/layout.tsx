@@ -11,6 +11,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ScrollToTop } from "@/components/providers/scroll-to-top";
 import { MarketingTracker } from "@/components/providers/marketing-tracker";
+import { AdminUpdateBus } from "@/components/providers/admin-update-bus";
 import { siteMetadata } from "@/lib/seo";
 
 const playfair = Playfair_Display({
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable} h-full`}>
       <body className="min-h-full flex flex-col font-sans antialiased">
         <AuthProvider>
+          <AdminUpdateBus />
           <MarketingTracker />
           <ScrollToTop />
           <AgeGate />

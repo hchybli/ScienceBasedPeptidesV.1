@@ -6,6 +6,7 @@ import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/pr
 import { getCanonicalProductImage, getShopGridProductImage } from "@/lib/product-pdp-theme";
 import { parseJsonArray } from "@/lib/utils";
 import { productJsonLd, siteMetadata } from "@/lib/seo";
+import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,8 @@ export async function generateMetadata(ctx: { params: Promise<{ slug: string }> 
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const user = await getCurrentUser();
+  const isAdmin = user?.role === "admin";
   const p = await prisma.products.findFirst({
     where: { slug, is_active: 1 },
   });
@@ -102,6 +105,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ProductPdp
         heroImage={heroImage}
+        isAdmin={isAdmin}
+        adminEditProductId={p.id as string}
         product={{
           id: p.id as string,
           name: p.name,
@@ -112,6 +117,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           categoryName: category?.name ?? "",
           categorySlug: category?.slug ?? "",
           images: mergedImages,
+            basePrice: p.base_price,
+            comparePriceAt: p.compare_price_at,
           purity: p.purity,
           molecularFormula: p.molecular_formula,
           casNumber: p.cas_number,

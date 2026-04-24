@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -65,6 +66,14 @@ export async function POST(req: Request) {
       select: { id: true },
     }),
   ]);
+
+  const v = await prisma.variants.findFirst({ where: { id: variantId }, select: { product_id: true } });
+  if (v?.product_id) {
+    const p = await prisma.products.findFirst({ where: { id: v.product_id }, select: { slug: true } });
+    if (p?.slug) revalidatePath(`/products/${p.slug}`);
+    revalidatePath(`/admin/products/${v.product_id}/edit`);
+  }
+  revalidatePath("/shop");
 
   return NextResponse.json({ ok: true, adjustment: { ...adj, created_at: Number(adj.created_at) } });
 }
