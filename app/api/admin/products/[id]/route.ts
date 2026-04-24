@@ -31,7 +31,7 @@ const patchSchema = z
     seo_title: z.string().min(1).nullable().optional(),
     seo_description: z.string().min(1).nullable().optional(),
   })
-  .strict();
+  .strip();
 
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser();
