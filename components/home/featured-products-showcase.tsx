@@ -205,7 +205,7 @@ export function FeaturedProductsShowcase({ items }: { items: Item[] }) {
                       onClick={() => setSelectedId(item.id)}
                       className={`group relative flex w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border bg-transparent transition aspect-[3/4] ${
                         active
-                          ? "border-2 border-[var(--accent)] shadow-[0_0_0_1px_rgba(169,212,236,0.35)]"
+                          ? "border-2 border-[var(--accent)] shadow-[0_0_0_1px_rgba(120,189,223,0.35)]"
                           : "border-[var(--border)] hover:border-[var(--border)]/80"
                       }`}
                       aria-label={`Select ${item.name}`}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Copy, ExternalLink, Share2, UserCircle2 } from "lucide-react";
 import { useAuthStore } from "@/store/auth-store";
@@ -36,11 +37,14 @@ type DashboardPayload = {
 };
 
 export default function AccountDashboard() {
+  const router = useRouter();
   const persistedUser = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
   const [data, setData] = useState<DashboardPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [copyLinkState, setCopyLinkState] = useState<"idle" | "copied">("idle");
   const [copyCodeState, setCopyCodeState] = useState<"idle" | "copied">("idle");
+  const [signingOut, setSigningOut] = useState(false);
 
   const referralUrl = useMemo(() => {
     const code = data?.account.referralCode || persistedUser?.referralCode;
@@ -149,6 +153,18 @@ export default function AccountDashboard() {
     await onCopyLink();
   }
 
+  async function onSignOut() {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await logout();
+      router.push("/login");
+      router.refresh();
+    } finally {
+      setSigningOut(false);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-12">
       <div className="rounded-2xl border border-[var(--border)] bg-surface p-6">
@@ -157,9 +173,14 @@ export default function AccountDashboard() {
             <h1 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Account</h1>
             <p className="mt-2 text-sm text-[var(--text-muted)]">Manage your account, orders, and affiliate referrals.</p>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs text-[var(--text-muted)]">
-            <span className="font-medium">Affiliate Code:</span>
-            <span className="font-mono text-accent">{displayCode}</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs text-[var(--text-muted)]">
+              <span className="font-medium">Affiliate Code:</span>
+              <span className="font-mono text-accent">{displayCode}</span>
+            </div>
+            <Button variant="danger" size="sm" type="button" onClick={onSignOut} disabled={signingOut}>
+              {signingOut ? "Signing out..." : "Sign out"}
+            </Button>
           </div>
         </div>
       </div>

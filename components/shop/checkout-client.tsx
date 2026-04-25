@@ -112,7 +112,7 @@ export function CheckoutClient({
 
   return (
     <div id="checkout-top" className="relative overflow-hidden bg-[var(--bg)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(169,212,236,0.2),transparent_36%),radial-gradient(circle_at_82%_14%,rgba(207,231,245,0.24),transparent_34%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(120,189,223,0.2),transparent_36%),radial-gradient(circle_at_82%_14%,rgba(152,205,232,0.24),transparent_34%)]" />
       <div className="relative mx-auto max-w-7xl px-4 py-12 md:py-16">
         <div className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(120deg,#fffdf9,#f3efe7)] p-6 md:p-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">

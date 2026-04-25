@@ -193,7 +193,7 @@ export default async function ReferralsMarketingPage() {
   return (
     <div className="bg-[var(--bg)]">
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(169,212,236,0.18),transparent_56%),radial-gradient(circle_at_78%_18%,rgba(207,231,245,0.22),transparent_48%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(120,189,223,0.18),transparent_56%),radial-gradient(circle_at_78%_18%,rgba(152,205,232,0.22),transparent_48%)]" />
         <div className="mx-auto flex max-w-7xl flex-col items-center px-4 py-20 text-center md:px-6 md:py-28">
           <h1 className="max-w-5xl font-display text-4xl font-semibold tracking-tight md:text-6xl">
             Become a HALVECO Affiliate
@@ -255,7 +255,7 @@ export default async function ReferralsMarketingPage() {
             </Card>
           ))}
         </div>
-        <div className="mt-6 rounded-2xl border border-accent/30 bg-[linear-gradient(135deg,rgba(169,212,236,0.24),rgba(255,253,249,0.95))] p-5 md:p-6">
+        <div className="mt-6 rounded-2xl border border-accent/30 bg-[linear-gradient(135deg,rgba(120,189,223,0.24),rgba(255,253,249,0.95))] p-5 md:p-6">
           <p className="text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">Illustrative monthly total</p>
           <p className="mt-2 font-display text-4xl font-semibold tracking-tight">$3,539</p>
           <p className="mt-3 text-xs text-[var(--text-muted)]">

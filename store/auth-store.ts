@@ -12,14 +12,17 @@ interface AuthUser {
 interface AuthStore {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>()((set) => ({
   user: null,
   setUser: (user) => set({ user }),
-  logout: () => {
-    void fetch("/api/auth/logout", { method: "POST" });
-    set({ user: null });
+  logout: async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    } finally {
+      set({ user: null });
+    }
   },
 }));

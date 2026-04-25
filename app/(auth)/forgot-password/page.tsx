@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="relative overflow-hidden bg-[var(--bg)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(169,212,236,0.2),transparent_42%),radial-gradient(circle_at_82%_24%,rgba(207,231,245,0.22),transparent_40%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(120,189,223,0.2),transparent_42%),radial-gradient(circle_at_82%_24%,rgba(152,205,232,0.22),transparent_40%)]" />
       <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-2 md:items-stretch md:py-24">
         <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-6 shadow-[0_16px_48px_rgba(30,26,23,0.12)] md:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">Account access</p>

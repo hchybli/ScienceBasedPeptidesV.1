@@ -590,7 +590,7 @@ export function ProductPdp(props: ProductPdpProps) {
                 const next = Number(qtyInput);
                 if (!Number.isFinite(next) || next < 0) setQtyInput("0");
               }}
-              className="mt-1 h-10 w-16 rounded-[var(--radius)] border border-accent/40 bg-surface-2 px-2 text-center font-mono text-sm shadow-[0_0_0_1px_rgba(169,212,236,0.22),0_0_22px_rgba(169,212,236,0.22)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(169,212,236,0.4),0_0_26px_rgba(169,212,236,0.3)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="mt-1 h-10 w-16 rounded-[var(--radius)] border border-accent/40 bg-surface-2 px-2 text-center font-mono text-sm shadow-[0_0_0_1px_rgba(120,189,223,0.22),0_0_22px_rgba(120,189,223,0.22)] outline-none transition focus:border-accent/70 focus:shadow-[0_0_0_1px_rgba(120,189,223,0.4),0_0_26px_rgba(120,189,223,0.3)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
           </div>
         </div>

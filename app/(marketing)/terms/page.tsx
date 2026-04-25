@@ -211,7 +211,7 @@ const TERMS_TABS = [
 export default function TermsPage() {
   return (
     <div className="relative overflow-hidden bg-[var(--bg)] text-[var(--text)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(169,212,236,0.2),_transparent_42%),radial-gradient(circle_at_80%_20%,_rgba(207,231,245,0.22),_transparent_38%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(120,189,223,0.2),_transparent_42%),radial-gradient(circle_at_80%_20%,_rgba(152,205,232,0.22),_transparent_38%)]" />
       <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24">
         <section className="text-center">
           <h1 className="font-display text-4xl font-semibold tracking-tight md:text-6xl">Terms of Service</h1>

@@ -153,7 +153,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[var(--bg)]">
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(169,212,236,0.18),transparent_40%),radial-gradient(circle_at_80%_22%,rgba(207,231,245,0.22),transparent_36%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(120,189,223,0.18),transparent_40%),radial-gradient(circle_at_80%_22%,rgba(152,205,232,0.22),transparent_36%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-12 md:py-16 lg:grid-cols-[1.05fr_1.25fr] lg:items-center">
           <div>
             <h1 className="font-display max-w-4xl text-4xl font-semibold tracking-tight text-[var(--text)] md:text-6xl">
