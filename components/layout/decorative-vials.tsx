@@ -196,13 +196,18 @@ export function DecorativeVials() {
           src,
           className: `absolute ${SHOW_AT[spec.breakpoint]} ${spec.blur ? "blur-[1.5px]" : ""}`,
           style: {
-            top: `${y}%`,
-            [spec.side]: `${x}%`,
+            top: `${y.toFixed(6)}%`,
+            [spec.side]: `${x.toFixed(6)}%`,
             width: `${size}px`,
             height: `${size}px`,
             transform: `translateY(-50%) rotate(${rotate.toFixed(1)}deg)`,
-            opacity,
-            animation: `vialDrift ${duration}s ease-in-out ${delay}s infinite alternate`,
+            opacity: Number(opacity.toFixed(6)),
+            animationName: "vialDrift",
+            animationDuration: `${duration}s`,
+            animationTimingFunction: "ease-in-out",
+            animationDelay: `${delay}s`,
+            animationIterationCount: "infinite",
+            animationDirection: "alternate",
           } as Record<string, string | number>,
         };
       })

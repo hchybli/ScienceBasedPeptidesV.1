@@ -270,3 +270,45 @@ model newsletter_signups {
   consent    Int    @default(1)
   created_at BigInt @default(dbgenerated("(EXTRACT(EPOCH FROM NOW()))::bigint"))
 }
+
+model customer_tags {
+  id         String @id
+  user_id    String
+  tag        String
+  created_at BigInt @default(dbgenerated("(EXTRACT(EPOCH FROM NOW()))::bigint"))
+
+  @@unique([user_id, tag])
+  @@index([user_id])
+  @@index([tag])
+}
+
+model customer_notes {
+  id             String @id
+  user_id        String
+  body           String
+  author_user_id String?
+  created_at     BigInt @default(dbgenerated("(EXTRACT(EPOCH FROM NOW()))::bigint"))
+  updated_at     BigInt?
+
+  @@index([user_id])
+  @@index([created_at])
+}
+
+model customer_status {
+  id             String @id
+  user_id        String @unique
+  status         String @default("active") // active | suspended
+  updated_at     BigInt @default(dbgenerated("(EXTRACT(EPOCH FROM NOW()))::bigint"))
+  updated_by     String?
+
+  @@index([status])
+}
+
+model marketing_events {
+  id          String @id
+  event_type  String
+  source      String?
+  path        String?
+  session_key String?
+  created_at  BigInt
+}

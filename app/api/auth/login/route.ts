@@ -20,6 +20,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
+  const status = await prisma.customer_status.findUnique({ where: { user_id: user.id }, select: { status: true } });
+  if (status?.status === "suspended") {
+    return NextResponse.json({ error: "Account suspended" }, { status: 403 });
+  }
+
   const role = user.role === "admin" ? "admin" : "customer";
   const token = signToken({ userId: user.id, email: user.email, role });
   await setAuthCookie(token);
