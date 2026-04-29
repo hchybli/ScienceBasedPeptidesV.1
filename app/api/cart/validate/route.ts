@@ -6,6 +6,7 @@ import { calculateTotals } from "@/lib/cart";
 import { listPublicProductFilenames, mergeProductImagesWithDisk } from "@/lib/product-images-server";
 import { getCanonicalProductImage } from "@/lib/product-pdp-theme";
 import { parseJsonArray } from "@/lib/utils";
+import { appliedDiscountSchema } from "@/lib/discounts";
 
 const schema = z.object({
   items: z.array(
@@ -15,14 +16,7 @@ const schema = z.object({
       quantity: z.number().int().positive(),
     })
   ),
-  discount: z
-    .object({
-      code: z.string(),
-      type: z.string(),
-      value: z.number(),
-    })
-    .nullable()
-    .optional(),
+  discount: appliedDiscountSchema.nullable().optional(),
   loyaltyPointsToRedeem: z.number().min(0).optional(),
   isSubscription: z.boolean().optional(),
 });
