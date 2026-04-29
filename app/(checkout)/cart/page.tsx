@@ -15,20 +15,25 @@ import { CartRecommendation } from "@/components/shop/cart-recommendation";
 export default function CartPage() {
   const { items, updateQuantity, removeItem, discountData, setDiscount } = useCartStore();
   const [code, setCode] = useState("");
+  const [discountError, setDiscountError] = useState<string | null>(null);
   const totals = calculateTotals(items, discountData);
 
   async function applyCode() {
+    setDiscountError(null);
     const res = await fetch("/api/discounts/validate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code, subtotal: totals.subtotal }),
     });
     if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
       setDiscount(null);
+      setDiscountError(data.error ?? "Unable to apply code");
       return;
     }
     const data = await res.json();
     setDiscount(data.discount);
+    setDiscountError(null);
   }
 
   return (
@@ -76,6 +81,7 @@ export default function CartPage() {
               Apply
             </Button>
           </div>
+          {discountError ? <p className="text-sm text-danger">{discountError}</p> : null}
           <div className="space-y-1 text-sm">
             <div className="flex justify-between">
               <span className="text-[var(--text-muted)]">Subtotal</span>

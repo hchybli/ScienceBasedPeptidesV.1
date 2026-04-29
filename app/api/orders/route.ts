@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { calculateTotals, type CartItem } from "@/lib/cart";
 import { calculateCryptoAmount, getCryptoOptions } from "@/lib/crypto-payment";
 import { sendOrderConfirmationEmail } from "@/lib/email";
+import { appliedDiscountSchema, normalizeDiscountType, validateDiscountCodeConstraints } from "@/lib/discounts";
 const lineSchema = z.object({
   productId: z.string(),
   variantId: z.string(),
@@ -23,16 +24,24 @@ const lineSchema = z.object({
 
 const schema = z.object({
   items: z.array(lineSchema),
-  discount: z
-    .object({ code: z.string(), type: z.string(), value: z.number() })
-    .nullable()
-    .optional(),
+  discountCode: z.string().trim().min(1).optional(),
+  discount: z.object({ code: z.string() }).nullable().optional(),
   loyaltyPointsToRedeem: z.number().min(0).optional(),
   isSubscription: z.boolean().optional(),
   guestEmail: z.string().email().optional(),
   shippingAddress: z.record(z.string(), z.unknown()),
   cryptoSymbol: z.string().min(2),
 });
+
+class CheckoutDiscountError extends Error {
+  constructor(
+    message: string,
+    public readonly status = 400
+  ) {
+    super(message);
+    this.name = "CheckoutDiscountError";
+  }
+}
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -98,7 +107,50 @@ export async function POST(req: Request) {
     loyaltyRedeem = 0;
   }
 
-  const totals = calculateTotals(items, d.discount ?? null, loyaltyRedeem, d.isSubscription ?? false);
+  const requestedDiscountCode = d.discountCode ?? d.discount?.code ?? null;
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  let resolvedDiscount = null;
+  let resolvedDiscountId: string | null = null;
+  let resolvedDiscountMaxUses: number | null = null;
+
+  if (requestedDiscountCode) {
+    const row = await prisma.discount_codes.findFirst({
+      where: {
+        code: { equals: requestedDiscountCode, mode: "insensitive" },
+      },
+    });
+
+    if (!row) {
+      return NextResponse.json({ error: "Invalid code" }, { status: 400 });
+    }
+
+    const type = normalizeDiscountType(row.type);
+    if (!type) {
+      return NextResponse.json({ error: "Code type not supported" }, { status: 400 });
+    }
+
+    const discountError = validateDiscountCodeConstraints({
+      subtotal,
+      minOrderValue: row.min_order_value,
+      maxUses: row.max_uses,
+      usedCount: row.used_count,
+      expiresAt: row.expires_at != null ? Number(row.expires_at) : null,
+      isActive: row.is_active,
+    });
+    if (discountError) {
+      return NextResponse.json({ error: discountError }, { status: 400 });
+    }
+
+    resolvedDiscount = appliedDiscountSchema.parse({
+      code: row.code,
+      type,
+      value: row.value,
+    });
+    resolvedDiscountId = row.id;
+    resolvedDiscountMaxUses = row.max_uses;
+  }
+
+  const totals = calculateTotals(items, resolvedDiscount, loyaltyRedeem, d.isSubscription ?? false);
   const options = getCryptoOptions();
   const crypto = options.find((o) => o.symbol === d.cryptoSymbol) ?? options[0];
   const cryptoAmount = await calculateCryptoAmount(totals.total, crypto.symbol);
@@ -110,7 +162,32 @@ export async function POST(req: Request) {
   }));
   const shippingJson = JSON.stringify(d.shippingAddress);
 
-  await prisma.$transaction(async (tx) => {
+  try {
+    await prisma.$transaction(async (tx) => {
+      if (resolvedDiscountId) {
+        if (resolvedDiscountMaxUses != null) {
+          const consumed = await tx.discount_codes.updateMany({
+            where: {
+              id: resolvedDiscountId,
+              is_active: 1,
+              used_count: { lt: resolvedDiscountMaxUses },
+            },
+            data: { used_count: { increment: 1 } },
+          });
+          if (consumed.count !== 1) {
+            throw new CheckoutDiscountError("Code no longer available", 409);
+          }
+        } else {
+          const consumed = await tx.discount_codes.updateMany({
+            where: { id: resolvedDiscountId, is_active: 1 },
+            data: { used_count: { increment: 1 } },
+          });
+          if (consumed.count !== 1) {
+            throw new CheckoutDiscountError("Code no longer available", 409);
+          }
+        }
+      }
+
     await tx.orders.create({
       data: {
         id: orderId,
@@ -166,7 +243,13 @@ export async function POST(req: Request) {
         data: { id: ac, user_id: user.userId, cart_data: JSON.stringify({ items: [] }), recovered: 1 },
       });
     }
-  });
+    });
+  } catch (error) {
+    if (error instanceof CheckoutDiscountError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+    throw error;
+  }
 
   const displayName =
     (d.shippingAddress.fullName as string) ||

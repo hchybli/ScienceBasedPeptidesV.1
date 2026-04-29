@@ -1,9 +1,11 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
+import { useState } from "react";
 import { ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/cart-store";
 import { calculateTotals } from "@/lib/cart";
@@ -12,10 +14,40 @@ import { CartLineItem } from "@/components/shop/cart-line-item";
 import { CartRecommendation } from "@/components/shop/cart-recommendation";
 
 export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
-  const { items, removeItem, updateQuantity, discountData } = useCartStore();
+  const { items, removeItem, updateQuantity, discountData, setDiscount } = useCartStore();
   const totals = calculateTotals(items, discountData);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const estimatedTotal = Math.max(0, totals.subtotal - totals.discountAmount);
+  const [code, setCode] = useState("");
+  const [discountErr, setDiscountErr] = useState<string | null>(null);
+  const [discountLoading, setDiscountLoading] = useState(false);
+
+  async function applyCode() {
+    const trimmed = code.trim();
+    if (!trimmed) {
+      setDiscount(null);
+      setDiscountErr(null);
+      return;
+    }
+    setDiscountLoading(true);
+    setDiscountErr(null);
+    const res = await fetch("/api/discounts/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: trimmed, subtotal: totals.subtotal }),
+    });
+    setDiscountLoading(false);
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      setDiscount(null);
+      setDiscountErr(e.error ?? "Unable to apply code");
+      return;
+    }
+    const data = await res.json();
+    setDiscount(data.discount ?? null);
+    setCode(data.discount?.code ?? trimmed);
+    setDiscountErr(null);
+  }
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -72,6 +104,14 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
               <span className="text-[var(--text-muted)]">Subtotal</span>
               <span className="font-mono">{formatCurrency(totals.subtotal)}</span>
             </div>
+            <div className="mt-3 flex gap-2">
+              <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Discount code" />
+              <Button type="button" variant="secondary" onClick={applyCode} disabled={discountLoading || items.length === 0}>
+                {discountLoading ? "..." : "Apply"}
+              </Button>
+            </div>
+            {discountData?.code ? <p className="mt-1 text-xs text-accent">Applied code: {discountData.code}</p> : null}
+            {discountErr ? <p className="mt-1 text-xs text-danger">{discountErr}</p> : null}
             {totals.discountAmount > 0 ? (
               <div className="mt-2 flex justify-between text-sm">
                 <span className="text-[var(--text-muted)]">Discount</span>

@@ -1,16 +1,17 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { CartItem } from "@/lib/cart";
+import type { AppliedDiscount } from "@/lib/discounts";
 
 interface CartStore {
   items: CartItem[];
   discountCode: string | null;
-  discountData: { code: string; type: string; value: number } | null;
+  discountData: AppliedDiscount | null;
   addItem: (item: CartItem) => void;
   removeItem: (variantId: string) => void;
   updateQuantity: (variantId: string, quantity: number) => void;
   clearCart: () => void;
-  setDiscount: (data: { code: string; type: string; value: number } | null) => void;
+  setDiscount: (data: AppliedDiscount | null) => void;
   itemCount: () => number;
 }
 

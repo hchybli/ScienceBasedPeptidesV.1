@@ -3,11 +3,12 @@ import { nanoid } from "nanoid";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { discountTypeSchema } from "@/lib/discounts";
 
 const postSchema = z
   .object({
     code: z.string().min(2).max(50),
-    type: z.string().min(1).max(40),
+    type: discountTypeSchema,
     value: z.number().min(0),
     min_order_value: z.number().min(0).nullable().optional(),
     max_uses: z.number().int().positive().nullable().optional(),
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
   const created = await prisma.discount_codes.create({
     data: {
       id: nanoid(),
-      code: d.code,
+      code: d.code.trim().toUpperCase(),
       type: d.type,
       value: d.value,
       min_order_value: d.min_order_value ?? null,

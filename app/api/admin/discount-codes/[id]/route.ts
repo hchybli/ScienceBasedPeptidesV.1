@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { discountTypeSchema } from "@/lib/discounts";
 
 const patchSchema = z
   .object({
     code: z.string().min(2).max(50).optional(),
-    type: z.string().min(1).max(40).optional(),
+    type: discountTypeSchema.optional(),
     value: z.number().min(0).optional(),
     min_order_value: z.number().min(0).nullable().optional(),
     max_uses: z.number().int().positive().nullable().optional(),
@@ -29,6 +30,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
 
   const d = parsed.data;
   const data: Record<string, unknown> = { ...d };
+  if (typeof d.code === "string") data.code = d.code.trim().toUpperCase();
   if (d.applicable_product_ids) data.applicable_product_ids = JSON.stringify(d.applicable_product_ids);
   if ("expires_at" in d) data.expires_at = d.expires_at != null ? BigInt(d.expires_at) : null;
 

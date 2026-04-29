@@ -101,6 +101,9 @@ export default function AdminDashboard() {
             <Button asChild variant="secondary">
               <Link href="/admin/discounts">Discounts</Link>
             </Button>
+            <Button asChild variant="secondary">
+              <Link href="/admin/affiliates">Affiliates</Link>
+            </Button>
           </div>
         </div>
       </div>

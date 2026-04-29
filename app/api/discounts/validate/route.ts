@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { parseJsonArray } from "@/lib/utils";
+import {
+  appliedDiscountSchema,
+  normalizeDiscountType,
+  validateDiscountCodeConstraints,
+} from "@/lib/discounts";
 
 const schema = z.object({
   code: z.string().min(1),
@@ -25,24 +30,32 @@ export async function POST(req: Request) {
   if (!row) {
     return NextResponse.json({ error: "Invalid code" }, { status: 400 });
   }
-  const now = Math.floor(Date.now() / 1000);
-  if (row.expires_at && row.expires_at < now) {
-    return NextResponse.json({ error: "Code expired" }, { status: 400 });
+
+  const constraintError = validateDiscountCodeConstraints({
+    subtotal,
+    minOrderValue: row.min_order_value,
+    maxUses: row.max_uses,
+    usedCount: row.used_count,
+    expiresAt: row.expires_at != null ? Number(row.expires_at) : null,
+    isActive: row.is_active,
+  });
+  if (constraintError) {
+    return NextResponse.json({ error: constraintError }, { status: 400 });
   }
-  if (row.max_uses != null && row.used_count >= row.max_uses) {
-    return NextResponse.json({ error: "Code no longer available" }, { status: 400 });
-  }
-  if (row.min_order_value != null && subtotal < row.min_order_value) {
-    return NextResponse.json({ error: `Minimum order $${row.min_order_value}` }, { status: 400 });
+
+  const type = normalizeDiscountType(row.type);
+  if (!type) {
+    return NextResponse.json({ error: "Code type not supported" }, { status: 400 });
   }
 
   const applicable = parseJsonArray<string>(row.applicable_product_ids, []);
+  const discount = appliedDiscountSchema.parse({
+    code: row.code,
+    type,
+    value: row.value,
+  });
+
   return NextResponse.json({
-    discount: {
-      code: row.code,
-      type: row.type,
-      value: row.value,
-      applicableProductIds: applicable,
-    },
+    discount: { ...discount, applicableProductIds: applicable },
   });
 }

@@ -22,7 +22,7 @@ export function CheckoutClient({
 }) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const { items, discountData, clearCart } = useCartStore();
+  const { items, discountData, setDiscount, clearCart } = useCartStore();
   const totals = calculateTotals(items, discountData);
   const [symbol, setSymbol] = useState(options[0]?.symbol ?? "BTC");
   const [guestEmail, setGuestEmail] = useState("");
@@ -38,12 +38,42 @@ export function CheckoutClient({
   const [tx, setTx] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [discountCode, setDiscountCode] = useState(discountData?.code ?? "");
+  const [discountErr, setDiscountErr] = useState<string | null>(null);
+  const [discountLoading, setDiscountLoading] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterMsg, setNewsletterMsg] = useState<string | null>(null);
   const [newsletterSending, setNewsletterSending] = useState(false);
 
   const selected = options.find((o) => o.symbol === symbol) ?? options[0];
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
+
+  async function applyDiscountCode() {
+    const trimmed = discountCode.trim();
+    if (!trimmed) {
+      setDiscount(null);
+      setDiscountErr(null);
+      return;
+    }
+    setDiscountLoading(true);
+    setDiscountErr(null);
+    const res = await fetch("/api/discounts/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: trimmed, subtotal: totals.subtotal }),
+    });
+    setDiscountLoading(false);
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      setDiscount(null);
+      setDiscountErr(e.error ?? "Unable to apply code");
+      return;
+    }
+    const data = await res.json();
+    setDiscount(data.discount ?? null);
+    setDiscountCode(data.discount?.code ?? trimmed);
+    setDiscountErr(null);
+  }
 
   async function placeOrder() {
     setLoading(true);
@@ -64,7 +94,7 @@ export function CheckoutClient({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         items,
-        discount: discountData,
+        discountCode: discountData?.code,
         loyaltyPointsToRedeem: 0,
         isSubscription: false,
         guestEmail: user ? undefined : email,
@@ -75,6 +105,9 @@ export function CheckoutClient({
     setLoading(false);
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
+      if (typeof e.error === "string" && e.error.toLowerCase().includes("code")) {
+        setDiscount(null);
+      }
       setErr(e.error ?? "Order failed");
       return;
     }
@@ -174,6 +207,29 @@ export function CheckoutClient({
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-accent" />
                 <h2 className="font-display text-2xl font-semibold tracking-tight">Cryptocurrency payment</h2>
+              </div>
+              <div className="mt-6 space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    label="Discount code"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    placeholder="Enter code"
+                  />
+                  <Button
+                    className="mt-7"
+                    type="button"
+                    variant="secondary"
+                    onClick={applyDiscountCode}
+                    disabled={discountLoading || items.length === 0}
+                  >
+                    {discountLoading ? "Applying..." : "Apply"}
+                  </Button>
+                </div>
+                {discountData?.code ? (
+                  <p className="text-xs text-accent">Applied code: {discountData.code}</p>
+                ) : null}
+                {discountErr ? <p className="text-xs text-danger">{discountErr}</p> : null}
               </div>
               <p className="mt-2 text-sm text-[var(--text-muted)]">
                 Pay with <strong className="font-medium text-[var(--text)]">BTC</strong>,{" "}
